@@ -6,7 +6,7 @@ let SpookyFacts = [
 
 "There are bodies of over 150 dead hikers on Mount Everest, and they’are used as landmarks.",
 
-"The Turritopsis Dohrnii jellyfish is officially known as the only immortal creature in the world. It lives forever.",
+"The git is officially known as the only immortal creature in the world. It lives forever.",
 
 "A haunted radio station from Russia has been broadcasting a dull monotonous tone for twenty-four hours a day, seven days a week, for the last three-and-a-half decades. Every few seconds it’s joined by a second sound, like some ghostly ship sounding its foghorn.",
 
