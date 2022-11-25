@@ -8,6 +8,7 @@ const vips = [
     "canniman777",
     "definatelynotelsie",
     "deuzex85",
+    "johnharris85",
     "freeside11",
     "gangmediator",
     "guccigottheflu",
@@ -19,13 +20,20 @@ const vips = [
     "tougodotio",
     "rock_a_goth",
     "kamikifoxy92"
-
 ]
 
 const tmi = require('tmi.js');
 
+// COUNTER: 
+// - We need to create something that will hold our counters
+// - Const or let? Are we going to need to modify it?
+// - Should it be an array or an object? What are the advantages / disadvantages for each? What's easier? How are we likely to access them?
+// - What data do we need to store in it? Creator, count, name, maybe the time it was created? (so we can clean up old ones)
 
-//timers
+// Timers
+// COUNTER:
+// - If you decided to store the creation time, do we need a timer to run every so often to clear expired counters?
+// - How often? How is it going to find expired ones?
 
 function tyTimer() {
     let ty = "Thank you so much for stopping by and hanging out! 🎉"
@@ -156,11 +164,20 @@ client.on('message', (channel, tags, message, self) => {
             client.say(channel, `Please check out and follow ${soUser} at Twitch.tv/${soUser}`);
             break;
             
-
             // In case the message in lowercase is equal to the string '!name', send the sender of that message the name of the chatbot
         case '!name':
             client.say(channel, `Hello @${tags.username}, my name is SpookyBot! Boo!`);
             break;
+
+        // COUNTER: 
+        // - We need a new command for our counters. What should we call it?
+        // - We'll also need to split the command into all it's pieces (see structure below), how can we do that and save each 'piece' (counter name, value, etc...)
+        // - What's the structure of our counter messages going to be? !counter <counter> <value>? Or maybe !counter <command, delete, create etc...?> <counter>?
+        // - Who can manipulate counters? Who can create them? Who can add / subtract from them? Who can delete them?
+        // - What are the different things I can do with counters? Create, add / subtract, list, delete, etc..., any others? We should handle each case one 
+        // at a time and make sure we cover all the requirements.
+        // - We need to make sure counters can't go negative, either at the start or as people subtract from them.
+        // - Message text is always a string, if we need to do math on the input (to add / subtract / keep track of totals) what do we need to do?
             
             // In case the message in lowercase is equal to the string 'help', send the sender of that message all the available help and commands
         case 'help':
