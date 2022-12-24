@@ -67,6 +67,11 @@ function spookyIntervalFunc() {
   client.say("#rock_a_goth", fact);
 }
 
+function discordTimer() {
+    let discord = "Network, stream, game, make friends, become a homie and join our discord <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
+    client.say("#rock_a_goth", follow);
+  }
+
 // Setup connection configurations
 // These include the channel, username and password
 const client = new tmi.Client({
@@ -91,6 +96,7 @@ client.connect().catch(console.error);
 
 //call timer functions
 setInterval(spookyIntervalFunc, 900000); //15 mins
+setInterval(discordTimer, 15000000); //25
 setInterval(followTimer, 18000000); //30
 setInterval(spookyTimer, 24000000); //40
 setInterval(tyTimer, 27000000); //45
