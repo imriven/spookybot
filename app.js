@@ -148,8 +148,8 @@ client.on("message", (channel, tags, message, self) => {
     //     client.say(channel, `Hello @${tags.username}, what's up?!`);
     //     break;
 
-    // case '!sexybear':
-    //     client.say(channel, `@${tags.username}, Nina is the sexy bear!`);
+    // case '!fuzzybear':
+    //     client.say(channel, `@${tags.username}, Leila is the fuzzy bear!`);
     //     break;
 
     // case '!kitty':
