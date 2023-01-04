@@ -57,7 +57,7 @@ function rulesTimer() {
 
 function spookyTimer() {
   let spooky =
-    "Hey I'm Spooky. I ate nightbot... Well parts... It can do some commands but I'm better. Type in the word, commands to see what I can do! ";
+    "Hey I'm Spooky. Type in the word, COMMANDS, to see what I can do! ";
   client.say("#rock_a_goth", spooky);
 }
 
@@ -68,9 +68,20 @@ function spookyIntervalFunc() {
 }
 
 function discordTimer() {
-    let discord = "Network, stream, game, make friends, become a homie and join our discord <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
-    client.say("#rock_a_goth", follow);
-  }
+    let discord = "Join the rock a goth discord! You might even see spooky bot there!" <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
+    client.say("#rock_a_goth", discord);
+}
+
+function discordHomieTimer() {
+  let homieDiscord = "Network, stream, game, make friends, become a homie and join our discord" <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
+  client.say("#rock_a_goth", homieDiscord);
+}
+
+function linkTreeTimer() {
+  let linkTree = "Check out RockAGoth's socials!" <a href=\"https://linktr.ee/rockagoth</a>";
+  client.say("#rock_a_goth", linkTree);
+}
+
 
 // Setup connection configurations
 // These include the channel, username and password
@@ -91,16 +102,15 @@ const client = new tmi.Client({
 });
 
 // Connect to the channel specified using the setings found in the configurations
-// Any error found shall be logged out in the console
-client.connect().catch(console.error);
-
-//call timer functions
+// Any error found shall be logged out in the consetInterval(followTimer, 18000000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
 setInterval(discordTimer, 15000000); //25
 setInterval(followTimer, 18000000); //30
+setInterval(linkTreeTimer, 18500000); //35
 setInterval(spookyTimer, 24000000); //40
 setInterval(tyTimer, 27000000); //45
 setInterval(rulesTimer, 36000000); //60
+setInterval(discordHomieTimer, 36500000); //65
 
 // When the bot is on, it shall fetch the messages send by user from the specified channel
 client.on("message", (channel, tags, message, self) => {
