@@ -1,7 +1,11 @@
 const Data = require("./data");
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
+const { Client, GatewayIntentBits } = require('discord.js')
 require("dotenv").config();
+const ZwiftAccount = require("zwift-mobile-api");
+const tmi = require("tmi.js");
+
 
 const vips = [
   "angrytxicchaobla",
@@ -26,7 +30,6 @@ const vips = [
   "timberbrick"
 ];
 
-const tmi = require("tmi.js");
 
 // COUNTER:
 // - We need to create something that will hold our counters
@@ -51,6 +54,16 @@ const tmi = require("tmi.js");
 // COUNTER:
 // - If you decided to store the creation time, do we need a timer to run every so often to clear expired counters?
 // - How often? How is it going to find expired ones?
+
+function zwiftTimer() {
+  account.getProfile(`${process.env.Z_ID}`).profile().then(p => {
+    if (p.currentActivityId) {
+      discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
+        channel.send("Christina isn't working out on zwift")
+      })
+    }
+});
+}
 
 function tyTimer() {
   let ty = "Thank you so much for stopping by and hanging out! 🎉";
@@ -91,6 +104,7 @@ function linkTreeTimer() {
   client.say("#rock_a_goth", linkTree);
 }
 
+const account = new ZwiftAccount(`${process.env.Z_USERNAME}`, `${process.env.Z_PASSWORD}`);
 
 // Setup connection configurations
 // These include the channel, username and password
@@ -112,15 +126,30 @@ const client = new tmi.Client({
 
 // Connect to the channel specified using the settings found in the configurations
 client.connect().catch(console.error)
+const discord = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ]
+})
 
+discord.on('ready', () => {
+  console.log(`Logged in as ${discord.user.tag}!`);
+});
+
+
+//make sure this line is the last line
+discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
-setInterval(followTimer, 18000000); //30
+
+setInterval(zwiftTimer, 300000); //5
+setInterval(followTimer, 1800000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
-setInterval(followTimer, 18000000); //30
 setInterval(linkTreeTimer, 18500000); //35
-setInterval(spookyTimer, 24000000); //40
-setInterval(tyTimer, 27000000); //45
-setInterval(rulesTimer, 36000000); //60
+setInterval(spookyTimer, 2400000); //40
+setInterval(tyTimer, 2700000); //45
+setInterval(rulesTimer, 3600000); //60
 setInterval(discordHomieTimer, 36500000); //65
 
 let counters = {}

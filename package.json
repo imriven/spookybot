@@ -24,9 +24,11 @@
     },
     "homepage": "https://github.com/justusmbuvi/Twitch-Chatbot-in-Node.js#readme",
     "dependencies": {
+        "discord.js": "^14.7.1",
         "dotenv": "^10.0.0",
         "knex": "^2.3.0",
         "pg": "^8.8.0",
-        "tmi.js": "^1.8.3"
+        "tmi.js": "^1.8.3",
+        "zwift-mobile-api": "github:johnharris85/zwift-mobile-api"
     }
 }
