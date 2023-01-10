@@ -1,0 +1,17 @@
+# fly.toml file generated for spookybot on 2023-01-05T15:04:22-08:00
+
+app = "spookybot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+services = []
+
+[env]
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+  private_network = true
+
+[build]
+  builder = "heroku/buildpacks:20"

@@ -34,6 +34,19 @@ const tmi = require("tmi.js");
 // - Should it be an array or an object? What are the advantages / disadvantages for each? What's easier? How are we likely to access them?
 // - What data do we need to store in it? Creator, count, name, maybe the time it was created? (so we can clean up old ones)
 
+
+
+
+//Counter 
+//create a new counter
+//can enter where we want to start the counter upon creation
+//want to add to the counter and have it display updated number after being added to
+//also need the ability to subtract
+//ability to erase counter and show what counters are active or have been created
+// command counter_name number(optional default to 0)
+
+
+
 // Timers
 // COUNTER:
 // - If you decided to store the creation time, do we need a timer to run every so often to clear expired counters?
@@ -57,7 +70,7 @@ function rulesTimer() {
 
 function spookyTimer() {
   let spooky =
-    "Hey I'm Spooky. Type in the word, COMMANDS, to see what I can do! ";
+    "Hey I'm Spooky. Type in the word, commands, to see what I can do! ";
   client.say("#rock_a_goth", spooky);
 }
 
@@ -67,18 +80,14 @@ function spookyIntervalFunc() {
   client.say("#rock_a_goth", fact);
 }
 
-function discordTimer() {
-    let discord = "Join the rock a goth discord! You might even see spooky bot there!" <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
-    client.say("#rock_a_goth", discord);
-}
-
 function discordHomieTimer() {
-  let homieDiscord = "Network, stream, game, make friends, become a homie and join our discord" <a href=\"https://discord.gg/GkmqJq6Q>Join the Homies Discord</a>";
+  let homieDiscord = "Network, stream, game, make friends, become a homie and join our discord! https://discord.gg/GkmqJq6Q";
+ 
   client.say("#rock_a_goth", homieDiscord);
 }
 
 function linkTreeTimer() {
-  let linkTree = "Check out RockAGoth's socials!" <a href=\"https://linktr.ee/rockagoth</a>";
+  let linkTree = "Check out RockAGoth's socials! https://linktr.ee/rockagoth";
   client.say("#rock_a_goth", linkTree);
 }
 
@@ -86,12 +95,12 @@ function linkTreeTimer() {
 // Setup connection configurations
 // These include the channel, username and password
 const client = new tmi.Client({
-  options: { debug: true, messagesLogLevel: "info" },
+  options: { debug: true, messagesLogLevel: "debug" },
   connection: {
     reconnect: true,
     secure: true,
   },
-
+  
   // Lack of the identity tags makes the bot anonymous and able to fetch messages from the channel
   // for reading, supervision, spying, or viewing purposes only
   identity: {
@@ -101,10 +110,12 @@ const client = new tmi.Client({
   channels: [`${process.env.TWITCH_CHANNEL}`],
 });
 
-// Connect to the channel specified using the setings found in the configurations
-// Any error found shall be logged out in the consetInterval(followTimer, 18000000); //30
+// Connect to the channel specified using the settings found in the configurations
+client.connect().catch(console.error)
+
+// Any error found shall be logged out in the con
+setInterval(followTimer, 18000000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
-setInterval(discordTimer, 15000000); //25
 setInterval(followTimer, 18000000); //30
 setInterval(linkTreeTimer, 18500000); //35
 setInterval(spookyTimer, 24000000); //40
@@ -112,6 +123,15 @@ setInterval(tyTimer, 27000000); //45
 setInterval(rulesTimer, 36000000); //60
 setInterval(discordHomieTimer, 36500000); //65
 
+let counters = {}
+let counterExample = {
+
+  "death": {
+    "value": 5,
+    "creator": "christina"
+  }
+}
+/* #region */
 // When the bot is on, it shall fetch the messages send by user from the specified channel
 client.on("message", (channel, tags, message, self) => {
   // Lack of this statement or it's inverse (!self) will make it in active
@@ -205,7 +225,7 @@ client.on("message", (channel, tags, message, self) => {
         `Hello @${tags.username}, my name is SpookyBot! Boo!`
       );
       break;
-
+    /* #endregion */
     // COUNTER:
     // - We need a new command for our counters. What should we call it?
     // - We'll also need to split the command into all it's pieces (see structure below), how can we do that and save each 'piece' (counter name, value, etc...)
@@ -216,6 +236,83 @@ client.on("message", (channel, tags, message, self) => {
     // - We need to make sure counters can't go negative, either at the start or as people subtract from them.
     // - Message text is always a string, if we need to do math on the input (to add / subtract / keep track of totals) what do we need to do?
 
+
+    case "!counter":
+      if (!vips.includes(tags.username)) {
+        client.say(channel, "Must be a VIP or Mod make counter");
+        break;
+      }
+      if (message === "!counter") {
+        for (const property in counters) {
+          const cp = counters[property]
+          client.say(channel, `${property}: ${cp.value}, ${cp.creator}`);
+        } 
+        break;
+      }
+      let splitMessage = message.split(" ")
+      let counterName = splitMessage[1]
+      if (counters.hasOwnProperty(counterName)) {
+        if (splitMessage[2] == "delete") {
+          delete counters[counterName]
+          client.say(channel, `Counter ${counterName} has been deleted`);
+          break;
+        } else if (splitMessage[2].startsWith("+")) {
+          let num = splitMessage[2].slice(1)
+          let nn = parseInt(num)
+          if (isNaN(nn)) {
+            client.say(channel, "you can only add numbers to a counter")
+            break;
+          }
+          counters[counterName].value += nn
+          client.say(channel, `${counterName}: ${counters[counterName].value}`)
+          break;
+        } else if (splitMessage[2].startsWith("-")) {
+          let num = splitMessage[2].slice(1)
+          let nn = parseInt(num)
+          if (isNaN(nn)) {
+            client.say(channel, "you can only add numbers to a counter")
+            break;
+          }
+          if (counters[counterName].value - nn < 0) {
+            client.say(channel, "Counter numbers can't go below zero")
+          } else {
+            counters[counterName].value -= nn
+            client.say(channel, `${counterName}: ${counters[counterName].value}`)
+          }
+          break;
+        } else {
+          client.say(channel, "Invalid operation for a counter")
+          break;
+        }
+      } else {
+        if(splitMessage.length < 3 ){
+          counters[counterName] = {
+            value: 0,
+            creator: tags.username
+          }
+          client.say(channel, `Counter ${counterName} created by ${tags.username}!`)
+          break;
+        }
+        if (splitMessage[2].startsWith("+")) {
+          let num = splitMessage[2].slice(1)
+          let nn = parseInt(num)
+          if (isNaN(nn)) {
+            client.say(channel, "you can only add numbers to a counter")
+            break;
+          }
+          counters[counterName] = {
+            value: nn,
+            creator: tags.username
+          }
+          client.say(channel, `Counter ${counterName} created by ${tags.username}!`)
+          break;
+        } else {
+          client.say(channel, "counter doesn't exist")
+          break;
+        }
+      } 
+
+ 
     // In case the message in lowercase is equal to the string 'help', send the sender of that message all the available help and commands
     case "help":
       client.say(
