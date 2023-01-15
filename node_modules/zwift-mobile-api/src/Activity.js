@@ -30,8 +30,7 @@ class Activity {
   }
 
   getActivity(activityId) {
-    throw new Error('Activities are not supported by the developer API');
-    // return this.request.json(`/api/developer/profile/${this.id}/activities/${activityId}`)
+    return this.request.json(`/api/profiles/${this.id}/activities/${activityId}`)
   }
 
   downloadFitFile(fitFileBucket, fitFileKey) {

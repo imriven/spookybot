@@ -1,11 +1,18 @@
 const Data = require("./data");
+ 
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
-const { Client, GatewayIntentBits } = require('discord.js')
+const { Client, GatewayIntentBits, ThreadMemberFlags } = require('discord.js')
 require("dotenv").config();
 const ZwiftAccount = require("zwift-mobile-api");
 const tmi = require("tmi.js");
 
+const worldMap = {
+  1: "Watopia",
+  3: "London",
+  4: "New York",
+  9: "Murkai Islands",
+}
 
 const vips = [
   "angrytxicchaobla",
@@ -55,15 +62,84 @@ const vips = [
 // - If you decided to store the creation time, do we need a timer to run every so often to clear expired counters?
 // - How often? How is it going to find expired ones?
 
+let currentActivityId = null;
+
 function zwiftTimer() {
-  account.getProfile(`${process.env.Z_ID}`).profile().then(p => {
+  account.getProfile(process.env.Z_ID).profile().then(p => {
     if (p.currentActivityId) {
+      console.log(p)
+      if (currentActivityId === p.currentActivityId){
+        return;
+      }
+      console.log(p.currentActivityId)
+      currentActivityId = p.currentActivityId;
+      // account.getActivity(process.env.Z_ID).getActivity(p.currentActivityId).then(activity => {
+      //   console.log(activity)
+      // })
       discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
-        channel.send("Christina isn't working out on zwift")
-      })
+        channel.send("Christina is working out on zwift")
+      }) 
+    } else {
+      if (currentActivityId != null) {
+        discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
+          channel.send("Christina stopped working out on zwift")
+        }) 
+        currentActivityId = null;
+      }
     }
 });
 }
+const getOrdinalNum = (number) => {
+  let selector;
+
+  if (number <= 0) {
+    selector = 4;
+  } else if ((number > 3 && number < 21) || number % 10 > 3) {
+    selector = 0;
+  } else {
+    selector = number % 10;
+  }
+
+  return number + ['th', 'st', 'nd', 'rd', ''][selector];
+};
+
+function dailyChallenge() {
+  const date = new Date()
+  if (date.getUTCHours() !== 14) {
+    return
+  }
+  // while new array is not equal to Three
+let dailyExercises = [] 
+  while (dailyExercises.length != 3) {
+
+      const randomIndex = Math.floor(Math.random() * Data.ExerciseArray.length)
+      if (!dailyExercises.includes(randomIndex)){
+        dailyExercises.push(randomIndex)
+      } 
+  }
+  
+  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const yearMonth = ["January","February","March","April","May","June","July",
+  "August","September","October","November","December"]
+  let day = weekday[date.getDay()]
+  let month = yearMonth[date.getMonth()]
+  let dateNum = getOrdinalNum(date.getDate())
+  let year = date.getFullYear()
+  discord.channels.fetch(process.env.DISCORD_DAILY_ID).then(channel => {
+    channel.send(`
+**${day} ${month} ${dateNum}, ${year}**
+*1 - 5 sets*
+${Data.ExerciseArray[dailyExercises[0]]}
+${Data.ExerciseArray[dailyExercises[1]]}
+*extra credit*
+${Data.ExerciseArray[dailyExercises[2]]}
+    `)
+  }) 
+}
+
+
+
+
 
 function tyTimer() {
   let ty = "Thank you so much for stopping by and hanging out! 🎉";
@@ -104,6 +180,8 @@ function linkTreeTimer() {
   client.say("#rock_a_goth", linkTree);
 }
 
+
+
 const account = new ZwiftAccount(`${process.env.Z_USERNAME}`, `${process.env.Z_PASSWORD}`);
 
 // Setup connection configurations
@@ -143,13 +221,15 @@ discord.on('ready', () => {
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
 
-setInterval(zwiftTimer, 300000); //5
+// setInterval(zwiftTimer, 300000); //5
+setInterval(zwiftTimer, 30000); //
 setInterval(followTimer, 1800000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
 setInterval(linkTreeTimer, 18500000); //35
 setInterval(spookyTimer, 2400000); //40
 setInterval(tyTimer, 2700000); //45
 setInterval(rulesTimer, 3600000); //60
+setInterval(dailyChallenge, 3600000) //60
 setInterval(discordHomieTimer, 36500000); //65
 
 let counters = {}

@@ -110,4 +110,67 @@ let SpookyFacts = [
   "Cockroaches can live without their heads for weeks but will ultimately die when they need food or water",
 ];
 
-module.exports = SpookyFacts;
+let ExerciseArray = [
+
+  // Thursday December 29th
+  // 1 - 3 sets
+  // 25 push ups
+  // 25 crunches
+  // extra credit
+  // 25 lunges
+  
+  "25 push ups",
+  "25 crunches",
+  "25 lunges",
+  "12-15 V ups",
+  "15 bridges",
+  "15 Supermans",
+  "15-20 crunches",
+  "15-20seconds plank",
+  "10 burpees",
+  "10-12 reverse lunges",
+  "15-20 push ups",
+  "15 jump lunges",
+  "10-12 crunches",
+  "15-20 curtsy lunges",
+  "10 burpees",
+  "30 seconds planks",
+  "30 squats",
+  "15-20 jump lunges",
+  "30-60 seconds run in place",
+  "10-15 jump squats",
+  "15-20 plank jacks",
+  "20-30 knee tucks ",
+  "10-15 backwards lunges",
+  "8-12 plank up-downs",
+  "20-30 seconds Lateral lunges",
+  "20-30 seconds Skiers ",
+  "20-30 seconds Side plank / each side",
+  "20-30 seconds Lateral squats",
+  "20-30 seconds crunches ",
+  "8-12 burpees",
+  "20-30 seconds high knees",
+  "20-30 jump lunges ",
+  "10-15 leg lifts",
+  "10-15 push-ups ",
+  "12-15 bridges ",
+  "20-30 seconds side lunges",
+  "20-30 seconds jump lunges ",
+  "20-30 seconds planks",
+  "8-15 burpees" ,
+  "20-30 seconds wall sit",
+  "20-30 seconds triceps dip",
+  "20-30 seconds high knees",
+  "20-30 seconds mountain climber",
+  "20-30 seconds squat jump",
+  "20-30 seconds curtsy lunges",
+  "20-30 seconds jump lunges",
+  "15-30 seconds push-ups",
+  "20-30 seconds lateral planks",
+  "12-15 bridges"
+  ];
+
+module.exports = {
+  SpookyFacts,
+  ExerciseArray
+}
