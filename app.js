@@ -164,8 +164,8 @@ function spookyTimer() {
 }
 
 function spookyIntervalFunc() {
-  let factIndex = Math.floor(Math.random() * (Data.length - 0 + 1) + 0);
-  let fact = Data[factIndex];
+  let factIndex = Math.floor(Math.random() * Data.SpookyFacts.length);
+  let fact = Data.SpookyFacts[factIndex];
   client.say("#rock_a_goth", fact);
 }
 
@@ -221,15 +221,14 @@ discord.on('ready', () => {
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
 
-// setInterval(zwiftTimer, 300000); //5
-setInterval(zwiftTimer, 30000); //
+setInterval(zwiftTimer, 300000); //5
 setInterval(followTimer, 1800000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
 setInterval(linkTreeTimer, 18500000); //35
 setInterval(spookyTimer, 2400000); //40
 setInterval(tyTimer, 2700000); //45
 setInterval(rulesTimer, 3600000); //60
-setInterval(dailyChallenge, 3600000) //60
+setInterval(dailyChallenge, 3600000) //60 Discord
 setInterval(discordHomieTimer, 36500000); //65
 
 let counters = {}
@@ -296,8 +295,8 @@ client.on("message", (channel, tags, message, self) => {
     //     break;
 
     case "!spooky":
-      let factIndex = Math.floor(Math.random() * (Data.length - 0 + 1) + 0);
-      let fact = Data[factIndex];
+      let factIndex = Math.floor(Math.random() * (Data.SpookyFacts.length - 0 + 1) + 0);
+      let fact = Data.SpookyFacts[factIndex];
       client.say(channel, fact);
       break;
 
