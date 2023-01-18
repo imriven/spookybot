@@ -156,8 +156,6 @@ function tipOfDay() {
   cycleArray();
 }
 
-tipOfDay()
-
 
 
 function tyTimer() {
@@ -240,6 +238,7 @@ discord.on('ready', () => {
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
 
+setInterval(tipOfDay, 10000); //10 sec
 setInterval(zwiftTimer, 300000); //5
 setInterval(followTimer, 1800000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins
