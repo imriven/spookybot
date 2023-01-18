@@ -1,5 +1,5 @@
 const Data = require("./data");
- 
+
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
 const { Client, GatewayIntentBits, ThreadMemberFlags } = require('discord.js')
@@ -68,7 +68,7 @@ function zwiftTimer() {
   account.getProfile(process.env.Z_ID).profile().then(p => {
     if (p.currentActivityId) {
       console.log(p)
-      if (currentActivityId === p.currentActivityId){
+      if (currentActivityId === p.currentActivityId) {
         return;
       }
       console.log(p.currentActivityId)
@@ -78,16 +78,16 @@ function zwiftTimer() {
       // })
       discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
         channel.send("Christina is working out on zwift")
-      }) 
+      })
     } else {
       if (currentActivityId != null) {
         discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
           channel.send("Christina stopped working out on zwift")
-        }) 
+        })
         currentActivityId = null;
       }
     }
-});
+  });
 }
 const getOrdinalNum = (number) => {
   let selector;
@@ -109,18 +109,18 @@ function dailyChallenge() {
     return
   }
   // while new array is not equal to Three
-let dailyExercises = [] 
+  let dailyExercises = []
   while (dailyExercises.length != 3) {
 
-      const randomIndex = Math.floor(Math.random() * Data.ExerciseArray.length)
-      if (!dailyExercises.includes(randomIndex)){
-        dailyExercises.push(randomIndex)
-      } 
+    const randomIndex = Math.floor(Math.random() * Data.ExerciseArray.length)
+    if (!dailyExercises.includes(randomIndex)) {
+      dailyExercises.push(randomIndex)
+    }
   }
-  
-  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const yearMonth = ["January","February","March","April","May","June","July",
-  "August","September","October","November","December"]
+
+  const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const yearMonth = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"]
   let day = weekday[date.getDay()]
   let month = yearMonth[date.getMonth()]
   let dateNum = getOrdinalNum(date.getDate())
@@ -134,10 +134,29 @@ ${Data.ExerciseArray[dailyExercises[1]]}
 *extra credit*
 ${Data.ExerciseArray[dailyExercises[2]]}
     `)
-  }) 
+  })
 }
 
+function tipOfDay() {
+  const date = new Date()
+  if (date.getUTCHours() !== date.getUTCHours()) {
+    return
+  }
+  let dailyTips = Data.Tips;
+  let counter = 0;
+  function cycleArray() {
+    let tip = dailyTips[counter];
+    console.log(tip) //channel send
+    counter++;
+    console.log(counter);
+    if (counter == dailyTips.length) {
+      counter = 0
+    }
+  }
+  cycleArray();
+}
 
+tipOfDay()
 
 
 
@@ -171,7 +190,7 @@ function spookyIntervalFunc() {
 
 function discordHomieTimer() {
   let homieDiscord = "Network, stream, game, make friends, become a homie and join our discord! https://discord.gg/GkmqJq6Q";
- 
+
   client.say("#rock_a_goth", homieDiscord);
 }
 
@@ -192,7 +211,7 @@ const client = new tmi.Client({
     reconnect: true,
     secure: true,
   },
-  
+
   // Lack of the identity tags makes the bot anonymous and able to fetch messages from the channel
   // for reading, supervision, spying, or viewing purposes only
   identity: {
@@ -205,11 +224,11 @@ const client = new tmi.Client({
 // Connect to the channel specified using the settings found in the configurations
 client.connect().catch(console.error)
 const discord = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ]
 })
 
 discord.on('ready', () => {
@@ -354,7 +373,7 @@ client.on("message", (channel, tags, message, self) => {
         for (const property in counters) {
           const cp = counters[property]
           client.say(channel, `${property}: ${cp.value}, ${cp.creator}`);
-        } 
+        }
         break;
       }
       let splitMessage = message.split(" ")
@@ -393,7 +412,7 @@ client.on("message", (channel, tags, message, self) => {
           break;
         }
       } else {
-        if(splitMessage.length < 3 ){
+        if (splitMessage.length < 3) {
           counters[counterName] = {
             value: 0,
             creator: tags.username
@@ -418,9 +437,9 @@ client.on("message", (channel, tags, message, self) => {
           client.say(channel, "counter doesn't exist")
           break;
         }
-      } 
+      }
 
- 
+
     // In case the message in lowercase is equal to the string 'help', send the sender of that message all the available help and commands
     case "help":
       client.say(

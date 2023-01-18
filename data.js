@@ -278,23 +278,32 @@ let Tips = [
     
     They can tell you when you need to ease up until your heart rate goes down. This is important because it tells you what your limits are.
     
-    Subsequently the can also tell you when you aren’t working hard enough. As you continue your fitness adventure your body gets use to it and your heart becomes more efficient so you can start pushing yourself a little harder! It can even make weight lifting more cardio forward! 
+    Subsequently the can also tell you when you aren't working hard enough. As you continue your fitness adventure your body gets use to it and your heart becomes more efficient so you can start pushing yourself a little harder! It can even make weight lifting more cardio forward! 
     
-    If you can invest in one it’s a great tool to have in your wheelhouse. If not always listen to the cues of your body! Don’t push yourself too hard but make sure you are pushing hard enough! `
+    If you can invest in one it's a great tool to have in your wheelhouse. If not always listen to the cues of your body! Don't push yourself too hard but make sure you are pushing hard enough! `
   },
   {
-    Title: "",
-    Tip: ``
+    Title: "Salmon the super fish!!",
+    Tip: `
+    Not only is salmon super versatile and tasty, it can also help with post workout inflammation effectively decreasing muscle soreness. It also comes packed with protein to aid with repairing and building muscle fibers. 
+    
+    Salmon is rich in omega fatty acids, b vitamins, and protein. It can be broiled, poached, grilled, baked, steamed,  seared, and etc. Try 4oz of smoked salmon with a boiled egg or two for breakfast! This protein fueled breakfast will power you through ur morning! Try salmon chunks to give your lunch time salad a protein boost! For a quick dinner smother your salmon fillet with scallions, tomatoes, peppers, mushrooms or whatever veggies you can fit in!! Bake and enjoy!`
   },  {
-    Title: "",
-    Tip: ``
+    Title: "Wellness isn't just about your physical health",
+    Tip: `Did you know there are several "dimensions of wellness" that contribute to your overall well being? Wellness is a blanket term for everything around us that affects us. It includes physical, emotional, financial, vocational, social, intellectual, environmental, and spiritual wellness. 
+    
+    Physical Wellness is what I primarily focus on here in this discord! Physical Wellness is the ability to get your body to function at it's most optimal state. We may see health and fitness as ways to look and feel better but the body is a machine with different systems running. When you don't take care of a machine or are hard on it, it breaks down.
+    
+    Emotional Wellness is about self-image, your reactions to experiences, and your ability to cope and adapt. Spiritual wellness is about your beliefs, principles and values that guides you through life. Intellectual Wellness encourages curiousity, empathy, and creativity. It's allowing your mentality to expand through experiences and acquired knowledge. Environmental Wellness almost goes hand in hand with physical wellness. External factors have a direct influence on your physical and emotional well being. This could be natural like weather or the quality of home life.
+    `
   },  {
-    Title: "",
-    Tip: ``
-  },  {
-    Title: "",
-    Tip: ``
-  },
+    Title: "Take a break",
+    Tip: `We tend to have this an unhealthy mentality that you can't be successful without grinding at everything. But the truth is whatever you're reaching for will be hard to acheieve without allowing yourself to have a break! This is true with everything, health & fitness, occupations and careers, education, gaming, etc. Not only does a break help you to reset emotionally, physically, and mentally, they also serve as motivation towards the next reward or break. Setting goals and rewarding yourself for reaching those goals are an excellent way of keeping you motivated without grinding yourself into the ground!`
+  },  
+  // {
+  //   Title: "",
+  //   Tip: ``
+  // },
 
 ]
 
