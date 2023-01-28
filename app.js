@@ -1,4 +1,5 @@
 const Data = require("./data");
+const { createClient } = require("redis");
 
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
@@ -34,7 +35,11 @@ const vips = [
   "savior0420",
   "smokeahontasx",
   "surgetekken",
-  "timberbrick"
+  "timberbrick",
+  "kornhole_the_based",
+  "pandashoesttv"
+
+
 ];
 
 
@@ -137,23 +142,40 @@ ${Data.ExerciseArray[dailyExercises[2]]}
   })
 }
 
-function tipOfDay() {
+// Tip Of The Day
+const redisClient = createClient({
+  url: process.env.REDIS_FLY_CONNECT,
+})
+
+async function setUpRedis(){
+  await redisClient.connect()
+  const setup = await redisClient.exists("tipCounter")
+if (!setup) {
+  await redisClient.set("tipCounter", 0)}
+}
+
+setUpRedis()
+
+
+async function tipOfDay() {
+  let tipCounter = await redisClient.get("tipCounter")
   const date = new Date()
-  if (date.getUTCHours() !== date.getUTCHours()) {
+  if (date.getUTCHours() !== 14) {
     return
   }
   let dailyTips = Data.Tips;
-  let counter = 0;
-  function cycleArray() {
-    let tip = dailyTips[counter];
-    console.log(tip) //channel send
-    counter++;
-    console.log(counter);
-    if (counter == dailyTips.length) {
-      counter = 0
-    }
+
+  if (tipCounter == dailyTips.length - 1) {
+    await redisClient.set("tipCounter", 0)
   }
-  cycleArray();
+
+  const channel = await discord.channels.fetch(process.env.DISCORD_TIP_ID)
+  await channel.send(`
+**${dailyTips[tipCounter].Title}**
+${dailyTips[tipCounter].Tip}
+    `)
+  tipCounter++;
+  await redisClient.set("tipCounter", tipCounter)
 }
 
 
@@ -234,11 +256,14 @@ discord.on('ready', () => {
 });
 
 
+
+redisClient.on('error', (err) => console.log('Redis Client Error', err))
+
 //make sure this line is the last line
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
 
-setInterval(tipOfDay, 10000); //10 sec
+setInterval(tipOfDay, 3600000); //10 sec
 setInterval(zwiftTimer, 300000); //5
 setInterval(followTimer, 1800000); //30
 setInterval(spookyIntervalFunc, 900000); //15 mins

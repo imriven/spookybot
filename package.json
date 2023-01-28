@@ -28,6 +28,7 @@
         "dotenv": "^10.0.0",
         "knex": "^2.3.0",
         "pg": "^8.8.0",
+        "redis": "^4.5.1",
         "tmi.js": "^1.8.3",
         "zwift-mobile-api": "github:johnharris85/zwift-mobile-api"
     }
