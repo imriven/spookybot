@@ -1,5 +1,6 @@
 const Data = require("./data");
-const { createClient } = require("redis");
+const Redis = require('redis');
+Redis.debug_mode = true;
 
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
@@ -143,42 +144,40 @@ ${Data.ExerciseArray[dailyExercises[2]]}
 }
 
 // Tip Of The Day
-const redisClient = createClient({
+const redisClient = Redis.createClient({
   url: process.env.REDIS_FLY_CONNECT,
+  pingInterval: 120000,
 })
 
-async function setUpRedis(){
+async function setUpRedis() {
   await redisClient.connect()
   const setup = await redisClient.exists("tipCounter")
-if (!setup) {
-  await redisClient.set("tipCounter", 0)}
+  if (!setup) {
+    await redisClient.set("tipCounter", 0)
+  }
 }
 
 setUpRedis()
 
-
 async function tipOfDay() {
-  let tipCounter = await redisClient.get("tipCounter")
   const date = new Date()
   if (date.getUTCHours() !== 14) {
     return
   }
+  const tipCounter = await redisClient.get("tipCounter")
   let dailyTips = Data.Tips;
-
-  if (tipCounter == dailyTips.length - 1) {
-    await redisClient.set("tipCounter", 0)
-  }
 
   const channel = await discord.channels.fetch(process.env.DISCORD_TIP_ID)
   await channel.send(`
 **${dailyTips[tipCounter].Title}**
 ${dailyTips[tipCounter].Tip}
     `)
-  tipCounter++;
-  await redisClient.set("tipCounter", tipCounter)
+  if (tipCounter == dailyTips.length - 1) {
+    await redisClient.set("tipCounter", 0)
+  } else {
+    await redisClient.set("tipCounter", tipCounter + 1)
+  }
 }
-
-
 
 function tyTimer() {
   let ty = "Thank you so much for stopping by and hanging out! 🎉";
@@ -256,8 +255,8 @@ discord.on('ready', () => {
 });
 
 
-
 redisClient.on('error', (err) => console.log('Redis Client Error', err))
+redisClient.on('reconnecting', () => console.log('Redis reconnecting'));
 
 //make sure this line is the last line
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
