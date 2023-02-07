@@ -1,0 +1,100 @@
+[2m2023-01-28T13:03:10Z[0m app[63e84687] [32msea[0m [[34minfo[0m][13:03] info: Connected to server.
+[2m2023-01-28T13:03:10Z[0m app[63e84687] [32msea[0m [[34minfo[0m][13:03] info: Executing command: JOIN #rock_a_goth
+[2m2023-01-28T13:03:10Z[0m app[63e84687] [32msea[0m [[34minfo[0m][13:03] info: Joined #rock_a_goth
+[2m2023-01-28T13:03:10Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Logged in as Spooky Bot#6867!
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Redis Client Error SocketClosedUnexpectedlyError: Socket closed unexpectedly
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.<anonymous> (/workspace/node_modules/@redis/client/dist/lib/client/socket.js:181:118)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Object.onceWrapper (node:events:628:26)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.emit (node:events:513:28)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at TCP.<anonymous> (node:net:317:12)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]node:internal/process/promises:289
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]            triggerUncaughtException(err, true /* fromPromise */);
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]            ^
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]SocketClosedUnexpectedlyError: Socket closed unexpectedly
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.<anonymous> (/workspace/node_modules/@redis/client/dist/lib/client/socket.js:181:118)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Object.onceWrapper (node:events:628:26)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.emit (node:events:513:28)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at TCP.<anonymous> (node:net:317:12)
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Node.js v19.4.0
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice New minor version of npm available! 9.2.0 -> 9.4.0
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice Changelog: <https://github.com/npm/cli/releases/tag/v9.4.0>
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice Run `npm install -g npm@9.4.0` to update!
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice
+[2m2023-01-28T14:18:49Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Starting clean up.
+[2m2023-01-28T14:18:54Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Starting instance
+[2m2023-01-28T14:18:55Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Configuring virtual machine
+[2m2023-01-28T14:18:55Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Pulling container image
+[2m2023-01-28T14:18:56Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Unpacking image
+[2m2023-01-28T14:18:56Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Preparing kernel init
+[2m2023-01-28T14:18:56Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Configuring firecracker
+[2m2023-01-28T14:18:56Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Starting virtual machine
+[2m2023-01-28T14:18:56Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Starting init (commit: 1780205)...
+[2m2023-01-28T14:18:56Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Preparing to run: `/cnb/process/web` as heroku
+[2m2023-01-28T14:18:57Z[0m app[63e84687] [32msea[0m [[34minfo[0m]2023/01/28 14:18:57 listening on [fdaa:0:c960:a7b:a5:63e8:4687:2]:22 (DNS: [fdaa::3]:53)
+[2m2023-01-28T14:18:57Z[0m app[63e84687] [32msea[0m [[34minfo[0m]> Twitch-Chatbot@1.0.0 start
+[2m2023-01-28T14:18:57Z[0m app[63e84687] [32msea[0m [[34minfo[0m]> node app.js
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m][14:18] info: Connecting to irc-ws.chat.twitch.tv on port 443..
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m][14:18] info: Sending authentication to server..
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m][14:18] info: Connected to server.
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m][14:18] info: Executing command: JOIN #rock_a_goth
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m][14:18] info: Joined #rock_a_goth
+[2m2023-01-28T14:18:59Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Logged in as Spooky Bot#6867!
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Redis Client Error SocketClosedUnexpectedlyError: Socket closed unexpectedly
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.<anonymous> (/workspace/node_modules/@redis/client/dist/lib/client/socket.js:181:118)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Object.onceWrapper (node:events:628:26)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.emit (node:events:513:28)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at TCP.<anonymous> (node:net:317:12)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]node:internal/process/promises:289
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]            triggerUncaughtException(err, true /* fromPromise */);
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]            ^
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]SocketClosedUnexpectedlyError: Socket closed unexpectedly
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.<anonymous> (/workspace/node_modules/@redis/client/dist/lib/client/socket.js:181:118)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Object.onceWrapper (node:events:628:26)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at Socket.emit (node:events:513:28)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]    at TCP.<anonymous> (node:net:317:12)
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Node.js v19.4.0
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice New minor version of npm available! 9.2.0 -> 9.4.0
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice Changelog: <https://github.com/npm/cli/releases/tag/v9.4.0>
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice Run `npm install -g npm@9.4.0` to update!
+[2m2023-01-28T15:34:37Z[0m app[63e84687] [32msea[0m [[34minfo[0m]npm notice
+[2m2023-01-28T15:34:38Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Starting clean up.
+[2m2023-01-28T15:34:44Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Starting instance
+[2m2023-01-28T15:34:44Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Configuring virtual machine
+[2m2023-01-28T15:34:44Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Pulling container image
+[2m2023-01-28T15:34:45Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Unpacking image
+[2m2023-01-28T15:34:45Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Preparing kernel init
+[2m2023-01-28T15:34:45Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Configuring firecracker
+[2m2023-01-28T15:34:45Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Starting virtual machine
+[2m2023-01-28T15:34:45Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Starting init (commit: 1780205)...
+[2m2023-01-28T15:34:45Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Preparing to run: `/cnb/process/web` as heroku
+[2m2023-01-28T15:34:45Z[0m app[63e84687] [32msea[0m [[34minfo[0m]2023/01/28 15:34:45 listening on [fdaa:0:c960:a7b:a5:63e8:4687:2]:22 (DNS: [fdaa::3]:53)
+[2m2023-01-28T15:34:46Z[0m app[63e84687] [32msea[0m [[34minfo[0m]> Twitch-Chatbot@1.0.0 start
+[2m2023-01-28T15:34:46Z[0m app[63e84687] [32msea[0m [[34minfo[0m]> node app.js
+[2m2023-01-28T15:34:47Z[0m app[63e84687] [32msea[0m [[34minfo[0m][15:34] info: Connecting to irc-ws.chat.twitch.tv on port 443..
+[2m2023-01-28T15:34:47Z[0m app[63e84687] [32msea[0m [[34minfo[0m][15:34] info: Sending authentication to server..
+[2m2023-01-28T15:34:47Z[0m app[63e84687] [32msea[0m [[34minfo[0m][15:34] info: Connected to server.
+[2m2023-01-28T15:34:47Z[0m app[63e84687] [32msea[0m [[34minfo[0m][15:34] info: Executing command: JOIN #rock_a_goth
+[2m2023-01-28T15:34:48Z[0m app[63e84687] [32msea[0m [[34minfo[0m][15:34] info: Joined #rock_a_goth
+[2m2023-01-28T15:34:48Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Logged in as Spooky Bot#6867!
+[2m2023-01-28T15:35:44Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Starting instance
+[2m2023-01-28T15:35:45Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Configuring virtual machine
+[2m2023-01-28T15:35:45Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Pulling container image
+[2m2023-01-28T15:35:47Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Unpacking image
+[2m2023-01-28T15:35:49Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Preparing kernel init
+[2m2023-01-28T15:35:49Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Configuring firecracker
+[2m2023-01-28T15:35:50Z[0m runner[882f0d8f] [32msea[0m [[34minfo[0m]Starting virtual machine
+[2m2023-01-28T15:35:50Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]Starting init (commit: 1780205)...
+[2m2023-01-28T15:35:50Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]Preparing to run: `/cnb/process/web` as heroku
+[2m2023-01-28T15:35:50Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]2023/01/28 15:35:50 listening on [fdaa:0:c960:a7b:a6:882f:d8f:2]:22 (DNS: [fdaa::3]:53)
+[2m2023-01-28T15:35:51Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]> Twitch-Chatbot@1.0.0 start
+[2m2023-01-28T15:35:51Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]> node app.js
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m][15:35] info: Connecting to irc-ws.chat.twitch.tv on port 443..
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m][15:35] info: Sending authentication to server..
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m][15:35] info: Connected to server.
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m][15:35] info: Executing command: JOIN #rock_a_goth
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m][15:35] info: Joined #rock_a_goth
+[2m2023-01-28T15:35:52Z[0m app[882f0d8f] [32msea[0m [[34minfo[0m]Logged in as Spooky Bot#6867!
+[2m2023-01-28T15:36:20Z[0m runner[63e84687] [32msea[0m [[34minfo[0m]Shutting down virtual machine
+[2m2023-01-28T15:36:20Z[0m app[63e84687] [32msea[0m [[34minfo[0m]Sending signal SIGINT to main child process w/ PID 520

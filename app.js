@@ -14,6 +14,8 @@ const worldMap = {
   3: "London",
   4: "New York",
   9: "Murkai Islands",
+  //Innsbruck
+  //Richmond
 }
 
 const vips = [
