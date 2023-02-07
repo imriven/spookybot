@@ -39,8 +39,6 @@ const vips = [
   "timberbrick",
   "kornhole_the_based",
   "pandashoesttv"
-
-
 ];
 
 
@@ -197,7 +195,7 @@ function rulesTimer() {
 
 function spookyTimer() {
   let spooky =
-    "Hey I'm Spooky. Type in the word, commands, to see what I can do! ";
+    "Hey I'm Spooky. Feel free to !lurk !slap !so !socials !spooky for spooky facts and more. Type in the word 'help' to find out more! ";
   client.say("#rock_a_goth", spooky);
 }
 
@@ -207,10 +205,10 @@ function spookyIntervalFunc() {
   client.say("#rock_a_goth", fact);
 }
 
-function discordHomieTimer() {
-  let homieDiscord = "Network, stream, game, make friends, become a homie and join our discord! https://discord.gg/GkmqJq6Q";
-
-  client.say("#rock_a_goth", homieDiscord);
+function discordTimer() {
+  let myDiscord =
+    "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86";
+  client.say("#rock_a_goth", myDiscord);
 }
 
 function linkTreeTimer() {
@@ -218,6 +216,16 @@ function linkTreeTimer() {
   client.say("#rock_a_goth", linkTree);
 }
 
+function PatreonTimer() {
+  let patreon = "To listen to exclusive content from the podcast check out patreon. https://patreon.com/RockAgoth";
+  client.say("#rock_a_goth", patreon);
+}
+
+function PodcastTimer() {
+  let podcast =
+    "Check out the Gaming in the Basement Podcast! available on several platforms https://anchor.fm/rock-a-goth";
+  client.say("#rock_a_goth", podcast);
+}
 
 
 const account = new ZwiftAccount(`${process.env.Z_USERNAME}`, `${process.env.Z_PASSWORD}`);
@@ -261,17 +269,20 @@ redisClient.on('reconnecting', () => console.log('Redis reconnecting'));
 //make sure this line is the last line
 discord.login(process.env.DISCORD_TOKEN); //login bot using token
 // Any error found shall be logged out in the con
-
+//Discord
 setInterval(tipOfDay, 3600000); //10 sec
 setInterval(zwiftTimer, 300000); //5
-setInterval(followTimer, 1800000); //30
-setInterval(spookyIntervalFunc, 900000); //15 mins
-setInterval(linkTreeTimer, 18500000); //35
-setInterval(spookyTimer, 2400000); //40
-setInterval(tyTimer, 2700000); //45
+setInterval(dailyChallenge, 3600000) //60 
+//Twitch
 setInterval(rulesTimer, 3600000); //60
-setInterval(dailyChallenge, 3600000) //60 Discord
-setInterval(discordHomieTimer, 36500000); //65
+setInterval(followTimer, 4200000); //70
+setInterval(spookyIntervalFunc, 4800000); //80 mins
+setInterval(linkTreeTimer, 5400000); //90
+setInterval(spookyTimer, 6000000); //100
+setInterval(tyTimer, 6600000); //110
+setInterval(PodcastTimer, 7200000); //120
+setInterval(PatreonTimer, 7800000); //130
+setInterval(discordTimer, 8400000); //140
 
 let counters = {}
 let counterExample = {
@@ -303,7 +314,7 @@ client.on("message", (channel, tags, message, self) => {
       client.say(
         channel,
         `@${tags.username}, available commands are:
-            - commands - help - !lurk - !socials - !spooky - !slap user - !so user - !name - !spooky - For more info just type "help"
+            - commands - help - !lurk - !socials - !counter counterName - !spooky - !slap user - !so user - !name - !spooky - For more info just type "help"
             `
       );
       break;
@@ -464,6 +475,8 @@ client.on("message", (channel, tags, message, self) => {
 
 
     // In case the message in lowercase is equal to the string 'help', send the sender of that message all the available help and commands
+
+    // would be great to have each command have a help with more deatil. This also needs counter instructions.
     case "help":
       client.say(
         channel,
@@ -472,7 +485,7 @@ client.on("message", (channel, tags, message, self) => {
             commands: Get Commands || 
             help: Get Help || 
             !spooky: Get random spooky fact || 
-            !lurk: Lurk Mode ||     }
+            !lurk: Lurk Mode ||     
             !socials: My Linktree || 
             !slap: Insert username after command - SUB, VIP, MOD only || 
             !so: Give yourself a shoutout - SUB, VIP, MOD only ||
