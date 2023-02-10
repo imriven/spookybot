@@ -164,7 +164,8 @@ async function tipOfDay() {
   if (date.getUTCHours() !== 14) {
     return
   }
-  const tipCounter = await redisClient.get("tipCounter")
+  let tipCounter = await redisClient.get("tipCounter")
+  tipCounter = parseInt(tipCounter)
   let dailyTips = Data.Tips;
 
   const channel = await discord.channels.fetch(process.env.DISCORD_TIP_ID)
