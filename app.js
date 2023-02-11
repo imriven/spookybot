@@ -30,8 +30,7 @@ const vips = [
   "johnharris85",
   "freeside11",
   "gangmediator",
-  "guccigottheflu",
-  "johnharris85",
+  "guccigottheflu",,
   "love_ivy54",
   "t7g_",
   "thecriticalchance",
@@ -44,7 +43,15 @@ const vips = [
   "surgetekken",
   "timberbrick",
   "kornhole_the_based",
-  "pandashoesttv"
+  "pandashoesttv",
+  "xpertj",
+  "wizebot",
+  "spoooookybot",
+  "restreambot",
+  "devilzneverdie",
+  "nightbot",
+  "raisunshine",
+
 ];
 
 
