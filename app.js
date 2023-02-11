@@ -11,11 +11,15 @@ const tmi = require("tmi.js");
 
 const worldMap = {
   1: "Watopia",
+  2: "Richmond",
   3: "London",
   4: "New York",
+  7: "Yorkshire",
   9: "Murkai Islands",
+  10: "France",
+  11: "Paris",
   //Innsbruck
-  //Richmond
+
 }
 
 const vips = [
