@@ -51,6 +51,8 @@ const vips = [
   "devilzneverdie",
   "nightbot",
   "raisunshine",
+  "l1ghtdatassup",
+  "restreambot"
 
 ];
 
@@ -333,6 +335,7 @@ client.on("message", (channel, tags, message, self) => {
       );
       break;
 
+
     // In case the message in lowercase is equal to the string '!website', send the sender of that message your personal website
     case "!lurk":
       client.say(
@@ -387,6 +390,9 @@ client.on("message", (channel, tags, message, self) => {
         break;
       }
       let soUser = message.split(" ")[1];
+        if (soUser.startsWith("@")){
+          soUser = soUser.slice(1)
+        }
       client.say(
         channel,
         `Please check out and follow ${soUser} at Twitch.tv/${soUser}`
