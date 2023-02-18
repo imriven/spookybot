@@ -511,31 +511,80 @@ client.on("message", (channel, tags, message, self) => {
       if (splitHelp.length == 1) {
         client.say(
           channel,
-          ```${tags.username}, Quick Help:
-
-            commands: Get Commands || 
-            help: Get Help || 
-            !spooky: Get random spooky fact || 
-            !lurk: Lurk Mode ||     
-            !socials: My Linktree || 
-            !slap: Insert username after command - SUB, VIP, MOD only || 
-            !so: Give yourself a shoutout - SUB, VIP, MOD only ||
-            !name: Spookybot wants to say hi
-            !counter: type "help counter" for full sub commands
-            ```
+          `${tags.username}, Quick Help:`
         );
-      } else if(splitHelp[1] == "counter") {
         client.say(
           channel,
-          ```${tags.username}, Counter Help:
-            !counter: displays counters that have been created
-            !counter counterName: Creates counter with value of 0
-            !counter counterName +Number: Creates counter with value of Number
-            !counter counterName +Number: Will add number to counter
-            !counter counterName -Number: Will subtract number from counter
-            !counter CounterName delete: Will delete counter
-            ```
-        );
+          `commands: Get Commands`);
+        client.say(
+          channel,
+          `help: Get Help`);
+        client.say(
+          channel,
+          `!spooky: Get random spooky fact`);
+        client.say(
+          channel,
+          `!lurk: Lurk Mode`);
+        client.say(
+          channel,
+          `!socials: Linktree`);
+        client.say(
+          channel,
+          `!slap: Insert username after command - SUB, VIP, MOD only`);
+        client.say(
+          channel,
+          `!so: Give a shoutout - SUB, VIP, MOD only`);
+        client.say(
+          channel,
+          `!name: Spookybot wants to say hi`);
+        client.say(
+          channel,
+          `!counter: type "help counter" for full sub commands`);
+        // client.say(
+        //   channel,
+        //   ```${tags.username}, Quick Help:
+
+        //       commands: Get Commands || 
+        //       help: Get Help || 
+        //       !spooky: Get random spooky fact || 
+        //       !lurk: Lurk Mode ||     
+        //       !socials: Linktree || 
+        //       !slap: Insert username after command - SUB, VIP, MOD only || 
+        //       !so: Give yourself a shoutout - SUB, VIP, MOD only ||
+        //       !name: Spookybot wants to say hi
+        //       !counter: type "help counter" for full sub commands
+        //       ```
+        // );
+      } else if (splitHelp[1] == "counter") {
+        // client.say(
+        //   channel,
+        //   ```${tags.username}, Counter Help:
+        //     !counter: displays counters that have been created
+        //     !counter counterName: Creates counter with value of 0
+        //     !counter counterName +Number: Creates counter with value of Number
+        //     !counter counterName +Number: Will add number to counter
+        //     !counter counterName -Number: Will subtract number from counter
+        //     !counter CounterName delete: Will delete counter
+        //     ```
+        // ); 
+        client.say(
+          channel,
+          `Counter Help:`);
+        client.say(
+          channel,
+          `!counter: displays counters that have been created`);
+        client.say(
+          channel,
+          `!counter counterName: Creates counter with value of 0`);
+        client.say(
+          channel,
+          `!counter counterName +NUMBER: Creates counter with value of NUMBER if the counter doesn't exist, if counter already exist this command will add the NUMBER to the counter`);
+        client.say(
+          channel,
+          `!counter counterName -NUMBER: Will subtract NUMBER from counter`);
+        client.say(
+          channel,
+          `!counter counterName delete: Will delete counter`);
       }
 
       break;
