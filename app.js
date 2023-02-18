@@ -14,12 +14,11 @@ const worldMap = {
   2: "Richmond",
   3: "London",
   4: "New York",
+  5: "Innsbruck",
   7: "Yorkshire",
   9: "Murkai Islands",
   10: "France",
-  11: "Paris",
-  //Innsbruck
-
+  11: "Paris"
 }
 
 const vips = [
@@ -30,7 +29,7 @@ const vips = [
   "johnharris85",
   "freeside11",
   "gangmediator",
-  "guccigottheflu",,
+  "guccigottheflu", ,
   "love_ivy54",
   "t7g_",
   "thecriticalchance",
@@ -330,7 +329,7 @@ client.on("message", (channel, tags, message, self) => {
       client.say(
         channel,
         `@${tags.username}, available commands are:
-            - commands - help - !lurk - !socials - !counter counterName - !spooky - !slap user - !so user - !name - !spooky - For more info just type "help"
+            - commands - help - !lurk - !socials - !counter - !spooky - !slap - !so - !name - !spooky - For more info just type "help"
             `
       );
       break;
@@ -390,9 +389,9 @@ client.on("message", (channel, tags, message, self) => {
         break;
       }
       let soUser = message.split(" ")[1];
-        if (soUser.startsWith("@")){
-          soUser = soUser.slice(1)
-        }
+      if (soUser.startsWith("@")) {
+        soUser = soUser.slice(1)
+      }
       client.say(
         channel,
         `Please check out and follow ${soUser} at Twitch.tv/${soUser}`
@@ -417,22 +416,32 @@ client.on("message", (channel, tags, message, self) => {
     // - We need to make sure counters can't go negative, either at the start or as people subtract from them.
     // - Message text is always a string, if we need to do math on the input (to add / subtract / keep track of totals) what do we need to do?
 
-
+    // let counters= {
+    //   "deaths": {
+    //     "value": 5,
+    //     "creator": "christina"
+    //   }
+    // }
     case "!counter":
       if (!vips.includes(tags.username)) {
         client.say(channel, "Must be a VIP or Mod make counter");
         break;
       }
+      //loops through counter and prints out name value and creator
       if (message === "!counter") {
-        for (const property in counters) {
-          const cp = counters[property]
-          client.say(channel, `${property}: ${cp.value}, ${cp.creator}`);
+        for (const counterName in counters) {
+          const currentCounter = counters[counterName]
+          client.say(channel, `${counterName}: ${currentCounter.value}, ${currentCounter.creator}`);
         }
         break;
       }
       let splitMessage = message.split(" ")
       let counterName = splitMessage[1]
       if (counters.hasOwnProperty(counterName)) {
+        if (splitMessage[2] == "status") {
+          client.say(channel, `${counterName}: ${counters[counterName].value}, ${counters[counterName].creator}`)
+          break;
+        }
         if (splitMessage[2] == "delete") {
           delete counters[counterName]
           client.say(channel, `Counter ${counterName} has been deleted`);
@@ -498,9 +507,11 @@ client.on("message", (channel, tags, message, self) => {
 
     // would be great to have each command have a help with more deatil. This also needs counter instructions.
     case "help":
-      client.say(
-        channel,
-        `${tags.username}, Quick Help:
+      let splitHelp = message.split(" ")
+      if (splitHelp.length == 1) {
+        client.say(
+          channel,
+          ```${tags.username}, Quick Help:
 
             commands: Get Commands || 
             help: Get Help || 
@@ -510,9 +521,23 @@ client.on("message", (channel, tags, message, self) => {
             !slap: Insert username after command - SUB, VIP, MOD only || 
             !so: Give yourself a shoutout - SUB, VIP, MOD only ||
             !name: Spookybot wants to say hi
+            !counter: type "help counter" for full sub commands
+            ```
+        );
+      } else if(splitHelp[1] == "counter") {
+        client.say(
+          channel,
+          ```${tags.username}, Counter Help:
+            !counter: displays counters that have been created
+            !counter counterName: Creates counter with value of 0
+            !counter counterName +Number: Creates counter with value of Number
+            !counter counterName +Number: Will add number to counter
+            !counter counterName -Number: Will subtract number from counter
+            !counter CounterName delete: Will delete counter
+            ```
+        );
+      }
 
-            `
-      );
       break;
 
     //         // In case the message in lowercase is none of the above, check whether it is equal to '!upvote' or '!cheers'
