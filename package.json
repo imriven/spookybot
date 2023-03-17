@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "Twitch node.js chat bot",
     "main": "app.js",
+    "type": "module",
     "scripts": {
         "start": "node app.js",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,6 +25,9 @@
     },
     "homepage": "https://github.com/justusmbuvi/Twitch-Chatbot-in-Node.js#readme",
     "dependencies": {
+        "@twurple/api": "^6.0.1",
+        "@twurple/auth": "^6.0.1",
+        "@twurple/chat": "^6.0.1",
         "discord.js": "^14.7.1",
         "dotenv": "^10.0.0",
         "knex": "^2.3.0",

@@ -1,4 +1,4 @@
-let SpookyFacts = [
+export const SpookyFacts = [
   "Tooth-in-the-Eye Surgery. Surgeons put a tooth in a blind person's eye to restore their sight. It was pioneered in the 1960s, and it actually works and it's still being done today",
 
   "Real corpses were used in the 1982 film Poltergeist.",
@@ -110,7 +110,7 @@ let SpookyFacts = [
   "Cockroaches can live without their heads for weeks but will ultimately die when they need food or water",
 ];
 
-let ExerciseArray = [
+export const ExerciseArray = [
 
   // Thursday December 29th
   // 1 - 3 sets
@@ -171,7 +171,7 @@ let ExerciseArray = [
 ];
 
 
-let Tips = [
+export const Tips = [
   {
     Title: "Don't skip weights!",
     Tip: `Some people feel like they don't want to start lifting weights until they're in better shape or skip them altogether because they don't want to bulk  up. 
@@ -308,8 +308,8 @@ Emotional Wellness is about self-image, your reactions to experiences, and your 
 
 
 
-module.exports = {
-  SpookyFacts,
-  ExerciseArray,
-  Tips,
-}
+// module.exports = {
+//   SpookyFacts,
+//   ExerciseArray,
+//   Tips
+// }

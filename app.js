@@ -1,24 +1,65 @@
-const Data = require("./data");
-const Redis = require('redis');
+// const Data = require("./data");
+// const Redis = require('redis');
 Redis.debug_mode = true;
-
+import { SpookyFacts, Tips, ExerciseArray } from "./data.js"
+import Redis from "redis"
+import dotenv from "dotenv"
+dotenv.config()
 // Require necessary node modules
 // Make the variables inside the .env element available to our Node project
-const { Client, GatewayIntentBits, ThreadMemberFlags } = require('discord.js')
-require("dotenv").config();
-const ZwiftAccount = require("zwift-mobile-api");
-const tmi = require("tmi.js");
+// const { Client, GatewayIntentBits, ThreadMemberFlags } = require('discord.js')
+// require("dotenv").config();
+// const ZwiftAccount = require("zwift-mobile-api");
+// const tmi = require("tmi.js");
+// const RefreshingAuthProvider = require('@twurple/auth').RefreshingAuthProvider;
+// const ChatClient = require('@twurple/chat').ChatClient;
+// const ApiClient = require('@twurple/api').ApiClient;
+// const fs = require('fs').promises;
+import { RefreshingAuthProvider } from '@twurple/auth';
+import { ChatClient } from '@twurple/chat';
+import { ApiClient } from '@twurple/api';
+import { promises as fs } from 'fs';
+import tmi from "tmi.js"
+import ZwiftAccount from "zwift-mobile-api";
+import { Client, GatewayIntentBits } from "discord.js";
 
 const worldMap = {
-  1: "Watopia",
-  2: "Richmond",
-  3: "London",
-  4: "New York",
-  5: "Innsbruck",
-  7: "Yorkshire",
-  9: "Murkai Islands",
-  10: "France",
-  11: "Paris"
+  1: {
+    name: "Watopia",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923298/Zwift/watopia_o9ekvf.jpg"
+  },
+  2: {
+    name: "Richmond",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923298/Zwift/richmond_fibqel.jpg"
+  },
+  3: {
+    name: "London",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/london_abgbwj.jpg"
+  },
+  4: {
+    name: "New York",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/newyork_hncoy1.jpg"
+  },
+  5: {
+    name: "Innsbruck",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/Innsbruck_m25bxc.jpg"
+  },
+  7: {
+    name: "Yorkshire",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923298/Zwift/yorkshire_tkhe39.jpg"
+  },
+  9: {
+    name: "Makuri Islands",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/makuri_bmmmcz.jpg"
+  },
+  10: {
+    name: "France",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/france_ljktss.jpg"
+  },
+  11: {
+    name: "Paris",
+    url: "https://res.cloudinary.com/dyrhhf6i8/image/upload/v1676923297/Zwift/paris_yffojr.jpg"
+  }
 }
 
 const vips = [
@@ -91,12 +132,13 @@ function zwiftTimer() {
       }
       console.log(p.currentActivityId)
       currentActivityId = p.currentActivityId;
-      // account.getActivity(process.env.Z_ID).getActivity(p.currentActivityId).then(activity => {
-      //   console.log(activity)
-      // })
-      discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
-        channel.send("Christina is working out on zwift")
+      account.getActivity(process.env.Z_ID).getActivity(p.currentActivityId).then(activity => {
+
+        discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
+          channel.send(`Christina is working out on zwift in ${worldMap[activity.worldID].name} ${worldMap[activity.worldID].url}`)
+        })
       })
+
     } else {
       if (currentActivityId != null) {
         discord.channels.fetch(process.env.DISCORD_CHANNEL_ID).then(channel => {
@@ -130,7 +172,7 @@ function dailyChallenge() {
   let dailyExercises = []
   while (dailyExercises.length != 3) {
 
-    const randomIndex = Math.floor(Math.random() * Data.ExerciseArray.length)
+    const randomIndex = Math.floor(Math.random() * ExerciseArray.length)
     if (!dailyExercises.includes(randomIndex)) {
       dailyExercises.push(randomIndex)
     }
@@ -147,10 +189,10 @@ function dailyChallenge() {
     channel.send(`
 **${day} ${month} ${dateNum}, ${year}**
 *1 - 5 sets*
-${Data.ExerciseArray[dailyExercises[0]]}
-${Data.ExerciseArray[dailyExercises[1]]}
+${ExerciseArray[dailyExercises[0]]}
+${ExerciseArray[dailyExercises[1]]}
 *extra credit*
-${Data.ExerciseArray[dailyExercises[2]]}
+${ExerciseArray[dailyExercises[2]]}
     `)
   })
 }
@@ -178,7 +220,7 @@ async function tipOfDay() {
   }
   let tipCounter = await redisClient.get("tipCounter")
   tipCounter = parseInt(tipCounter)
-  let dailyTips = Data.Tips;
+  let dailyTips = Tips;
 
   const channel = await discord.channels.fetch(process.env.DISCORD_TIP_ID)
   await channel.send(`
@@ -215,8 +257,8 @@ function spookyTimer() {
 }
 
 function spookyIntervalFunc() {
-  let factIndex = Math.floor(Math.random() * Data.SpookyFacts.length);
-  let fact = Data.SpookyFacts[factIndex];
+  let factIndex = Math.floor(Math.random() * SpookyFacts.length);
+  let fact = SpookyFacts[factIndex];
   client.say("#rock_a_goth", fact);
 }
 
@@ -242,6 +284,61 @@ function PodcastTimer() {
   client.say("#rock_a_goth", podcast);
 }
 
+// const simpleTimers = [
+//   {
+//     message: "Check out the Gaming in the Basement Podcast! available on several platforms https://anchor.fm/rock-a-goth",
+//     interval: 7200000
+//   },
+//   {
+//     message: "To listen to exclusive content from the podcast check out patreon. https://patreon.com/RockAgoth",
+//     interval: 7800000
+//   },
+//   {
+//     message: "",
+//     interval: 
+//   },
+//   {
+//     message: "",
+//     interval: 
+//   },
+//   {
+//     message: "",
+//     interval: 
+//   },
+// ]
+
+// simpleTimers.forEach(timer => {
+//   setInterval(() => {
+//     client.say("#rock_a_goth", timer.message)
+//   }, timer.interval); //60 timer.
+// })
+
+const clientId = process.env.TWITCH_CLIENT_ID
+const clientSecret = process.env.TWITCH_CLIENT_SECRET
+const tokenData = JSON.parse(await fs.readFile(`./tokens.${process.env.TWITCH_ROCK_ID}.json`, 'UTF-8'));
+const authProvider = new RefreshingAuthProvider(
+  {
+    clientId,
+    clientSecret,
+    onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
+  }
+);
+authProvider.addUser(process.env.TWITCH_ROCK_ID, tokenData, ['chat']);
+
+const apiClient = new ApiClient({ authProvider });
+
+
+
+
+async function getVips(channelId) {
+  const vips = await apiClient.channels.getVips(channelId)
+  if (!vips) {
+    return false
+  }
+  return await vips.data
+}
+const vips2 = await getVips(process.env.TWITCH_ROCK_ID)
+vips2.forEach(v => console.log(v.name))
 
 const account = new ZwiftAccount(`${process.env.Z_USERNAME}`, `${process.env.Z_PASSWORD}`);
 
@@ -263,7 +360,7 @@ const client = new tmi.Client({
   channels: [`${process.env.TWITCH_CHANNEL}`],
 });
 
-// Connect to the channel specified using the settings found in the configurations
+// Connect to the channel specified u sing the settings found in the configurations
 client.connect().catch(console.error)
 const discord = new Client({
   intents: [
@@ -364,8 +461,8 @@ client.on("message", (channel, tags, message, self) => {
     //     break;
 
     case "!spooky":
-      let factIndex = Math.floor(Math.random() * (Data.SpookyFacts.length - 0 + 1) + 0);
-      let fact = Data.SpookyFacts[factIndex];
+      let factIndex = Math.floor(Math.random() * (SpookyFacts.length - 0 + 1) + 0);
+      let fact = SpookyFacts[factIndex];
       client.say(channel, fact);
       break;
 
