@@ -90,7 +90,7 @@ const vips = [
   "restreambot",
   "devilzneverdie",
   "nightbot",
-  "raisunshine",
+  "raisunshine92",
   "l1ghtdatassup",
   "restreambot"
 
