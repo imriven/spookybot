@@ -206,10 +206,10 @@ class RESP2Decoder {
             this.initializeArray = false;
             this.arrayItemType = undefined;
             if (length === -1) {
-                return this.returnArrayReply(null, arraysToKeep);
+                return this.returnArrayReply(null, arraysToKeep, chunk);
             }
             else if (length === 0) {
-                return this.returnArrayReply([], arraysToKeep);
+                return this.returnArrayReply([], arraysToKeep, chunk);
             }
             this.arraysInProcess.push({
                 array: new Array(length),
@@ -231,16 +231,19 @@ class RESP2Decoder {
                 return reply;
         }
     }
-    returnArrayReply(reply, arraysToKeep) {
+    returnArrayReply(reply, arraysToKeep, chunk) {
         if (this.arraysInProcess.length <= arraysToKeep)
             return reply;
-        return this.pushArrayItem(reply, arraysToKeep);
+        return this.pushArrayItem(reply, arraysToKeep, chunk);
     }
-    pushArrayItem(item, arraysToKeep) {
+    pushArrayItem(item, arraysToKeep, chunk) {
         const to = this.arraysInProcess[this.arraysInProcess.length - 1];
         to.array[to.pushCounter] = item;
         if (++to.pushCounter === to.array.length) {
-            return this.returnArrayReply(this.arraysInProcess.pop().array, arraysToKeep);
+            return this.returnArrayReply(this.arraysInProcess.pop().array, arraysToKeep, chunk);
+        }
+        else if (chunk && chunk.length > this.cursor) {
+            return this.parseArray(chunk, arraysToKeep);
         }
     }
 }

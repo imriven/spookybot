@@ -5,7 +5,7 @@ const SEARCH_1 = require("./SEARCH");
 const _1 = require(".");
 exports.IS_READ_ONLY = true;
 function transformArguments(index, query, options) {
-    const args = ['FT.PROFILE', index, 'SEARCH'];
+    let args = ['FT.PROFILE', index, 'SEARCH'];
     if (options?.LIMITED) {
         args.push('LIMITED');
     }
@@ -13,9 +13,9 @@ function transformArguments(index, query, options) {
     return (0, _1.pushSearchOptions)(args, options);
 }
 exports.transformArguments = transformArguments;
-function transformReply(reply) {
+function transformReply(reply, withoutDocuments) {
     return {
-        results: (0, SEARCH_1.transformReply)(reply[0]),
+        results: (0, SEARCH_1.transformReply)(reply[0], withoutDocuments),
         profile: (0, _1.transformProfile)(reply[1])
     };
 }

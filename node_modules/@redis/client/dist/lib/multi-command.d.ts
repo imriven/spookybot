@@ -10,7 +10,6 @@ export default class RedisMultiCommand {
     addCommand(args: RedisCommandArguments, transformReply?: RedisCommand['transformReply']): void;
     addFunction(name: string, fn: RedisFunction, args: Array<unknown>): RedisCommandArguments;
     addScript(script: RedisScript, args: Array<unknown>): RedisCommandArguments;
-    exec(): undefined | Array<RedisMultiQueuedCommand>;
     handleExecReplies(rawReplies: Array<RedisCommandRawReply>): Array<RedisCommandRawReply>;
     transformReplies(rawReplies: Array<RedisCommandRawReply>): Array<RedisCommandRawReply>;
 }
