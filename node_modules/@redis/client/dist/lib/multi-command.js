@@ -54,16 +54,6 @@ class RedisMultiCommand {
         this.addCommand(transformedArguments, script.transformReply);
         return transformedArguments;
     }
-    exec() {
-        if (!this.queue.length) {
-            return;
-        }
-        return [
-            { args: ['MULTI'] },
-            ...this.queue,
-            { args: ['EXEC'] }
-        ];
-    }
     handleExecReplies(rawReplies) {
         const execReply = rawReplies[rawReplies.length - 1];
         if (execReply === null) {

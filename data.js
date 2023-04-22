@@ -1,4 +1,4 @@
-export const SpookyFacts = [
+export const spookyFacts = [
   "Tooth-in-the-Eye Surgery. Surgeons put a tooth in a blind person's eye to restore their sight. It was pioneered in the 1960s, and it actually works and it's still being done today",
 
   "Real corpses were used in the 1982 film Poltergeist.",
@@ -110,7 +110,7 @@ export const SpookyFacts = [
   "Cockroaches can live without their heads for weeks but will ultimately die when they need food or water",
 ];
 
-export const ExerciseArray = [
+export const exercises = [
 
   // Thursday December 29th
   // 1 - 3 sets
@@ -171,10 +171,10 @@ export const ExerciseArray = [
 ];
 
 
-export const Tips = [
+export const dailyTips = [
   {
-    Title: "Don't skip weights!",
-    Tip: `Some people feel like they don't want to start lifting weights until they're in better shape or skip them altogether because they don't want to bulk  up. 
+    title: "Don't skip weights!",
+    tip: `Some people feel like they don't want to start lifting weights until they're in better shape or skip them altogether because they don't want to bulk  up. 
     
 Weight lifting is one of the most efficient ways of losing weight. Not only can it include cardio but you also jump start your metabolism and you'll experience afterburn! 
 
@@ -183,30 +183,30 @@ Afterburn means you are burning calories after your workout from  muscles being 
 One common myth is that you will bulk up when you weight-lift. It takes a lot of specific foods at specific times of the day to effectively bulk up. It's really a science! So next time you are looking for an effective workout give weightlifting some attention! Your body will thank you!!!` 
   },
   {
-    Title: "You are what you eat",
-    Tip: "If your goal is weight loss did you know that 80% has to do with diet and the other 20% is exercise. Diet is very important and should be the main focus and exercise is secondary. Calorie counting is helpful for managing intake. Don't sabotage your hard work!" 
+    title: "You are what you eat",
+    tip: "If your goal is weight loss did you know that 80% has to do with diet and the other 20% is exercise. Diet is very important and should be the main focus and exercise is secondary. Calorie counting is helpful for managing intake. Don't sabotage your hard work!" 
   },
   {
-    Title: "No weights or workout equipment? No problem",
-    Tip: "Your body weight is the most efficient, inexpensive, and space saving equipment you need.There are hundreds of body weight exercises focused on core, upper and lower body, and cardio.You can get an effective full body workout just using you!" 
+    title: "No weights or workout equipment? No problem",
+    tip: "Your body weight is the most efficient, inexpensive, and space saving equipment you need.There are hundreds of body weight exercises focused on core, upper and lower body, and cardio.You can get an effective full body workout just using you!" 
   },
   {
-    Title: "Only have a few minutes to workout?",
-    Tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between.Give them a try, even ten minutes will feel like you got a full workout!" 
+    title: "Only have a few minutes to workout?",
+    tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between.Give them a try, even ten minutes will feel like you got a full workout!" 
   },
   {
-    Title: "Its in the way that you use it",
-    Tip: "Weights are great for weight loss or for toning up and building muscle.For more of an aerobic workout choose lighter weights and higher reps.To build muscle use heavier weights and lower reps." 
+    title: "Its in the way that you use it",
+    tip: "Weights are great for weight loss or for toning up and building muscle.For more of an aerobic workout choose lighter weights and higher reps.To build muscle use heavier weights and lower reps." 
   },
   {
-    Title: "Proteins are important",
-    Tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. 
+    title: "Proteins are important",
+    tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. 
 
 They are especially important for post workout.You can find sources of protein in meat, fish, and eggs, or plant based sources as well.Protein also keeps the body more satiated so you'll be less likely to snack in between meals.` 
   },
   {
-    Title: "Looking for a challenge?",
-    Tip: `If you're looking to make your weight lifting sessions more interesting try drop sets, supersets, or giant sets. 
+    title: "Looking for a challenge?",
+    tip: `If you're looking to make your weight lifting sessions more interesting try drop sets, supersets, or giant sets. 
 
 A drop set is where you grab a set of heavy, medium, and light weights.You start out heavy until you can't lift anymore and drop down to medium and then to lightweight.Drop sets are very efficient in fatiguing your muscles.When performing to fatigue the muscle fibers grow by tearing and rebuilding. 
 
@@ -217,8 +217,8 @@ A giant set is the same idea as a superset but it's three or more exercises.
 Adding these techniques into your workout can also add an element of cardio in as well since it allows for less of a recovery period.They promote a more efficient and effective workout while switching up your routine!`
   },
   {
-    Title: "How to stick to your health resolutions anytime of the year",
-    Tip: `People tend to have an all or nothing outlook to getting healthy in the new year.But if you are trying to build lifelong habits here's some tips that might help. 
+    title: "How to stick to your health resolutions anytime of the year",
+    tip: `People tend to have an all or nothing outlook to getting healthy in the new year.But if you are trying to build lifelong habits here's some tips that might help. 
     
 1. Ease yourself into it 
 one reason people quit is they try to do too much too soon.Give yourself a chance to succeed! Make a plan.Introduce new habits to your life slowly and give yourself time to adjust.  
@@ -232,8 +232,8 @@ one reason people quit is they try to do too much too soon.Give yourself a chanc
 I hope these tips help to build those good habits you want to implement in your life!`
   },
   {
-    Title: "Are you drinking enough water ?",
-    Tip: `Water is not only important for weightloss and exercise but is essential for everything your body does! Not drinking enough can effect the quality of your workouts and the effectiveness of your diet. 
+    title: "Are you drinking enough water ?",
+    tip: `Water is not only important for weightloss and exercise but is essential for everything your body does! Not drinking enough can effect the quality of your workouts and the effectiveness of your diet. 
 
 FamilyDoctor.org says, “Good hydration means getting the right amount of water before, during, and after exercise.Water regulates your body temperature and lubricates your joints.It helps transport nutrients to give you energy and keep you healthy.If you're not hydrated, your body can't perform at its highest level.” 
 
@@ -243,16 +243,16 @@ If water is too boring try a flavor enhancer.They come in all types of flavors! 
     `
   },
   {
-    Title: "Embrace your DOMS",
-    Tip: `You may or may not be familiar with DOMS but I'm sure you're familiar with post workout soreness.Ever workout and not feel it for a day or two ? DOMS stand for delayed onset muscle syndrome and can kick in anywhere from 24 to 72 hours after a workout! 
+    title: "Embrace your DOMS",
+    tip: `You may or may not be familiar with DOMS but I'm sure you're familiar with post workout soreness.Ever workout and not feel it for a day or two ? DOMS stand for delayed onset muscle syndrome and can kick in anywhere from 24 to 72 hours after a workout! 
     
 DOMS come from the muscle tears that happen when you workout.While you feel this soreness your muscles are repairing.That's why it's always good to do splits to make sure you exercise different muscle groups so the sore ones have time to heal. 
 
 Extra protein in your diet can help your muscles to repair themselves quicker.Hydration, stretching, and foam rollers can help too! Don't run from DOMs embrace them! It means what you are doing is working.Your body is changing.` 
   },
   {
-    Title: "Challenge yourself with resistance bands", 
-    Tip: `So you want to work out at home but don't have the space and / or money for heavy duty equipment ? You might be surprised to know you don't need much to get a challenging and effective workout! Besides using your body weight for workouts adding resistance bands to your workout will give your body a new challenge!  
+    title: "Challenge yourself with resistance bands", 
+    tip: `So you want to work out at home but don't have the space and / or money for heavy duty equipment ? You might be surprised to know you don't need much to get a challenging and effective workout! Besides using your body weight for workouts adding resistance bands to your workout will give your body a new challenge!  
 
 Resistance bands are inexpensive, don't take up a lot of room and can be added to body weight workouts you may be doing already. 
 
@@ -261,16 +261,16 @@ There are several different types of resistance bands you can use to give you ac
 There is an ample array of YouTube videos that use resistance bands in fun and challenging ways so you'll never get bored with your workout!`
 },
   {
-    Title: "It may be small but it's powerful", 
-    Tip: `I'm talking about eggs! They are compact, easy to carry around and are a protein power house! They have the ability to keep you satiated for hours and they can be cooked up many ways! There's too many benefits to list here but eggs are great and easy to add to many dishes! If you're ever looking for a protein boost or a post workout snack give an egg a try!` 
+    title: "It may be small but it's powerful", 
+    tip: `I'm talking about eggs! They are compact, easy to carry around and are a protein power house! They have the ability to keep you satiated for hours and they can be cooked up many ways! There's too many benefits to list here but eggs are great and easy to add to many dishes! If you're ever looking for a protein boost or a post workout snack give an egg a try!` 
   },
   {
-    Title: "Don't be targeted and become a victim", 
-    Tip: `As a consumer you have a target on your back.Idk if you've noticed health food trends marketed to make you buy.Trendy terms like “superfood”, “charcoal activated”, “metaboliser ”, etc etc are used to make you think you are making healthier choices.One thing that never changes is the food pyramid.It's very handy when trying to figure out what you should be eating and how much.So before you lament over whether to use olive oil, avocado oil, or coconut oil, just note they are about the same amount of calories and all have different cooking smoke points.Everything in moderation.Too much of anything is bad for you!` 
+    title: "Don't be targeted and become a victim", 
+    tip: `As a consumer you have a target on your back.Idk if you've noticed health food trends marketed to make you buy.Trendy terms like “superfood”, “charcoal activated”, “metaboliser ”, etc etc are used to make you think you are making healthier choices.One thing that never changes is the food pyramid.It's very handy when trying to figure out what you should be eating and how much.So before you lament over whether to use olive oil, avocado oil, or coconut oil, just note they are about the same amount of calories and all have different cooking smoke points.Everything in moderation.Too much of anything is bad for you!` 
   },
   {
-    Title: "The importance of a heart rate monitor", 
-    Tip: `Heart rate monitors are handy little tools especially when your are beginning your fitness journey. 
+    title: "The importance of a heart rate monitor", 
+    tip: `Heart rate monitors are handy little tools especially when your are beginning your fitness journey. 
     
 They can tell you when you need to ease up until your heart rate goes down. This is important because it tells you what your limits are. 
 
@@ -279,37 +279,20 @@ Subsequently the can also tell you when you aren't working hard enough. As you c
 If you can invest in one it's a great tool to have in your wheelhouse. If not always listen to the cues of your body! Don't push yourself too hard but make sure you are pushing hard enough! ` 
   },
   {
-    Title: "Salmon the super fish!!",
-    Tip: `Not only is salmon super versatile and tasty, it can also help with post workout inflammation effectively decreasing muscle soreness. It also comes packed with protein to aid with repairing and building muscle fibers. 
+    title: "Salmon the super fish!!",
+    tip: `Not only is salmon super versatile and tasty, it can also help with post workout inflammation effectively decreasing muscle soreness. It also comes packed with protein to aid with repairing and building muscle fibers. 
     
 Salmon is rich in omega fatty acids, b vitamins, and protein. It can be broiled, poached, grilled, baked, steamed,  seared, and etc. Try 4oz of smoked salmon with a boiled egg or two for breakfast! This protein fueled breakfast will power you through ur morning! Try salmon chunks to give your lunch time salad a protein boost! For a quick dinner smother your salmon fillet with scallions, tomatoes, peppers, mushrooms or whatever veggies you can fit in!! Bake and enjoy!` 
   },  {
-    Title: "Wellness isn't just about your physical health", 
-    Tip: `Did you know there are several "dimensions of wellness" that contribute to your overall well being? Wellness is a blanket term for everything around us that affects us. It includes physical, emotional, financial, vocational, social, intellectual, environmental, and spiritual wellness. 
+    title: "Wellness isn't just about your physical health", 
+    tip: `Did you know there are several "dimensions of wellness" that contribute to your overall well being? Wellness is a blanket term for everything around us that affects us. It includes physical, emotional, financial, vocational, social, intellectual, environmental, and spiritual wellness. 
     
 Physical Wellness is what I primarily focus on here in this discord! Physical Wellness is the ability to get your body to function at it's most optimal state. We may see health and fitness as ways to look and feel better but the body is a machine with different systems running. When you don't take care of a machine or are hard on it, it breaks down. 
 
 Emotional Wellness is about self-image, your reactions to experiences, and your ability to cope and adapt. Spiritual wellness is about your beliefs, principles and values that guides you through life. Intellectual Wellness encourages curiousity, empathy, and creativity. It's allowing your mentality to expand through experiences and acquired knowledge. Environmental Wellness almost goes hand in hand with physical wellness. External factors have a direct influence on your physical and emotional well being. This could be natural like weather or the quality of home life. 
 `
   },  {
-    Title: "Take a break", 
-    Tip: `We tend to have this an unhealthy mentality that you can't be successful without grinding at everything. But the truth is whatever you're reaching for will be hard to acheieve without allowing yourself to have a break! This is true with everything, health & fitness, occupations and careers, education, gaming, etc. Not only does a break help you to reset emotionally, physically, and mentally, they also serve as motivation towards the next reward or break. Setting goals and rewarding yourself for reaching those goals are an excellent way of keeping you motivated without grinding yourself into the ground!` 
+    title: "Take a break", 
+    tip: `We tend to have this an unhealthy mentality that you can't be successful without grinding at everything. But the truth is whatever you're reaching for will be hard to acheieve without allowing yourself to have a break! This is true with everything, health & fitness, occupations and careers, education, gaming, etc. Not only does a break help you to reset emotionally, physically, and mentally, they also serve as motivation towards the next reward or break. Setting goals and rewarding yourself for reaching those goals are an excellent way of keeping you motivated without grinding yourself into the ground!` 
   },  
-  // {
-  //   Title: "",
-  //   Tip: ``
-  // },
-
 ]
-
-
-
-
-
-
-
-// module.exports = {
-//   SpookyFacts,
-//   ExerciseArray,
-//   Tips
-// }
