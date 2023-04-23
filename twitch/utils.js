@@ -7,20 +7,20 @@ import { promises as fs } from 'fs';
 import config from "../config/appConfig.js";
 
 export async function refreshVipMods(twitchClient, state) {
-  const vips = await twitchClient.channels.getVips(config.twitchChannelId)
-  const fetchedVipsData = await vips.data
+  const vips = await twitchClient.channels.getVipsPaginated(config.twitchChannelId)
+  const fetchedVipsData = await vips.getAll()
   state.vips = fetchedVipsData.map(v => v.name)
-  const mods = await twitchClient.moderation.getModerators(config.twitchChannelId)
-  const fetchedModsData = await mods.data
+  const mods = await twitchClient.moderation.getModeratorsPaginated(config.twitchChannelId)
+  const fetchedModsData = await mods.getAll()
   const newMods = fetchedModsData.map(m => m.userName)
   newMods.push(config.twitchChannelUsername)
   state.mods = newMods
 }
 
 export async function getFollowers(twitchClient) {
-  const fetchedFollowers = await twitchClient.channels.getChannelFollowers(config.twitchChannelId, config.twitchChannelId)
-  const fetchedFollowersData = await fetchedFollowers.data
-  return fetchedFollowersData.map(m => m.userName)
+  const fetchedFollowers = await twitchClient.channels.getChannelFollowersPaginated(config.twitchChannelId, config.twitchChannelId)
+  const allFetchedFollowers = await fetchedFollowers.getAll()
+  return allFetchedFollowers.map(m => m.userName)
 }
 
 export async function NewTwitchClient() {
@@ -35,14 +35,16 @@ export async function NewTwitchClient() {
     }
   );
   authProvider.addUser(config.twitchChannelId, tokenData, ['chat']);
-    
+
   return new ApiClient({ authProvider });
 }
 
 export function privilegedUser(client, state, user) {
   if (!state.vips.includes(user) && !state.mods.includes(user)) {
     client.say(channel, "Must be a VIP or Mod to do that!");
+    return false;
   }
+  return true;
 }
 
 export async function TwitchChatClient(state) {
@@ -109,6 +111,10 @@ export async function TwitchChatClient(state) {
         chat.name(client, channel, tags, message);
         break;
 
+      case "!hug":
+        chat.hug(client, channel, tags, message);
+        break;
+
       case "!counter":
         if (!privilegedUser(client, state, tags.username)) {
           break;
@@ -120,9 +126,6 @@ export async function TwitchChatClient(state) {
         chat.help(client, channel, tags, message);
         break;
 
-      default:
-        chat.defaultChat(client, channel, tags, message);
-        break;
     }
   });
 

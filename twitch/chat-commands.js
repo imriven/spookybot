@@ -14,13 +14,6 @@ export function lurk(client, channel, tags) {
     )
 }
 
-export function defaultChat(client, channel, tags) {
-    client.say(
-        channel,
-        "sorry don't know that one!"
-    )
-}
-
 export function discord(client, channel, tags) {
     client.say(
         channel,
@@ -41,11 +34,19 @@ export function fact(client, channel) {
     client.say(channel, fact);
 }
 
-export function slap(client, channel, tags) {
+export function slap(client, channel, tags, message) {
     let slappedUser = message.split(" ")[1];
     client.say(
         channel,
         `${slappedUser} just got slapped by ${tags.username}`
+    )
+}
+
+export function hug(client, channel, tags, message) {
+    let huggedUser = message.split(" ")[1];
+    client.say(
+        channel,
+        `${huggedUser} just got hugged by ${tags.username}`
     )
 }
 

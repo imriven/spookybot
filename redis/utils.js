@@ -1,10 +1,9 @@
-import Redis from "redis"
-Redis.debug_mode = true;
+import {createClient} from "redis"
 import config from "../config/appConfig.js";
 
 export default async function RedisClient() {
-    const redisClient = Redis.createClient({
-        url: config.redisFlyConnect,
+    const redisClient = createClient({
+        url: config.redisFlyConnectDev,
         pingInterval: 120000,
     })
     redisClient.on('error', (err) => console.log('Redis Client Error', err))

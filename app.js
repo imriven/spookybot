@@ -12,9 +12,6 @@ const twitchChatClient = await TwitchChatClient(state)
 const newTwitchClient = await NewTwitchClient(state)
 await refreshVipMods(newTwitchClient, state)
 state.followers = await getFollowers(newTwitchClient)
-// const redisClient = await RedisClient()
-// const zwiftClient = ZwiftClient()
-// setupTimers(twitchChatClient, discordClient, redisClient, zwiftClient, state)
-
-setupTimers(twitchChatClient, discordClient, newTwitchClient, state)
-
+const redisClient = await RedisClient()
+const zwiftClient = ZwiftClient()
+setupTimers(twitchChatClient, discordClient, newTwitchClient, redisClient, zwiftClient, state)

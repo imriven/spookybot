@@ -55,7 +55,7 @@ const timers = [
     },
 ]
 
-function setupTimers(twitchClient, discordClient, newTwitchClient, state) {
+function setupTimers(twitchClient, discordClient, newTwitchClient, redisClient, zwiftClient, state) {
     timers.forEach(t => {
         setInterval(() => {
             twitchClient.say(t.channel, t.message);
@@ -121,29 +121,29 @@ ${exercises[dailyExercises[2]]}
     }, 10000, );
 
 
-    // setInterval(async () => {
-    //     await zwiftTimer(zwiftClient, discordClient, state)
-    // }, 300000);
+    setInterval(async () => {
+        await zwiftTimer(zwiftClient, discordClient, state)
+    }, 300000);
 
-    // setInterval(async () => {
-    //     const date = new Date()
-    //     if (date.getUTCHours() !== 14) {
-    //         return
-    //     }
-    //     let tipCounter = await redisClient.get("tipCounter")
-    //     tipCounter = parseInt(tipCounter)
+    setInterval(async () => {
+        const date = new Date()
+        if (date.getUTCHours() !== 14) {
+            return
+        }
+        let tipCounter = await redisClient.get("tipCounter")
+        tipCounter = parseInt(tipCounter)
 
-    //     const channel = await discordClient.channels.fetch(config.discordTipChannelId)
-    //     await channel.send(`
-    //   **${dailyTips[tipCounter].title}**
-    //   ${dailyTips[tipCounter].tip}
-    //       `)
-    //     if (tipCounter == dailyTips.length - 1) {
-    //         await redisClient.set("tipCounter", 0)
-    //     } else {
-    //         await redisClient.set("tipCounter", tipCounter + 1)
-    //     }
-    // }, 3600000);
+        const channel = await discordClient.channels.fetch(config.discordTipChannelId)
+        await channel.send(`
+      **${dailyTips[tipCounter].title}**
+      ${dailyTips[tipCounter].tip}
+          `)
+        if (tipCounter == dailyTips.length - 1) {
+            await redisClient.set("tipCounter", 0)
+        } else {
+            await redisClient.set("tipCounter", tipCounter + 1)
+        }
+    }, 3600000);
 
 }
 
