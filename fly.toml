@@ -1,26 +1,17 @@
-# fly.toml app configuration file generated for deuzbot on 2023-04-22T07:13:46-07:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# fly.toml file generated for spookybot on 2023-01-05T15:04:22-08:00
 
-app = "deuzbot"
-primary_region = "sea"
+app = "spookybot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+services = []
+
+[env]
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+  private_network = true
 
 [build]
   builder = "heroku/buildpacks:20"
-
-[[services]]
-  internal_port = 8080
-  protocol = "tcp"
-
-  [[services.ports]]
-    handlers = ["http"]
-    port = "80"
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = "443"
-  
-  [[services.tcp_checks]]
-    interval = 10000
-    timeout = 2000

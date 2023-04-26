@@ -169,6 +169,9 @@ export function help(client, channel, tags) {
             `!discord: discord link`);
         client.say(
             channel,
+            `!hug: Insert username after command `);
+        client.say(
+            channel,
             `!socials: Linktree`);
         client.say(
             channel,

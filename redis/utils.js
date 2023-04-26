@@ -3,7 +3,7 @@ import config from "../config/appConfig.js";
 
 export default async function RedisClient() {
     const redisClient = createClient({
-        url: config.redisFlyConnectDev,
+        url: config.redisFlyConnect,
         pingInterval: 120000,
     })
     redisClient.on('error', (err) => console.log('Redis Client Error', err))

@@ -42,6 +42,24 @@ const timers = [
         channel: config.twitchChannelUsername,
     },
     {
+        title: "saCommands",
+        message: "Join in the avatar fun! You can !jump, !sit, !duel (user) (points), !fart, !roll, !8ball (question), !slots (points), !attack (user), !hug (user), and !dance",
+        time: 9000000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "saExtension",
+        message: "Check out the stream avatar extension below the stream to change or dress up your avatar",
+        time: 960000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "saFullCommands",
+        message: "Curious about what your avatar can do? Check out the full command list here https://docs.streamavatars.com/stream-avatars/commands",
+        time: 1200000,
+        channel: config.twitchChannelUsername,
+    },
+    {
         title: "patreon",
         message: "To listen to exclusive content from the podcast check out patreon. https://patreon.com/RockAgoth",
         time: 7800000,
