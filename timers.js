@@ -134,13 +134,17 @@ ${exercises[dailyExercises[2]]}
             state.followers = fetchedFollowers
             return
         }
-        const a = new Set(state.followers);
-        const b = new Set(fetchedFollowers);
+        const previous = new Set(state.followers);
+        const current = new Set(fetchedFollowers);
 
-        const unfollows = [...a].filter(x => !b.has(x)).join(", ")
+        const unfollows = [...previous].filter(follower => !current.has(follower)).join(", ")
+        const newFollows = [...current].filter(follower => !previous.has(follower)).join(", ")
+        const channel = await discordClient.channels.fetch(config.discordUnfollowsChannelId)
         if (unfollows) {
-            const channel = await discordClient.channels.fetch(config.discordUnfollowsChannelId)
             channel.send(`These folks just unfollowed: ${unfollows}`)
+        }
+        if (newFollows) {
+            channel.send(`These folks just followed: ${newFollows}`)
         }
         state.followers = fetchedFollowers
     }, 86400000,);
