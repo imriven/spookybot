@@ -1,7 +1,7 @@
-import { getOrdinalNum } from "./utils.js"
+import { getOrdinalNum, msToTime } from "./utils.js"
 import { zwiftTimer } from "./zwift/utils.js"
 import { spookyFacts, dailyTips, exercises } from "./data.js"
-import { refreshVipMods, getFollowers, checkIfLive } from "./twitch/utils.js"
+import { refreshVipMods, getFollowers, checkIfLive, getNumChatters, getNumViewers} from "./twitch/utils.js"
 import config from "./config/appConfig.js"
 
 const timers = [
@@ -73,19 +73,31 @@ const timers = [
     },
 ]
 
-export function setUpLiveTwitchTimers(twitchClient, state) {
+export function setUpLiveTwitchTimers(twitchChatClient, twitchClient, state) {
     timers.forEach(t => {
         const interval = setInterval(() => {
-            twitchClient.say(t.channel, t.message);
+            twitchChatClient.say(t.channel, t.message);
         }, t.time)
         state.setTwitchTimer(t.title, interval)
     })
     const factInterval = setInterval(() => {
         let factIndex = Math.floor(Math.random() * spookyFacts.length);
         let fact = spookyFacts[factIndex];
-        twitchClient.say(config.twitchChannelUsername, fact);
+        twitchChatClient.say(config.twitchChannelUsername, fact);
     }, 4800000)
     state.setTwitchTimer("fact", factInterval)
+    const chatterViewerUptime = setInterval(async () => {
+        const currentChatters = getNumChatters()
+        const currentViewers = getNumViewers()
+        const chatterDiff = currentChatters - state.numChatters
+        const viewerDiff = currentViewers - state.numViewers
+        const stream = await twitchClient.streams.getStreamByUserId(config.twitchChannelId)
+        const currentDate = new Date()
+        const twitchTime = new Date(stream.started_at).getTime()
+        const streamTime = Math.abs(currentDate.getTime() - twitchTime)
+        twitchChatClient.say(config.twitchChannelUsername, `stream time: ${msToTime(streamTime)}, chatters: ${currentChatters} (${chatterDiff}) viewers: ${currentViewers} (${viewerDiff})`);
+    }, 3600000)
+    state.setTwitchTimer("cvu", chatterViewerUptime)
 }
 
 export function setupTimers(twitchClient, discordClient, newTwitchClient, redisClient, zwiftClient, state) {
@@ -152,7 +164,7 @@ ${exercises[dailyExercises[2]]}
 
     setInterval(async () => {
         await zwiftTimer(zwiftClient, discordClient, state)
-    }, 300000);
+    }, 300000);mods
 
     setInterval(async () => {
         const date = new Date()

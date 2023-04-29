@@ -1,6 +1,8 @@
 export default class BotState {
     constructor() {
         this._counters = {};
+        this._numViewers = 0;
+        this._numChatters = 0;
         this._mods = [];
         this._vips = [];
         this._liveTimers = {};
@@ -15,6 +17,23 @@ export default class BotState {
     get mods() {
         return this._mods;
     }
+
+    set numViewers(viewers) {
+        this.numViewers = viewers;
+    }
+
+    get numViewers() {
+        return this._numViewers;
+    }
+
+    set numChatters(chatters) {
+        this._numChatters = chatters;
+    }
+
+    get numChatters() {
+        return this._numChatters;
+    }
+
 
     set isLive(isLive) {
         this._isLive = isLive;

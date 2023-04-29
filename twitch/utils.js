@@ -21,7 +21,7 @@ export async function refreshVipMods(twitchClient, state) {
 export async function checkIfLive(twitchChatClient, twitchClient, state) {
   const stream = await twitchClient.streams.getStreamByUserId(config.twitchChannelId)
   if (stream && !state.isLive) {
-    setUpLiveTwitchTimers(twitchChatClient, state)
+    setUpLiveTwitchTimers(twitchChatClient, twitchClient, state)
   }
   if (!stream && state.isLive) {
     for (var key in state.twitchTimers) {
