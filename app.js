@@ -1,4 +1,4 @@
-import setupTimers from "./timers.js"
+import {setupTimers} from "./timers.js"
 import DiscordClient from "./discord/utils.js"
 import BotState from "./state.js";
 import RedisClient from "./redis/utils.js"

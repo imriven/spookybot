@@ -21,7 +21,7 @@ export function discord(client, channel, tags) {
     )
 }
 
-export function socials(client, channel, tags) {
+export function socials(client, channel) {
     client.say(
         channel,
         `visit my linktree for my socials! https://linktr.ee/rockagoth`
@@ -50,7 +50,7 @@ export function hug(client, channel, tags, message) {
     )
 }
 
-export function shoutout(client, channel) {
+export function shoutout(client, channel, message) {
     let soUser = message.split(" ")[1];
     if (soUser.startsWith("@")) {
         soUser = soUser.slice(1)
@@ -68,7 +68,7 @@ export function name(client, channel, tags) {
     )
 }
 
-export function counter(client, channel, tags, state) {
+export function counter(client, channel, tags, state, message) {
     //loops through counter and prints out name value and creator
     if (message === "!counter") {
         for (const counterName in state.counters) {

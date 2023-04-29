@@ -5,6 +5,7 @@ import { ChatClient } from '@twurple/chat';
 import { ApiClient } from '@twurple/api';
 import { promises as fs } from 'fs';
 import config from "../config/appConfig.js";
+import { setUpLiveTwitchTimers } from "../timers.js";
 
 export async function refreshVipMods(twitchClient, state) {
   const vips = await twitchClient.channels.getVipsPaginated(config.twitchChannelId)
@@ -17,10 +18,38 @@ export async function refreshVipMods(twitchClient, state) {
   state.mods = newMods
 }
 
+export async function checkIfLive(twitchChatClient, twitchClient, state) {
+  const stream = await twitchClient.streams.getStreamByUserId(config.twitchChannelId)
+  if (stream && !state.isLive) {
+    setUpLiveTwitchTimers(twitchChatClient, state)
+  }
+  if (!stream && state.isLive) {
+    for (var key in state.twitchTimers) {
+      if (state.twitchTimers.hasOwnProperty(key)) {
+        if (state.twitchTimers[key] === null || isEmpty(state.twitchTimers[key])) {
+          clearInterval(state.twitchTimers[key])
+          state.deleteTwitchTimer(key)
+        }
+      }
+    }
+  }
+}
+
 export async function getFollowers(twitchClient) {
   const fetchedFollowers = await twitchClient.channels.getChannelFollowersPaginated(config.twitchChannelId, config.twitchChannelId)
   const allFetchedFollowers = await fetchedFollowers.getAll()
   return allFetchedFollowers.map(m => m.userName)
+}
+
+export async function getNumViewers(twitchClient) {
+  const stream = await twitchClient.streams.getStreamByUserId(config.twitchChannelId)
+  return stream.viewers
+}
+
+export async function getNumChatters(twitchClient) {
+  const fetchedChatters = await twitchClient.chat.getChattersPaginated(config.twitchChannelId, config.twitchChannelId)
+  const allFetchedChatters = await fetchedChatters.getAll()
+  return allFetchedChatters.length
 }
 
 export async function NewTwitchClient() {
@@ -86,7 +115,7 @@ export async function TwitchChatClient(state) {
         break;
 
       case "!socials":
-        chat.socials(client, channel, tags);
+        chat.socials(client, channel);
         break;
 
       case "!spooky":
@@ -104,7 +133,7 @@ export async function TwitchChatClient(state) {
         if (!privilegedUser(client, state, tags.username)) {
           break;
         }
-        chat.shoutout(client, channel);
+        chat.shoutout(client, channel, message);
         break;
 
       case "!name":
@@ -119,7 +148,7 @@ export async function TwitchChatClient(state) {
         if (!privilegedUser(client, state, tags.username)) {
           break;
         }
-        chat.counter(client, channel, tags, message, state);
+        chat.counter(client, channel, tags, state, message);
         break;
 
       case "help":

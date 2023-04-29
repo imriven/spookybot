@@ -1,8 +1,10 @@
 export default class BotState {
     constructor() {
-        this._counters = [];
+        this._counters = {};
         this._mods = [];
         this._vips = [];
+        this._liveTimers = {};
+        this._isLive = false;
         this._followers = null;
         this._currentZwiftActivityId = null;
     }
@@ -12,6 +14,14 @@ export default class BotState {
 
     get mods() {
         return this._mods;
+    }
+
+    set isLive(isLive) {
+        this._isLive = isLive;
+    }
+
+    get isLive() {
+        return this._isLive;
     }
 
     set vips(vips) {
@@ -38,10 +48,6 @@ export default class BotState {
         return this._followers;
     }
 
-    addCounter(counter) {
-        this.counters = [...this.counters, counter]
-    }
-
     deleteCounter(counterName) {
         delete this._counters[counterName]
     }
@@ -66,4 +72,19 @@ export default class BotState {
         return this._currentZwiftActivityId;
     }
 
+    set twitchTimers(timers) {
+        this._twitchTimers = timers;
+    }
+
+    get twitchTimers() {
+        return this._twitchTimers;
+    }
+
+    setTwitchTimer(timerName, intervalFunction) {
+        this._twitchTimers[timerName] = intervalFunction
+    }
+
+    deleteTwitchTimer(timerName) {
+        delete this._twitchTimers[timerName]
+    }
 }

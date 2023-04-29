@@ -1,7 +1,7 @@
 import { getOrdinalNum } from "./utils.js"
 import { zwiftTimer } from "./zwift/utils.js"
 import { spookyFacts, dailyTips, exercises } from "./data.js"
-import { refreshVipMods, getFollowers } from "./twitch/utils.js"
+import { refreshVipMods, getFollowers, checkIfLive } from "./twitch/utils.js"
 import config from "./config/appConfig.js"
 
 const timers = [
@@ -50,13 +50,13 @@ const timers = [
     {
         title: "saExtension",
         message: "Check out the stream avatar extension below the stream to change or dress up your avatar",
-        time: 960000,
+        time: 9600000,
         channel: config.twitchChannelUsername,
     },
     {
         title: "saFullCommands",
         message: "Curious about what your avatar can do? Check out the full command list here https://docs.streamavatars.com/stream-avatars/commands",
-        time: 1200000,
+        time: 12000000,
         channel: config.twitchChannelUsername,
     },
     {
@@ -73,18 +73,25 @@ const timers = [
     },
 ]
 
-function setupTimers(twitchClient, discordClient, newTwitchClient, redisClient, zwiftClient, state) {
+export function setUpLiveTwitchTimers(twitchClient, state) {
     timers.forEach(t => {
-        setInterval(() => {
+        const interval = setInterval(() => {
             twitchClient.say(t.channel, t.message);
         }, t.time)
+        state.setTwitchTimer(t.title, interval)
     })
-
-    setInterval(() => {
+    const factInterval = setInterval(() => {
         let factIndex = Math.floor(Math.random() * spookyFacts.length);
         let fact = spookyFacts[factIndex];
         twitchClient.say(config.twitchChannelUsername, fact);
     }, 4800000)
+    state.setTwitchTimer("fact", factInterval)
+}
+
+export function setupTimers(twitchClient, discordClient, newTwitchClient, redisClient, zwiftClient, state) {
+    setInterval(async () => {
+        await checkIfLive(twitchClient, newTwitchClient, state)
+    }, 300000)
 
     setInterval(async () => {
         await refreshVipMods(newTwitchClient, state)
@@ -136,7 +143,7 @@ ${exercises[dailyExercises[2]]}
             channel.send(`These folks just unfollowed: ${unfollows}`)
         }
         state.followers = fetchedFollowers
-    }, 10000, );
+    }, 86400000,);
 
 
     setInterval(async () => {
@@ -164,5 +171,3 @@ ${exercises[dailyExercises[2]]}
     }, 3600000);
 
 }
-
-export default setupTimers;
