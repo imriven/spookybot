@@ -162,59 +162,59 @@ export async function TwitchChatClient(state) {
         break;
 
       case "!maninchair":
-        chat.urmom(client, channel);
+        chat.maninchair(client, channel);
         break;
 
       case "!angry":
-        chat.urmom(client, channel);
+        chat.angry(client, channel);
         break;
 
       case "!arisu":
-        chat.urmom(client, channel);
+        chat.arisu(client, channel);
         break;
 
       case "!canniman":
-        chat.urmom(client, channel);
+        chat.canniman(client, channel);
         break;
 
       case "!cleveland":
-        chat.urmom(client, channel);
+        chat.cleveland(client, channel);
         break;
 
       case "!clutchworld":
-        chat.urmom(client, channel);
+        chat.clutchworld(client, channel);
         break;
 
       case "!elise":
-        chat.urmom(client, channel);
+        chat.elise(client, channel);
         break;
 
       case "!deuzex":
-        chat.urmom(client, channel);
+        chat.deuzex(client, channel);
         break;
 
       case "!devilz":
-        chat.urmom(client, channel);
+        chat.devilz(client, channel);
         break;
 
       case "!free":
-        chat.urmom(client, channel);
+        chat.free(client, channel);
         break;
 
       case "!gang":
-        chat.urmom(client, channel);
+        chat.gang(client, channel);
         break;
 
       case "!gmike":
-        chat.urmom(client, channel);
+        chat.gmike(client, channel);
         break;
 
       case "!gooey":
-        chat.gucci(client, channel);
+        chat.gooey(client, channel);
         break;
 
       case "!gucci":
-        chat.urmom(client, channel);
+        chat.gucci(client, channel);
         break;
 
       case "!heavenly":
