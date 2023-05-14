@@ -100,8 +100,8 @@ export async function TwitchChatClient(state) {
     // Create up a switch statement with some possible commands and their outputs
     // The input shall be converted to lowercase form first
     // The outputs shall be in the chats
-
-    switch (message.split(" ")[0].toLowerCase()) {
+    const command = message.split(" ")[0].toLowerCase()
+    switch (command) {
       case "commands":
         chat.commands(client, channel, tags);
         break;
@@ -155,226 +155,15 @@ export async function TwitchChatClient(state) {
         chat.help(client, channel, tags, message);
         break;
 
-      // personalized shoutouts
-
-      case "!urmom":
-        chat.urmom(client, channel);
-        break;
-
-      case "!maninchair":
-        chat.maninchair(client, channel);
-        break;
-
-      case "!angry":
-        chat.angry(client, channel);
-        break;
-
-      case "!arisu":
-        chat.arisu(client, channel);
-        break;
-
-      case "!canniman":
-        chat.canniman(client, channel);
-        break;
-
-      case "!cleveland":
-        chat.cleveland(client, channel);
-        break;
-
-      case "!clutchworld":
-        chat.clutchworld(client, channel);
-        break;
-
-      case "!elise":
-        chat.elise(client, channel);
-        break;
-
-      case "!deuzex":
-        chat.deuzex(client, channel);
-        break;
-
-      case "!devilz":
-        chat.devilz(client, channel);
-        break;
-
-      case "!free":
-        chat.free(client, channel);
-        break;
-
-      case "!gang":
-        chat.gang(client, channel);
-        break;
-
-      case "!gmike":
-        chat.gmike(client, channel);
-        break;
-
-      case "!gooey":
-        chat.gooey(client, channel);
-        break;
-
-      case "!gucci":
-        chat.gucci(client, channel);
-        break;
-
-      case "!heavenly":
-        chat.heavenly(client, channel);
-        break;
-
-      case "!hunter":
-        chat.hunter(client, channel);
-        break;
-
-      case "!ili":
-        chat.ili(client, channel);
-        break;
-
-      case "!john":
-        chat.john(client, channel);
-        break;
-
-      case "!k9":
-        chat.k9(client, channel);
-        break;
-
-      case "!foxy":
-        chat.foxy(client, channel);
-        break;
-
-      case "!khal":
-        chat.khal(client, channel);
-        break;
-
-      case "!kidd":
-        chat.kidd(client, channel);
-        break;
-
-      case "!based":
-        chat.based(client, channel);
-        break;
-
-      case "!skittlez":
-        chat.skittlez(client, channel);
-        break;
-
-      case "!light":
-        chat.light(client, channel);
-        break;
-
-      case "!lesser":
-        chat.lesser(client, channel);
-        break;
-
-      case "!lilivy":
-        chat.lilivy(client, channel);
-        break;
-
-      case "!chop":
-        chat.chop(client, channel);
-        break;
-
-      case "!mustache":
-        chat.mustache(client, channel);
-        break;
-
-      case "!obscure":
-        chat.obscure(client, channel);
-        break;
-
-      case "!panda":
-        chat.panda(client, channel);
-        break;
-
-      case "!pickle":
-        chat.pickle(client, channel);
-        break;
-
-      case "!rai":
-        chat.rai(client, channel);
-        break;
-
-      case "!rocker":
-        chat.rocker(client, channel);
-        break;
-
-      case "!rounin":
-        chat.rounin(client, channel);
-        break;
-
-      case "!savior":
-        chat.savior(client, channel);
-        break;
-
-      case "!shigs":
-        chat.shigs(client, channel);
-        break;
-
-      case "!smoke":
-        chat.smoke(client, channel);
-        break;
-
-      case "!spiku":
-        chat.spiku(client, channel);
-        break;
-
-      case "!subboy":
-        chat.subboy(client, channel);
-        break;
-
-      case "!surge":
-        chat.surge(client, channel);
-        break;
-
-      case "!t7g":
-        chat.t7g(client, channel);
-        break;
-
-      case "!wardeness":
-        chat.wardeness(client, channel);
-        break;
-
-      case "!chance":
-        chat.chance(client, channel);
-        break;
-
-      case "!gil":
-        chat.gil(client, channel);
-        break;
-
-      case "!timber":
-        chat.timber(client, channel);
-        break;
-
-      case "!tisagh":
-        chat.tisagh(client, channel);
+      default:
+        if (command.startsWith("!") && (command.slice(1) in chat.customShoutouts)) {
+          chat.genericChat(client, channel, chat.customShoutouts[command.slice(1)])
+          break
+        }
         break;
 
 
-      case "!timber":
-        chat.timber(client, channel);
-        break;
-
-
-      case "!tnt":
-        chat.tnt(client, channel);
-        break;
-
-
-      case "!xpert":
-        chat.xpert(client, channel);
-        break;
-
-
-      case "!storm":
-        chat.storm(client, channel);
-        break;
-
-
-      case "!urmom":
-        chat.urmom(client, channel);
-        break;
     }
   });
-
   return client
 }

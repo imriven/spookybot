@@ -43,6 +43,10 @@ exports.up = function (knex) {
         tbl.string("name").primary().unique();
         tbl.string("timerId", 50);
       })
+      .createTable("customShoutouts", (tbl) => {
+        tbl.string("name").primary().unique().notNullable();
+        tbl.string("message", 300);
+      })
   };
   
   exports.down = function (knex) {
@@ -56,6 +60,7 @@ exports.up = function (knex) {
       .dropTableIfExists("mods")
       .dropTableIfExists("vips")
       .dropTableIfExists("status")
-      .dropTableIfExists("liveTimers");
+      .dropTableIfExists("liveTimers")
+      .dropTableIfExists("customShoutouts");
   };
   
