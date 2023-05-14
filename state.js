@@ -5,7 +5,7 @@ export default class BotState {
         this._numChatters = 0;
         this._mods = [];
         this._vips = [];
-        this._liveTimers = {};
+        this._twitchTimers = {};
         this._isLive = false;
         this._followers = null;
         this._currentZwiftActivityId = null;
