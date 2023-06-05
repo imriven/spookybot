@@ -9,6 +9,7 @@ export default class BotState {
         this._isLive = false;
         this._followers = null;
         this._currentZwiftActivityId = null;
+        this._liveStreamers = {};
     }
     set mods(mods) {
         this._mods = mods;
@@ -105,5 +106,16 @@ export default class BotState {
 
     deleteTwitchTimer(timerName) {
         delete this._twitchTimers[timerName]
+    }
+
+    get liveStreamers(){
+        return this._liveStreamers
+    }
+
+    set liveStreamers(streamerInfo){
+        this._liveStreamers = {...this._liveStreamers, streamerInfo}
+    }
+    deleteLiveStreamer(streamerName){
+        delete this._liveStreamers[streamerName]
     }
 }

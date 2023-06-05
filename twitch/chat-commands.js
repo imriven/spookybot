@@ -53,7 +53,7 @@ export const customShoutouts = {
   "storm": "I bring love and support everywhere I go! New to streaming, player of fps, come show the love! https://www.twitch.tv/xwfx_stormgaming",
   "timber": "Kind streamer with a big heart. Fun friendly and wholesome streams for every one! https://www.twitch.tv/timberbrick",
   "notpony": "Down to earth and fun to talk to! A casual gamer that loves good company! Let's hangout! https://www.twitch.tv/itznotp0ny",
-  "nature": "Work hard and play hard! Playing tekken and a variety of fun games! Come play https://www.twitch.tv/ibrothernature"
+  "nature": "Work hard and play hard! Playing a variety of fighters and fun games! Come play https://www.twitch.tv/ibrothernature"
 }
 
 export function commands(client, channel, tags) {

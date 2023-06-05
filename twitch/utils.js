@@ -6,6 +6,7 @@ import { ApiClient } from '@twurple/api';
 import { promises as fs } from 'fs';
 import config from "../config/appConfig.js";
 import { setUpLiveTwitchTimers } from "../timers.js";
+import { streamerNotifications } from "../data.js";
 
 export async function refreshVipMods(twitchClient, state) {
   const vips = await twitchClient.channels.getVipsPaginated(config.twitchChannelId)
@@ -34,6 +35,33 @@ export async function checkIfLive(twitchChatClient, twitchClient, state) {
     }
   }
 }
+
+function getStreamer(streamerName) {
+  return streamerNotifications.filter(s => s.twitchName === streamerName)[0]
+}
+
+export async function streamersLive(twitchClient, discordClient, state){
+  const streamerList = streamerNotifications.map(s => s.twitchName)
+  const streams = await twitchClient.streams.getStreamsByUserNames(streamerList)
+  streams.forEach(async s => { 
+    if (s && !state.liveStreamers.hasOwnProperty(s.userDisplayName)){
+      console.log(s.userName)
+      console.log(s.gameName)
+      console.log(s.userDisplayName)
+      const streamer = getStreamer(s.userDisplayName)
+      console.log(streamer)
+      const channel = await discordClient.channels.fetch(streamer.discordChannelId)
+      const message = await channel.send(`${streamer.twitchName} is Live now streaming ${s.gameName}. Check them out : https://twitch.tv/${streamer.twitchName} `);
+      state.liveStreamers = {[s.userDisplayName]: message.id}
+    } else if (!s && state.liveStreamers.hasOwnProperty(s.userDisplayName)) {
+      const streamer = getStreamer(s.userDisplayName)
+      const channel = await discordClient.channels.fetch(streamer.discordChannelId)
+      await deleteMessage(streamer.discordChannelId, state.liveStreamers[s.userDisplayName])
+      state.deleteLiveStreamer(s.userDisplayName)
+    }
+  })
+}
+
 
 export async function getFollowers(twitchClient) {
   const fetchedFollowers = await twitchClient.channels.getChannelFollowersPaginated(config.twitchChannelId, config.twitchChannelId)

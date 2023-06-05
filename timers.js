@@ -1,7 +1,7 @@
 import { getOrdinalNum, msToTime } from "./utils.js"
 // import { zwiftTimer } from "./zwift/utils.js"
 import { spookyFacts, dailyTips, exercises } from "./data.js"
-import { refreshVipMods, getFollowers, checkIfLive, getNumChatters, getNumViewers} from "./twitch/utils.js"
+import { refreshVipMods, getFollowers, checkIfLive, getNumChatters, getNumViewers, streamersLive} from "./twitch/utils.js"
 import config from "./config/appConfig.js"
 
 const timers = [
@@ -104,6 +104,10 @@ export function setupTimers(twitchClient, discordClient, newTwitchClient, redisC
     //zwiftClient taken out
     setInterval(async () => {
         await checkIfLive(twitchClient, newTwitchClient, state)
+    }, 300000)
+
+    setInterval(async () => {
+        await streamersLive(newTwitchClient, discordClient, state)
     }, 300000)
 
     setInterval(async () => {
