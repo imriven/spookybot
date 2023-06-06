@@ -315,14 +315,14 @@ Emotional Wellness http://www.whispersvegas.com/is about self-image, your reacti
 
 export const streamerNotifications = [
   {
-    twitchName: "BaconBoy528",
+    twitchName: "yourmom77665",
     twitchId: "",
-    discordName: "yourmom77665",
+    discordName: "BaconBoy528",
     discordId: "931658862619140156",
     discordChannelId: "1091642862740971530"
   },
   {
-    twitchName: "deuZex85",
+    twitchName: "deuzex85",
     twitchId: "",
     discordName: "deuZex85",
     discordId: "298657152900530176",
@@ -434,7 +434,7 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530",
   },
   {
-    twitchName: "zahabi",
+    twitchName: "zahabi_twitch",
     twitchId: "",
     discordName: "zahabi",
     discordId: "357350466600042519",

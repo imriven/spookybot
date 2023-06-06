@@ -112,9 +112,10 @@ export default class BotState {
         return this._liveStreamers
     }
 
-    set liveStreamers(streamerInfo){
-        this._liveStreamers = {...this._liveStreamers, streamerInfo}
+    addLiveStreamer(streamerName, messageId){
+        this._liveStreamers[streamerName] = messageId
     }
+
     deleteLiveStreamer(streamerName){
         delete this._liveStreamers[streamerName]
     }
