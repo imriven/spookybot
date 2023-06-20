@@ -117,7 +117,7 @@ export function t7gmods(client, channel) {
 export function tuesday(client, channel) {
     client.say(
         channel,
-        `welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy me a lady a shot!, `
+        `welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy a lady a shot!, `
     )
 }
 
