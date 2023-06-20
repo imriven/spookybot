@@ -40,28 +40,32 @@ function getStreamer(streamerName) {
   return streamerNotifications.filter(s => s.twitchName.toLowerCase() === streamerName)[0]
 }
 
-export async function streamersLive(twitchClient, discordClient, state){
+export async function streamersLive(twitchClient, discordClient, state) {
   const streamerList = streamerNotifications.map(s => s.twitchName.toLowerCase())
   const streams = await twitchClient.streams.getStreamsByUserNames(streamerList)
-  streams.forEach(async s => { 
-    if (s && !state.liveStreamers.hasOwnProperty(s.userName)){
-      console.dir(state.liveStreamers)
-      console.log(`4: ${s.userName}`)
-      console.log(`6: ${s.userDisplayName}`)
+  let nowStreaming = []
+  streams.forEach(async s => {
+    if (!state.liveStreamers.hasOwnProperty(s.userName)) {
       const streamer = getStreamer(s.userName)
       const channel = await discordClient.channels.fetch(streamer.discordChannelId)
-      const message = await channel.send(`${streamer.twitchName} is Live now streaming ${s.gameName}. Check them out : https://twitch.tv/${streamer.twitchName} `);
+      const message = await channel.send(`<@${streamer.discordId}> (${streamer.twitchName}) is Live now streaming ${s.gameName}. Check them out : https://twitch.tv/${streamer.twitchName} `);
       state.addLiveStreamer(s.userName, message.id)
-      console.dir(state.liveStreamers)
-      console.log(state.liveStreamers[s.userName])
-    } else if (!s && state.liveStreamers.hasOwnProperty(s.userName)) {
-      const streamer = getStreamer(s.userName)
-      await deleteMessage(streamer.discordChannelId, state.liveStreamers[s.userName])
-      state.deleteLiveStreamer(s.userName)
+    }
+    nowStreaming.push(s.userName)
+    console.log("Now streaming", nowStreaming)
+  })
+  Object.entries(state.liveStreamers).forEach(async ([streamerName, messageId]) => {
+    if (!nowStreaming.includes(streamerName)) {
+      console.log(streamerName)
+      const streamer = getStreamer(streamerName)
+      const channel = await discordClient.channels.fetch(streamer.discordChannelId)
+      const message = await channel.messages.fetch(messageId)
+      await message.delete()
+      state.deleteLiveStreamer(streamerName)
     }
   })
 }
-//it's not reprinting but it's also not deleting the message. is delete message built in? 
+
 
 export async function getFollowers(twitchClient) {
   const fetchedFollowers = await twitchClient.channels.getChannelFollowersPaginated(config.twitchChannelId, config.twitchChannelId)
@@ -140,6 +144,38 @@ export async function TwitchChatClient(state) {
 
       case "!discord":
         chat.discord(client, channel, tags);
+        break;
+
+      case "!podcast":
+        chat.podcast(client, channel, tags);
+        break;
+
+      case "!gamer":
+        chat.gamer(client, channel, tags);
+        break;
+
+      case "!t7gmods":
+        chat.t7gmods(client, channel);
+        break;
+
+      case "!tuesday":
+        chat.tuesday(client, channel);
+        break;
+
+      case "!warrior":
+        chat.warrior(client, channel);
+        break;
+
+      case "!throwback":
+        chat.throwback(client, channel);
+        break;
+
+      case "!thirsty":
+        chat.thirsty(client, channel);
+        break;
+
+      case "!friday":
+        chat.friday(client, channel, tags);
         break;
 
       case "!socials":

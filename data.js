@@ -192,7 +192,7 @@ One common myth is that you will bulk up when you weight-lift. It takes a lot of
   },
   {
     title: "Only have a few minutes to workout?",
-    tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between.Give them a try, even ten minutes will feel like you got a full workout!"
+    tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between. Give them a try, even ten minutes will feel like you got a full workout!"
   },
   {
     title: "Its in the way that you use it",
@@ -200,21 +200,17 @@ One common myth is that you will bulk up when you weight-lift. It takes a lot of
   },
   {
     title: "Proteins are important",
-    tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. 
-
-They are especially important for post workout.You can find sources of protein in meat, fish, and eggs, or plant based sources as well.Protein also keeps the body more satiated so you'll be less likely to snack in between meals.`
+    tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. They are especially important for post workout. You can find sources of protein in meat, fish, and eggs, or plant based sources as well. Protein also keeps the body more satiated so you'll be less likely to snack in between meals.`
   },
   {
     title: "Looking for a challenge?",
-    tip: `If you're looking to make your weight lifting sessions more interesting try drop sets, supersets, or giant sets. 
-
-A drop set is where you grab a set of heavy, medium, and light weights.You start out heavy until you can't lift anymore and drop down to medium and then to lightweight.Drop sets are very efficient in fatiguing your muscles.When performing to fatigue the muscle fibers grow by tearing and rebuilding. 
-
-Supersets are taking two exercises and putting them together with no break in between.Normally you do a set of exercises and then take a quick break.If you are doing a superset of push - ups and sit - ups you would do your sit - ups and then push - ups and then take a quick break. Another benefit of supersets is you fit more exercises in a shorter amount of time. 
-
-A giant set is the same idea as a superset but it's three or more exercises. 
-
-Adding these techniques into your workout can also add an element of cardio in as well since it allows for less of a recovery period.They promote a more efficient and effective workout while switching up your routine!`
+    tip: `If you're looking to make your weight lifting sessions more interesting try drop sets, supersets, or giant sets. A drop set is where you grab a set of heavy, medium, and light weights.You start out heavy until you can't lift anymore and drop down to medium and then to lightweight.Drop sets are very efficient in fatiguing your muscles.When performing to fatigue the muscle fibers grow by tearing and rebuilding. 
+    
+    Supersets are taking two exercises and putting them together with no break in between.Normally you do a set of exercises and then take a quick break.If you are doing a superset of push - ups and sit - ups you would do your sit - ups and then push - ups and then take a quick break. Another benefit of supersets is you fit more exercises in a shorter amount of time. 
+    
+    A giant set is the same idea as a superset but it's three or more exercises. 
+    
+    Adding these techniques into your workout can also add an element of cardio in as well since it allows for less of a recovery period.They promote a more efficient and effective workout while switching up your routine!`
   },
   {
     title: "How to stick to your health resolutions anytime of the year",
@@ -246,19 +242,19 @@ If water is too boring try a flavor enhancer.They come in all types of flavors! 
     title: "Embrace your DOMS",
     tip: `You may or may not be familiar with DOMS but I'm sure you're familiar with post workout soreness.Ever workout and not feel it for a day or two ? DOMS stand for delayed onset muscle syndrome and can kick in anywhere from 24 to 72 hours after a workout! 
     
-DOMS come from the muscle tears that happen when you workout.While you feel this soreness your muscles are repairing.That's why it's always good to do splits to make sure you exercise different muscle groups so the sore ones have time to heal. 
-
-Extra protein in your diet can help your muscles to repair themselves quicker.Hydration, stretching, and foam rollers can help too! Don't run from DOMs embrace them! It means what you are doing is working.Your body is changing.`
+    DOMS come from the muscle tears that happen when you workout.While you feel this soreness your muscles are repairing.That's why it's always good to do splits to make sure you exercise different muscle groups so the sore ones have time to heal. 
+    
+    Extra protein in your diet can help your muscles to repair themselves quicker.Hydration, stretching, and foam rollers can help too! Don't run from DOMs embrace them! It means what you are doing is working.Your body is changing.`
   },
   {
     title: "Challenge yourself with resistance bands",
     tip: `So you want to work out at home but don't have the space and / or money for heavy duty equipment ? You might be surprised to know you don't need much to get a challenging and effective workout! Besides using your body weight for workouts adding resistance bands to your workout will give your body a new challenge!  
-
-Resistance bands are inexpensive, don't take up a lot of room and can be added to body weight workouts you may be doing already. 
-
-There are several different types of resistance bands you can use to give you access to hundreds of exercises! 
-
-There is an ample array of YouTube videos that use resistance bands in fun and challenging ways so you'll never get bored with your workout!`
+    
+    Resistance bands are inexpensive, don't take up a lot of room and can be added to body weight workouts you may be doing already. 
+    
+    There are several different types of resistance bands you can use to give you access to hundreds of exercises! 
+    
+    There is an ample array of YouTube videos that use resistance bands in fun and challenging ways so you'll never get bored with your workout!`
   },
   {
     title: "It may be small but it's powerful",
@@ -289,7 +285,7 @@ Salmon is rich in omega fatty acids, b vitamins, and protein. It can be broiled,
     
 Physical Wellness is what I primarily focus on here in this discord! Physical Wellness is the ability to get your body to function at it's most optimal state. We may see health and fitness as ways to look and feel better but the body is a machine with different systems running. When you don't take care of a machine or are hard on it, it breaks down. 
 
-Emotional Wellness http://www.whispersvegas.com/is about self-image, your reactions to experiences, and your ability to cope and adapt. Spiritual wellness is about your beliefs, principles and values that guides you through life. Intellectual Wellness encourages curiousity, empathy, and creativity. It's allowing your mentality to expand through experiences and acquired knowledge. Environmental Wellness almost goes hand in hand with physical wellness. External factors have a direct influence on your physical and emotional well being. This could be natural like weather or the quality of home life. 
+Emotional Wellness about self-image, your reactions to experiences, and your ability to cope and adapt. Spiritual wellness is about your beliefs, principles and values that guides you through life. Intellectual Wellness encourages curiousity, empathy, and creativity. It's allowing your mentality to expand through experiences and acquired knowledge. Environmental Wellness almost goes hand in hand with physical wellness. External factors have a direct influence on your physical and emotional well being. This could be natural like weather or the quality of home life. 
 `
   }, {
     title: "Take a break",
@@ -343,7 +339,7 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530"
   },
   {
-    twitchName: "gothiccity",
+    twitchName: "gothicjinxy",
     twitchId: "",
     discordName: "jinxy",
     discordId: "1093345284270071838",
@@ -664,5 +660,18 @@ export const streamerNotifications = [
     discordId: "355676511992545300",
     discordChannelId: "1091642862740971530",
   },
-  
+  {
+    twitchName: "rockagoth_test_stream",
+    twitchId: "",
+    discordName: "Testing",
+    discordId: "459109042619678740",
+    discordChannelId: "1091642862740971530",
+  }, 
+  {
+    twitchName: "gothicjinxy",
+    twitchId: "",
+    discordName: "Jinxy",
+    discordId: "1093345284270071838",
+    discordChannelId: "1091642862740971530",
+  }
 ]
