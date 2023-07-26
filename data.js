@@ -357,49 +357,49 @@ export const streamerNotifications = [
     twitchId: "",
     discordName: "Hunter_Huntsman",
     discordId: "1064293204461097001",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "K9_OneOne",
     twitchId: "",
     discordName: "K9 OneOne",
-    discordId: "1064293204461097001",
-    discordChannelId: "1091642862740971530",
+    discordId: "1010959912613969930",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "HeavenlyShinryu",
     twitchId: "",
     discordName: "Heavenly",
     discordId: "615683768111333440",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "MagicNinjaRobot",
     twitchId: "",
     discordName: "MagicNinjaRobot",
     discordId: "694678628080025621",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "KhalKatana",
     twitchId: "",
     discordName: "Khal Katana",
     discordId: "668263861572468736",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "LadyMajinx",
     twitchId: "",
     discordName: "Lady",
     discordId: "474396476122988545",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "surget7",
     twitchId: "",
     discordName: "Surgekun",
     discordId: "943754183121719416",
-    discordChannelId: "1091642862740971530",
+    discordChannelId: "1091642862740971530"
   },
   {
     twitchName: "timberbrick",
@@ -673,5 +673,33 @@ export const streamerNotifications = [
     discordName: "Jinxy",
     discordId: "1093345284270071838",
     discordChannelId: "1091642862740971530",
-  }
-]
+  },
+  {
+    twitchName: "therealcrochetkid",
+    twitchId: "",
+    discordName: "thecrochetkid",
+    discordId: "422912253059268611",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "crashbexpert",
+    twitchId: "",
+    discordName: "Crashbexpert",
+    discordId: "932097914078130217",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "zelda3363",
+    twitchId: "",
+    discordName: "Zelda",
+    discordId: "904206612875595836",
+    discordChannelId: "1091642862740971530",
+  },{
+  twitchName: "flapperdevofficial",
+  twitchId: "",
+  discordName: "FlapperDev",
+  discordId: "814442785960099840",
+  discordChannelId: "1091642862740971530",
+}
+] 
+
