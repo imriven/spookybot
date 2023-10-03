@@ -325,10 +325,10 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530"
   },
   {
-    twitchName: "ibrotherNature",
+    twitchName: "princeofdarkness999",
     twitchId: "",
-    discordName: "Nature",
-    discordId: "621556397095780362",
+    discordName: "princeofdarkness999",
+    discordId: "335954374633193473",
     discordChannelId: "1091642862740971530"
   },
   {
@@ -666,7 +666,7 @@ export const streamerNotifications = [
     discordName: "Testing",
     discordId: "459109042619678740",
     discordChannelId: "1091642862740971530",
-  }, 
+  },
   {
     twitchName: "gothicjinxy",
     twitchId: "",
@@ -694,12 +694,20 @@ export const streamerNotifications = [
     discordName: "Zelda",
     discordId: "904206612875595836",
     discordChannelId: "1091642862740971530",
-  },{
-  twitchName: "flapperdevofficial",
-  twitchId: "",
-  discordName: "FlapperDev",
-  discordId: "814442785960099840",
-  discordChannelId: "1091642862740971530",
-}
-] 
+  }, 
+  {
+    twitchName: "flapperdevofficial",
+    twitchId: "",
+    discordName: "FlapperDev",
+    discordId: "814442785960099840",
+    discordChannelId: "1091642862740971530",
+  }
+  ,{
+    twitchName: "fairlyasian",
+    twitchId: "",
+    discordName: "fairlyasian",
+    discordId: "814442785960099840",
+    discordChannelId: "1091642862740971530",
+  }
+]
 

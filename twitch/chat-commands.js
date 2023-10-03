@@ -56,7 +56,8 @@ export const customShoutouts = {
     "nature": "Work hard and play hard! Playing a variety of fighters and fun games! Come play https://www.twitch.tv/ibrothernature",
     "vinnie":"super friendly and genuine streamer, playing tekken and street fighter in a very talented fighting game community https://www.twitch.tv/vinniescwluke",
     "lady":"Kind-hearted and a classy lassy who was made to dominate on and offline https://www.twitch.tv/ladymajinx",
-    "jace":"fun, energectic and bubbly, come join my community!https://www.twitch.tv/jaceiswimpy"
+    "jace":"fun, energectic and bubbly, come join my community!https://www.twitch.tv/jaceiswimpy",
+    "dbk" : "The Goat of commentators LFG!!! https://www.twitch.im_al98tv/devilbillykazama"
 
 }
 
