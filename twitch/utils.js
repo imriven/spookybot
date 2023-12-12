@@ -154,8 +154,8 @@ export async function TwitchChatClient(state) {
         chat.gamer(client, channel, tags);
         break;
 
-      case "!t7gmods":
-        chat.t7gmods(client, channel);
+      case "!dreewmods":
+        chat.dreewmods(client, channel);
         break;
 
       case "!tuesday":

@@ -42,7 +42,7 @@ export const customShoutouts = {
     "spiku": "Fun and unique conversations to be had with a variety of games! https://www.twitch.tv/spikuzardoz",
     "subboy": "Not just a baddass Tekken player that streams a variety of games. Come for the conversation stay for the company https://www.twitch.tv/spikuzardoz",
     "basement": "Specializing in fighters like Tekken and Street figher but plays a variety of games. I also sell used games, consoles, accessories. come by and say hi.  https://www.twitch.tv/basementdaddy",
-    "t7g": "Talented, spicy and savage I always bring it no matter the game! There's always a surprise in store, come see and check out my new mods! https://www.twitch.tv/t7g_",
+    "dreew": "Talented, spicy and savage I always bring it no matter the game! There's always a surprise in store, come see and check out my new mods! https://www.twitch.tv/dreew_ttv_",
     "wardeness": "Sweet, kind, and talented variety streamer. Currently giggling my way through hollow knight one boss at a time. https://www.twitch.tv/the_wardeness",
     "viking": "Burly biker but kind hearted and nice,I love good conversation and I don't scare easily https://www.twitch.tv/the_angry_viking_biker",
     "chance": "Chance is the name and fighting game are my thing. So much knowledge and skill in these two hands. Come see https://www.twitch.tv/thecriticalchance",
@@ -56,8 +56,9 @@ export const customShoutouts = {
     "nature": "Work hard and play hard! Playing a variety of fighters and fun games! Come play https://www.twitch.tv/ibrothernature",
     "vinnie":"super friendly and genuine streamer, playing tekken and street fighter in a very talented fighting game community https://www.twitch.tv/vinniescwluke",
     "lady":"Kind-hearted and a classy lassy who was made to dominate on and offline https://www.twitch.tv/ladymajinx",
-    "jace":"fun, energectic and bubbly, come join my community!https://www.twitch.tv/jaceiswimpy",
-    "dbk" : "The Goat of commentators LFG!!! https://www.twitch.im_al98tv/devilbillykazama"
+    "jace":"fun, energectic and bubbly, come join my community! https://www.twitch.tv/jaceiswimpy",
+    "dbk" : "The Goat of commentators LFG!!! https://www.twitch.tv/devilbillykazama",
+    "grabz" : "They call me Yeetah Cheetah for a reason! Come find out why https://www.twitch.tv/grabzttv"
 
 }
 

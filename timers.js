@@ -78,12 +78,6 @@ const timers = [
         time: 7200000,
         channel: config.twitchChannelUsername,
     },
-    {
-        title: "halloween",
-        message: "Happy Spooky Season!! Check out today's spooky link and streamer of the day! https://imriven.github.io/halloween-calendar/",
-        time: 600000,
-        channel: config.twitchChannelUsername,
-    },
 ]
 
 export function setUpLiveTwitchTimers(twitchChatClient, twitchClient, state) {
