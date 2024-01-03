@@ -47,6 +47,12 @@ const timers = [
         time: 5600000,
         channel: config.twitchChannelUsername,
     },
+    {
+        title: "prime",
+        message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
+        time: 3400000,
+        channel: config.twitchChannelUsername,
+    },
 
     // {
     //     title: "saCommands",

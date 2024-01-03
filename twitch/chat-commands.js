@@ -58,7 +58,12 @@ export const customShoutouts = {
     "lady":"Kind-hearted and a classy lassy who was made to dominate on and offline https://www.twitch.tv/ladymajinx",
     "jace":"fun, energectic and bubbly, come join my community! https://www.twitch.tv/jaceiswimpy",
     "dbk" : "The Goat of commentators LFG!!! https://www.twitch.tv/devilbillykazama",
-    "grabz" : "They call me Yeetah Cheetah for a reason! Come find out why https://www.twitch.tv/grabzttv"
+    "grabz" : "They call me Yeetah Cheetah for a reason! Come find out why https://www.twitch.tv/grabzttv",
+    "fairlyasian": "Sweet and kind but savage at WOW: Come check me out! https://www.twitch.tv/fairlyasian",
+    "billion": "I'm one of a kind, unique and one in a billion! Come join me for the vibes! https://www.twitch.tv/billionth_",
+    "superweapon":"I draw, I game, and create charchters while having a heart of gold, Look what I can do! https://www.twitch.tv/superweapon667",
+    "zesty":"Rock calls me Zesty for my zesty and spicy personality. Come through and see what i've got for you. https://www.twitch.tv/zehster",
+    "dreamteam" : "Please welcome ArguableRuby68 and NeoVirgil09 to the Rockagoth Community. We will be running Tekken tournaments this year. Make sure to follow them so you don't miss out!"
 
 }
 

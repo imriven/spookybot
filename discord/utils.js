@@ -6,6 +6,7 @@ export default async function DiscordClient() {
         intents: [
             GatewayIntentBits.Guilds,
             GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.MessageContent,
         ]
     })
@@ -13,6 +14,9 @@ export default async function DiscordClient() {
     discord.on('ready', () => {
         console.log(`Logged in as ${discord.user.tag}!`);
     });
+    discord.on('messageReactionAdd', (reaction, user) => {
+        console.dir(reaction, user)
+    })
 
     await discord.login(config.discordToken);
     return discord
