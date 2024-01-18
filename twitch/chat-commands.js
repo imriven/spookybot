@@ -259,7 +259,7 @@ export function counter(client, channel, tags, state, message) {
             if (isNaN(nn)) {
                 client.say(channel, "you can only add numbers to a counter")
                 return;
-            }https://www.twitch.tv/ibrothernature!
+            }
             state.setCounter(counterName, {
                 value: nn,
                 creator: tags.username
