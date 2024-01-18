@@ -84,6 +84,10 @@ export async function getNumChatters(twitchClient) {
   return allFetchedChatters.length
 }
 
+export async function changeTitle(twitchClient, title) {
+  const channelUpdate = await twitchClient.channels.updateChannelInfo(config.twitchChannelId, { title })
+}
+
 export async function NewTwitchClient() {
   const clientId = config.twitchClientId
   const clientSecret = config.twitchClientSecret
@@ -217,6 +221,13 @@ export async function TwitchChatClient(state) {
 
       case "help":
         chat.help(client, channel, tags, message);
+        break;
+      
+      case "!title":
+        if (!privilegedUser(client, state, tags.username)) {
+          break;
+        }
+        changeTitle(client, message.split(" ").slice(1).join(" "))
         break;
 
       default:
