@@ -68,7 +68,10 @@ export const customShoutouts = {
     "superweapon":"I draw, I game, and create charchters while having a heart of gold, Look what I can do! https://www.twitch.tv/superweapon667",
     "tuffer": "I'm one of a kind, unique and one in a billion! Come join me for the vibes! https://www.twitch.tv/tuffermrdeano",
     "zesty":"Rock calls me Zesty for my zesty and spicy personality. Come through and see what i've got for you. https://www.twitch.tv/zehster",
+    "ytr":"Drag main with a heart of gold! Check out YourThatRussian! https://www.twitch.tv/yourthatrussian",
+    "luna":"Her Bryan is that of nightmares, Hellhound and leader of the Wxlf Pack! Owoooooooo! https://www.twitch.tv/livelyluna",
     "soundcloud":"Check out l1ght's sound cloud https://soundcloud.com/special-ops-1",
+    "seattletkn":"Check out Seattle Tekken! Live Matches every Thursday! https://www.twitch.tv/seattletekken"
 
 }
 

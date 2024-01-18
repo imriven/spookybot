@@ -30,6 +30,12 @@ const timers = [
         channel: config.twitchChannelUsername,
     },
     {
+        title: "ytr",
+        message: "Today's special guest is YourThatRussian! Make sure to follow! https://www.twitch.tv/yourthatrussian",
+        time: 4300000,
+        channel: config.twitchChannelUsername,
+    },
+    {
         title: "discord",
         message: "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86",
         time: 8400000,
