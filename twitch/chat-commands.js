@@ -61,9 +61,14 @@ export const customShoutouts = {
     "grabz" : "They call me Yeetah Cheetah for a reason! Come find out why https://www.twitch.tv/grabzttv",
     "fairlyasian": "Sweet and kind but savage at WOW: Come check me out! https://www.twitch.tv/fairlyasian",
     "billion": "I'm one of a kind, unique and one in a billion! Come join me for the vibes! https://www.twitch.tv/billionth_",
+    "ra": "Variety streamer with a tiktok that has chill vibes! Reaching for affilate please help me grow! https://www.twitch.tv/ranotraw",
+    "druid": "Super kind and is a vibe! Come check me out! https://www.twitch.tv/druidlaine",
+    "neo": "I run Tekken tournaments and my chat likes to troll me sometimes. I may deserve it! Come hangout and chill! https://www.twitch.tv/neovergil09",
+    "ruby": "Tekken Eliza main that runs regular tournaments with a kind and supportive community! Join us! https://www.twitch.tv/argubleruby68",
     "superweapon":"I draw, I game, and create charchters while having a heart of gold, Look what I can do! https://www.twitch.tv/superweapon667",
+    "tuffer": "I'm one of a kind, unique and one in a billion! Come join me for the vibes! https://www.twitch.tv/tuffermrdeano",
     "zesty":"Rock calls me Zesty for my zesty and spicy personality. Come through and see what i've got for you. https://www.twitch.tv/zehster",
-    "dreamteam" : "Please welcome ArguableRuby68 and NeoVirgil09 to the Rockagoth Community. We will be running Tekken tournaments this year. Make sure to follow them so you don't miss out!"
+    "soundcloud":"Check out l1ght's sound cloud https://soundcloud.com/special-ops-1",
 
 }
 

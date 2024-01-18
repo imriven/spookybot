@@ -50,7 +50,19 @@ const timers = [
     {
         title: "prime",
         message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
+        time: 3200000,
+        channel: config.twitchChannelUsername,
+    },   
+    {
+        title: "panels",
+        message: "Rockagoth is running panels at PAX East, Washington Gaming Expo, and PAX West this year! If you are a streamer and are interested in telling others your story please whisper to me!",
         time: 3400000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "dreamteam",
+        message: "Please welcome ArguableRuby68 and NeoVirgil09 to the Community. We will be running Tekken tournaments this year. Make sure to follow them so you don't miss out!",
+        time: 3800000,
         channel: config.twitchChannelUsername,
     },
 
@@ -72,12 +84,6 @@ const timers = [
     //     time: 12000000,
     //     channel: config.twitchChannelUsername,
     // },
-    {
-        title: "patreon",
-        message: "To listen to exclusive content from the podcast check out patreon. https://patreon.com/RockAgoth",
-        time: 7800000,
-        channel: config.twitchChannelUsername,
-    },
     {
         title: "podcast",
         message: "Check out the Gaming in the Basement Podcast! available on several platforms https://anchor.fm/rock-a-goth",
