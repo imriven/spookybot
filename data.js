@@ -703,10 +703,10 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530",
   }
   ,{
-    twitchName: "fairlyasian",
+    twitchName: "surget8",
     twitchId: "",
-    discordName: "fairlyasian",
-    discordId: "814442785960099840",
+    discordName: "surge",
+    discordId: "943754183121719416",
     discordChannelId: "1091642862740971530",
   }
 ]

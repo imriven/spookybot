@@ -12,6 +12,12 @@ const timers = [
         channel: config.twitchChannelUsername,
     },
     {
+        title: "tekken",
+        message: "I'm 2 years into tekken thanks for joining me on my journey as we grow and learn together! My biggest goal is to bring people together through tekken!",
+        time: 4599000,
+        channel: config.twitchChannelUsername,
+    },
+    {
         title: "follow",
         message: "✨ Please FOLLOW to show your support! ✨ Thank You! 🤗",
         time: 4200000,
@@ -30,15 +36,21 @@ const timers = [
         channel: config.twitchChannelUsername,
     },
     {
-        title: "ytr",
-        message: "Today's special guest is YourThatRussian! Make sure to follow! https://www.twitch.tv/yourthatrussian",
-        time: 4300000,
+        title: "wxlfpack",
+        message: "Please show some love and support to my fellow wolves! Owooooo! LivelyLuna (owner) - https://www.twitch.tv/livelyluna, Kidd Rockets - https://www.twitch.tv/kiddrockets, Red Blossom - https://www.twitch.tv/wxlf_red_blossom, Raiken - https://www.twitch.tv/raikenvt, Armor King - https://www.twitch.tv/armorkingtv21, Serena - https://www.twitch.tv/serena1313_en",
+        time: 4355000,
         channel: config.twitchChannelUsername,
     },
     {
         title: "discord",
         message: "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86",
         time: 8400000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "wxlfgear",
+        message: "Grab some swag and support the Wxlf pack!https://my-store-f578bc.creator-spring.com/ ",
+        time: 8495500,
         channel: config.twitchChannelUsername,
     },
     {
@@ -60,17 +72,37 @@ const timers = [
         channel: config.twitchChannelUsername,
     },   
     {
-        title: "panels",
-        message: "Rockagoth is running panels at PAX East, Washington Gaming Expo, and PAX West this year! If you are a streamer and are interested in telling others your story please whisper to me!",
-        time: 3400000,
-        channel: config.twitchChannelUsername,
-    },
-    {
-        title: "dreamteam",
-        message: "Please welcome ArguableRuby68 and NeoVirgil09 to the Community. We will be running Tekken tournaments this year. Make sure to follow them so you don't miss out!",
+        title: "podcast",
+        message: "Season 3 of Gaming in the Basement with Rockagoth Podcast is being released weekly! This season we have streamers and indie developers!Check it out! https://spotifyanchor-web.app.link/e/ehAPTmOyoAb",
         time: 3800000,
         channel: config.twitchChannelUsername,
     },
+    {
+        title: "mentalhealth",
+        message: "It's mental health awareness month in May! A few of us streamers are collabing to bring you loads of fun events like cozy games, happy hour and roundtable discussions. If you are down to collabe let me know and keep an eye out in May for these events!",
+        time: 6800000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "clucknclash",
+        message: "Come through for Major Hurricane's birthday in a tournament meant for the hungriest of competitors!Top three prizes are chicken sandwiches! Sponsored by Wxlf Pack esports! Sign up today! https://matcherino.com/tournaments/112594",
+        time: 4000000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "wxlfdiscord",
+        message: "Come join the wxlf discord and hangout with these esports competitors! There's always something going on! Join us for movie & community nights, Exhibitions and Tournaments! Come release ur inner wolf! Awooooooo! https://discord.gg/JtAGm3a8D3 ",
+        time: 9000000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "summercamp",
+        message: "Are you or somebody you know trying to reach affiliate? Well then sign up for the Taco Summer Camp! Where you learn how to network and expand your community, make lifelong friends and connections, and reach affiliate together. Sign up here! https://forms.gle/bPc8NMSciKg6cTqT7",
+        time: 7000000,
+        channel: config.twitchChannelUsername,
+    },
+
+    
 
     // {
     //     title: "saCommands",
