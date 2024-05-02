@@ -8,25 +8,25 @@ const timers = [
     {
         title: "thanks",
         message: "Thank you so much for stopping by and hanging out! 🎉",
-        time: 3000000,
+        time: 3000000,  //50 minutes
         channel: config.twitchChannelUsername,
     },
     {
         title: "tekken",
         message: "I'm 2 years into tekken thanks for joining me on my journey as we grow and learn together! My biggest goal is to bring people together through tekken!",
-        time: 4599000,
+        time: 4500000, // 75 minutes
         channel: config.twitchChannelUsername,
     },
     {
         title: "follow",
         message: "✨ Please FOLLOW to show your support! ✨ Thank You! 🤗",
-        time: 4200000,
+        time: 4200000, // 70 minutes
         channel: config.twitchChannelUsername,
     },
     {
         title: "rules",
         message: "This is a place of positivity - Leave the negative vibes at the door!",
-        time: 3600000,
+        time: 3600000,  //60 minutes
         channel: config.twitchChannelUsername,
     },
     {
@@ -38,31 +38,31 @@ const timers = [
     {
         title: "wxlfpack",
         message: "Please show some love and support to my fellow wolves! Owooooo! LivelyLuna (owner) - https://www.twitch.tv/livelyluna, Kidd Rockets - https://www.twitch.tv/kiddrockets, Red Blossom - https://www.twitch.tv/wxlf_red_blossom, Raiken - https://www.twitch.tv/raikenvt, Armor King - https://www.twitch.tv/armorkingtv21, Serena - https://www.twitch.tv/serena1313_en",
-        time: 4355000,
+        time: 3900000, //65 minutes
         channel: config.twitchChannelUsername,
     },
     {
         title: "discord",
         message: "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86",
-        time: 8400000,
+        time: 8400000, // 140 minutes
         channel: config.twitchChannelUsername,
     },
     {
         title: "wxlfgear",
         message: "Grab some swag and support the Wxlf pack!https://my-store-f578bc.creator-spring.com/ ",
-        time: 8495500,
+        time: 4080000, // 68 mins
         channel: config.twitchChannelUsername,
     },
     {
         title: "socials",
         message: "Check out RockAGoth's socials! https://linktr.ee/rockagoth",
-        time: 5400000,
+        time: 5100000, // 85 mins
         channel: config.twitchChannelUsername,
     },
     {
         title: "welcome",
         message: "Welcome to the Basement! We are a fun and friendly community of gamers and streamers! Rockagoth is happy to be your host and get to know you! Don't be too afraid to say hi! Thank you for coming!",
-        time: 5600000,
+        time: 4380000,  // 73 mins
         channel: config.twitchChannelUsername,
     },
     {
@@ -78,27 +78,33 @@ const timers = [
         channel: config.twitchChannelUsername,
     },
     {
-        title: "mentalhealth",
-        message: "It's mental health awareness month in May! A few of us streamers are collabing to bring you loads of fun events like cozy games, happy hour and roundtable discussions. If you are down to collabe let me know and keep an eye out in May for these events!",
-        time: 6800000,
+        title: "Mental Health Awareness Month",
+        message: "Mental Health Awareness Month is in May. I'll be collabing with other streamers throughout the month! Please come through if you could use some healing. Be sure to follow me on FKA Twitter for event posts and updates! https://twitter.com/RockAGothTTV",
+        time: 1800000, // 30 mins
         channel: config.twitchChannelUsername,
     },
     {
-        title: "clucknclash",
-        message: "Come through for Major Hurricane's birthday in a tournament meant for the hungriest of competitors!Top three prizes are chicken sandwiches! Sponsored by Wxlf Pack esports! Sign up today! https://matcherino.com/tournaments/112594",
-        time: 4000000,
+        title: "Mental Health Awareness Month",
+        message: "I'll be streaming Mental Health events throughout the month of May! Please follow these fellow collaborators! https://www.twitch.tv/picnicblanketdoodles https://www.twitch.tv/k9_oneone https://www.twitch.tv/spikuzardoz https://www.twitch.tv/magicninjarobot https://www.twitch.tv/fairlyasian https://www.twitch.tv/billionth_ https://www.twitch.tv/raisunshine92 https://www.twitch.tv/klayea",
+        time: 2100000, // 35 mins
         channel: config.twitchChannelUsername,
     },
     {
-        title: "wxlfdiscord",
-        message: "Come join the wxlf discord and hangout with these esports competitors! There's always something going on! Join us for movie & community nights, Exhibitions and Tournaments! Come release ur inner wolf! Awooooooo! https://discord.gg/JtAGm3a8D3 ",
-        time: 9000000,
+        title: "Balancing Two Lives",
+        message: "Welcome in to our first event of Mental Health Awareness Month. Today I'm with K9oneone and Brandon of MNR discussing how to balance streamer and personal life. We're raising money for Active Minds, a nonprofit that runs mental health education geared toward 14 to 25 year olds. If you have a question please feel free to hightlight it. Also please give my co-hosts a follow if youre not already. https://twitch.tv/k9_oneone https://twitch.tv/magicninjarobot",
+        time: 600000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "wxlftwitch",
+        message: "The Wxlf Pack has found its den! Be sure you follow our new Twitch channel to spectate our events! https://twitch.tv/wxlf_esports",
+        time: 950000,
         channel: config.twitchChannelUsername,
     },
     {
         title: "summercamp",
         message: "Are you or somebody you know trying to reach affiliate? Well then sign up for the Taco Summer Camp! Where you learn how to network and expand your community, make lifelong friends and connections, and reach affiliate together. Sign up here! https://forms.gle/bPc8NMSciKg6cTqT7",
-        time: 7000000,
+        time: 700000,
         channel: config.twitchChannelUsername,
     },
 

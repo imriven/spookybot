@@ -69,11 +69,9 @@ export const customShoutouts = {
     "tuffer": "I'm one of a kind, unique and one in a billion! Come join me for the vibes! https://www.twitch.tv/tuffermrdeano",
     "zesty":"Rock calls me Zesty for my zesty and spicy personality. Come through and see what i've got for you. https://www.twitch.tv/zehster",
     "ytr":"Drag main with a heart of gold! Check out YourThatRussian! https://www.twitch.tv/yourthatrussian",
-    "luna":"Her Bryan is that of nightmares, Hellhound and leader of the Wxlf Pack! Owoooooooo! https://www.twitch.tv/livelyluna",
+    "luna":"Hellhound and leader of the Wxlf Pack! Owoooooooo! https://www.twitch.tv/livelyluna",
     "soundcloud":"Check out l1ght's sound cloud https://soundcloud.com/special-ops-1",
     "seattletkn":"Check out Seattle Tekken! Live Matches every Thursday! https://www.twitch.tv/seattletekken",
-    "mentalHealth":"Mental Health Awareness Month is in May. I'll be collabing with other streamers throughout the month! Please come through if you could use some healing. Be sure to follow me on FKA Twitter for event posts and updates! https://twitter.com/RockAGothTTV",
-    "mentalHealthStreamers" : "I'll be streaming Mental Health events throughout the month of May! Please follow these fellow collaborators! https://www.twitch.tv/picnicblanketdoodles https://www.twitch.tv/k9_oneone https://www.twitch.tv/spikuzardoz https://www.twitch.tv/magicninjarobot https://www.twitch.tv/fairlyasian https://www.twitch.tv/billionth_ https://www.twitch.tv/raisunshine92"
 
 }
 
@@ -284,6 +282,7 @@ export function counter(client, channel, tags, state, message) {
 }
 
 export function genericChat(client, channel, message) {
+    console.log(message)
     client.say(
         channel,
         message);
