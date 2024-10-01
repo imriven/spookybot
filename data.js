@@ -111,7 +111,6 @@ export const spookyFacts = [
 ];
 
 export const exercises = [
-
   // Thursday December 29th
   // 1 - 3 sets
   // 25 push ups
@@ -167,9 +166,8 @@ export const exercises = [
   "20-30 seconds jump lunges",
   "15-30 seconds push-ups",
   "20-30 seconds lateral planks",
-  "12-15 bridges"
+  "12-15 bridges",
 ];
-
 
 export const dailyTips = [
   {
@@ -180,27 +178,27 @@ Weight lifting is one of the most efficient ways of losing weight. Not only can 
 
 Afterburn means you are burning calories after your workout from  muscles being repaired, it takes calories to do this! Weightlifting and resistance training has also been linked to not only slowing the aging process but also with reversing some on a genetic level. 
 
-One common myth is that you will bulk up when you weight-lift. It takes a lot of specific foods at specific times of the day to effectively bulk up. It's really a science! So next time you are looking for an effective workout give weightlifting some attention! Your body will thank you!!!`
+One common myth is that you will bulk up when you weight-lift. It takes a lot of specific foods at specific times of the day to effectively bulk up. It's really a science! So next time you are looking for an effective workout give weightlifting some attention! Your body will thank you!!!`,
   },
   {
     title: "You are what you eat",
-    tip: "If your goal is weight loss did you know that 80% has to do with diet and the other 20% is exercise. Diet is very important and should be the main focus and exercise is secondary. Calorie counting is helpful for managing intake. Don't sabotage your hard work!"
+    tip: "If your goal is weight loss did you know that 80% has to do with diet and the other 20% is exercise. Diet is very important and should be the main focus and exercise is secondary. Calorie counting is helpful for managing intake. Don't sabotage your hard work!",
   },
   {
     title: "No weights or workout equipment? No problem",
-    tip: "Your body weight is the most efficient, inexpensive, and space saving equipment you need.There are hundreds of body weight exercises focused on core, upper and lower body, and cardio.You can get an effective full body workout just using you!"
+    tip: "Your body weight is the most efficient, inexpensive, and space saving equipment you need.There are hundreds of body weight exercises focused on core, upper and lower body, and cardio.You can get an effective full body workout just using you!",
   },
   {
     title: "Only have a few minutes to workout?",
-    tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between. Give them a try, even ten minutes will feel like you got a full workout!"
+    tip: "If youre looking for efficient but quick workouts give HIIT and Tabata workouts a try.Both types of workouts demand bursts of intense exercise with quick breaks in between. Give them a try, even ten minutes will feel like you got a full workout!",
   },
   {
     title: "Its in the way that you use it",
-    tip: "Weights are great for weight loss or for toning up and building muscle.For more of an aerobic workout choose lighter weights and higher reps.To build muscle use heavier weights and lower reps."
+    tip: "Weights are great for weight loss or for toning up and building muscle.For more of an aerobic workout choose lighter weights and higher reps.To build muscle use heavier weights and lower reps.",
   },
   {
     title: "Proteins are important",
-    tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. They are especially important for post workout. You can find sources of protein in meat, fish, and eggs, or plant based sources as well. Protein also keeps the body more satiated so you'll be less likely to snack in between meals.`
+    tip: `Protein is responsible for the growth and repair of the body's tissues.They also play an essential role in the production of hormones, enzymes, and red blood cells. They are especially important for post workout. You can find sources of protein in meat, fish, and eggs, or plant based sources as well. Protein also keeps the body more satiated so you'll be less likely to snack in between meals.`,
   },
   {
     title: "Looking for a challenge?",
@@ -210,7 +208,7 @@ One common myth is that you will bulk up when you weight-lift. It takes a lot of
     
     A giant set is the same idea as a superset but it's three or more exercises. 
     
-    Adding these techniques into your workout can also add an element of cardio in as well since it allows for less of a recovery period.They promote a more efficient and effective workout while switching up your routine!`
+    Adding these techniques into your workout can also add an element of cardio in as well since it allows for less of a recovery period.They promote a more efficient and effective workout while switching up your routine!`,
   },
   {
     title: "How to stick to your health resolutions anytime of the year",
@@ -225,7 +223,7 @@ one reason people quit is they try to do too much too soon.Give yourself a chanc
 
 4. When you decide you want to start being healthier don't wait.Some ppl will say oh I'll start in two weeks, I'll start the day after insert an event or day.But there really is no reason to wait.Start right then.Start planning and executing.  
 
-I hope these tips help to build those good habits you want to implement in your life!`
+I hope these tips help to build those good habits you want to implement in your life!`,
   },
   {
     title: "Are you drinking enough water ?",
@@ -236,7 +234,7 @@ FamilyDoctor.org says, “Good hydration means getting the right amount of water
 While it is hard to keep track of your recommended 40 - 64 oz of water a day there are many tools that can help you! There are apps out there that will remind you when to take a water break. There are also smart tumblers and bottles that will light up and make noises when you need to drink! 
 
 If water is too boring try a flavor enhancer.They come in all types of flavors! There are even jolly ranchers ones that aren't bad at all! 
-    `
+    `,
   },
   {
     title: "Embrace your DOMS",
@@ -244,7 +242,7 @@ If water is too boring try a flavor enhancer.They come in all types of flavors! 
     
     DOMS come from the muscle tears that happen when you workout.While you feel this soreness your muscles are repairing.That's why it's always good to do splits to make sure you exercise different muscle groups so the sore ones have time to heal. 
     
-    Extra protein in your diet can help your muscles to repair themselves quicker.Hydration, stretching, and foam rollers can help too! Don't run from DOMs embrace them! It means what you are doing is working.Your body is changing.`
+    Extra protein in your diet can help your muscles to repair themselves quicker.Hydration, stretching, and foam rollers can help too! Don't run from DOMs embrace them! It means what you are doing is working.Your body is changing.`,
   },
   {
     title: "Challenge yourself with resistance bands",
@@ -254,15 +252,15 @@ If water is too boring try a flavor enhancer.They come in all types of flavors! 
     
     There are several different types of resistance bands you can use to give you access to hundreds of exercises! 
     
-    There is an ample array of YouTube videos that use resistance bands in fun and challenging ways so you'll never get bored with your workout!`
+    There is an ample array of YouTube videos that use resistance bands in fun and challenging ways so you'll never get bored with your workout!`,
   },
   {
     title: "It may be small but it's powerful",
-    tip: `I'm talking about eggs! They are compact, easy to carry around and are a protein power house! They have the ability to keep you satiated for hours and they can be cooked up many ways! There's too many benefits to list here but eggs are great and easy to add to many dishes! If you're ever looking for a protein boost or a post workout snack give an egg a try!`
+    tip: `I'm talking about eggs! They are compact, easy to carry around and are a protein power house! They have the ability to keep you satiated for hours and they can be cooked up many ways! There's too many benefits to list here but eggs are great and easy to add to many dishes! If you're ever looking for a protein boost or a post workout snack give an egg a try!`,
   },
   {
     title: "Don't be targeted and become a victim",
-    tip: `As a consumer you have a target on your back.Idk if you've noticed health food trends marketed to make you buy.Trendy terms like “superfood”, “charcoal activated”, “metaboliser ”, etc etc are used to make you think you are making healthier choices.One thing that never changes is the food pyramid.It's very handy when trying to figure out what you should be eating and how much.So before you lament over whether to use olive oil, avocado oil, or coconut oil, just note they are about the same amount of calories and all have different cooking smoke points.Everything in moderation.Too much of anything is bad for you!`
+    tip: `As a consumer you have a target on your back.Idk if you've noticed health food trends marketed to make you buy.Trendy terms like “superfood”, “charcoal activated”, “metaboliser ”, etc etc are used to make you think you are making healthier choices.One thing that never changes is the food pyramid.It's very handy when trying to figure out what you should be eating and how much.So before you lament over whether to use olive oil, avocado oil, or coconut oil, just note they are about the same amount of calories and all have different cooking smoke points.Everything in moderation.Too much of anything is bad for you!`,
   },
   {
     title: "The importance of a heart rate monitor",
@@ -272,26 +270,28 @@ They can tell you when you need to ease up until your heart rate goes down. This
 
 Subsequently the can also tell you when you aren't working hard enough. As you continue your fitness adventure your body gets use to it and your heart becomes more efficient so you can start pushing yourself a little harder! It can even make weight lifting more cardio forward! 
 
-If you can invest in one it's a great tool to have in your wheelhouse. If not always listen to the cues of your body! Don't push yourself too hard but make sure you are pushing hard enough! `
+If you can invest in one it's a great tool to have in your wheelhouse. If not always listen to the cues of your body! Don't push yourself too hard but make sure you are pushing hard enough! `,
   },
   {
     title: "Salmon the super fish!!",
     tip: `Not only is salmon super versatile and tasty, it can also help with post workout inflammation effectively decreasing muscle soreness. It also comes packed with protein to aid with repairing and building muscle fibers. 
     
-Salmon is rich in omega fatty acids, b vitamins, and protein. It can be broiled, poached, grilled, baked, steamed,  seared, and etc. Try 4oz of smoked salmon with a boiled egg or two for breakfast! This protein fueled breakfast will power you through ur morning! Try salmon chunks to give your lunch time salad a protein boost! For a quick dinner smother your salmon fillet with scallions, tomatoes, peppers, mushrooms or whatever veggies you can fit in!! Bake and enjoy!`
-  }, {
+Salmon is rich in omega fatty acids, b vitamins, and protein. It can be broiled, poached, grilled, baked, steamed,  seared, and etc. Try 4oz of smoked salmon with a boiled egg or two for breakfast! This protein fueled breakfast will power you through ur morning! Try salmon chunks to give your lunch time salad a protein boost! For a quick dinner smother your salmon fillet with scallions, tomatoes, peppers, mushrooms or whatever veggies you can fit in!! Bake and enjoy!`,
+  },
+  {
     title: "Wellness isn't just about your physical health",
     tip: `Did you know there are several "dimensions of wellness" that contribute to your overall well being? Wellness is a blanket term for everything around us that affects us. It includes physical, emotional, financial, vocational, social, intellectual, environmental, and spiritual wellness. 
     
 Physical Wellness is what I primarily focus on here in this discord! Physical Wellness is the ability to get your body to function at it's most optimal state. We may see health and fitness as ways to look and feel better but the body is a machine with different systems running. When you don't take care of a machine or are hard on it, it breaks down. 
 
 Emotional Wellness about self-image, your reactions to experiences, and your ability to cope and adapt. Spiritual wellness is about your beliefs, principles and values that guides you through life. Intellectual Wellness encourages curiousity, empathy, and creativity. It's allowing your mentality to expand through experiences and acquired knowledge. Environmental Wellness almost goes hand in hand with physical wellness. External factors have a direct influence on your physical and emotional well being. This could be natural like weather or the quality of home life. 
-`
-  }, {
-    title: "Take a break",
-    tip: `We tend to have this an unhealthy mentality that you can't be successful without grinding at everything. But the truth is whatever you're reaching for will be hard to acheieve without allowing yourself to have a break! This is true with everything, health & fitness, occupations and careers, education, gaming, etc. Not only does a break help you to reset emotionally, physically, and mentally, they also serve as motivation towards the next reward or break. Setting goals and rewarding yourself for reaching those goals are an excellent way of keeping you motivated without grinding yourself into the ground!`
+`,
   },
-]
+  {
+    title: "Take a break",
+    tip: `We tend to have this an unhealthy mentality that you can't be successful without grinding at everything. But the truth is whatever you're reaching for will be hard to acheieve without allowing yourself to have a break! This is true with everything, health & fitness, occupations and careers, education, gaming, etc. Not only does a break help you to reset emotionally, physically, and mentally, they also serve as motivation towards the next reward or break. Setting goals and rewarding yourself for reaching those goals are an excellent way of keeping you motivated without grinding yourself into the ground!`,
+  },
+];
 
 // export const streamerNotifications = {
 //   "baconboy528":{
@@ -308,98 +308,97 @@ Emotional Wellness about self-image, your reactions to experiences, and your abi
 //   }
 // }
 
-
 export const streamerNotifications = [
   {
     twitchName: "yourmom77665",
     twitchId: "",
     discordName: "BaconBoy528",
     discordId: "931658862619140156",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "deuzex85",
     twitchId: "",
     discordName: "deuZex85",
     discordId: "298657152900530176",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "princeofdarkness999",
     twitchId: "",
     discordName: "princeofdarkness999",
     discordId: "335954374633193473",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "Freeside11",
     twitchId: "",
     discordName: "freeside11",
     discordId: "479451001280135186",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "gothicjinxy",
     twitchId: "",
     discordName: "jinxy",
     discordId: "1093345284270071838",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "GuccieGotTheFlu",
     twitchId: "",
     discordName: "GuccieGotTheFlu",
     discordId: "1037730631527972914",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "Hunter_Huntsman",
     twitchId: "",
     discordName: "Hunter_Huntsman",
     discordId: "1064293204461097001",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "K9_OneOne",
     twitchId: "",
     discordName: "K9 OneOne",
     discordId: "1010959912613969930",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "HeavenlyShinryu",
     twitchId: "",
     discordName: "Heavenly",
     discordId: "615683768111333440",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "MagicNinjaRobot",
     twitchId: "",
     discordName: "MagicNinjaRobot",
     discordId: "694678628080025621",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "KhalKatana",
     twitchId: "",
     discordName: "Khal Katana",
     discordId: "668263861572468736",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "LadyMajinx",
     twitchId: "",
     discordName: "Lady",
     discordId: "474396476122988545",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "surget7",
     twitchId: "",
     discordName: "Surgekun",
     discordId: "943754183121719416",
-    discordChannelId: "1091642862740971530"
+    discordChannelId: "1091642862740971530",
   },
   {
     twitchName: "timberbrick",
@@ -694,20 +693,61 @@ export const streamerNotifications = [
     discordName: "Zelda",
     discordId: "904206612875595836",
     discordChannelId: "1091642862740971530",
-  }, 
+  },
   {
     twitchName: "flapperdevofficial",
     twitchId: "",
     discordName: "FlapperDev",
     discordId: "814442785960099840",
     discordChannelId: "1091642862740971530",
-  }
-  ,{
+  },
+  {
     twitchName: "surget8",
     twitchId: "",
     discordName: "surge",
     discordId: "943754183121719416",
     discordChannelId: "1091642862740971530",
-  }
-]
-
+  },
+  {
+    twitchName: "akalien3",
+    twitchId: "",
+    discordName: "AKAlienX",
+    discordId: "522944347612643328",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "ArguableRuby68",
+    twitchId: "",
+    discordName: "ArguableRuby",
+    discordId: "361560410803142666",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "bigbusta96",
+    twitchId: "",
+    discordName: "Bigbusta96",
+    discordId: "553857826364063754",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "billionth_",
+    twitchId: "",
+    discordName: "Billionth",
+    discordId: "273285924375232512",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "C_Clare001",
+    twitchId: "",
+    discordName: "Clare001",
+    discordId: "277622645556772865",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "brhyexpress",
+    twitchId: "",
+    discordName: "B-RhyExpress",
+    discordId: "746906641735352321",
+    discordChannelId: "1091642862740971530",
+  },
+];
