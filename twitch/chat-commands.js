@@ -70,6 +70,7 @@ export const customShoutouts = {
     "ytr":"Drag main with a heart of gold! Check out YourThatRussian! https://www.twitch.tv/yourthatrussian",
     "luna":"Hellhound and leader of the Wxlf Pack! Owoooooooo! https://www.twitch.tv/livelyluna",
     "soundcloud":"Check out l1ght's sound cloud https://soundcloud.com/special-ops-1",
+    "mental": "becoming a master upon yoshis in tekken! Follow my journey: https://www.twitch.tv/mentalgamingttv",
     "seattletkn":"Check out Seattle Tekken! Live Matches every Thursday! https://www.twitch.tv/seattletekken",
 
 }

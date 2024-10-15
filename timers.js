@@ -58,7 +58,27 @@ const timers = [
         message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
         time: 3200000,
         channel: config.twitchChannelUsername,
-    },   
+    },     {
+        title: "shadowplay",
+        message:
+          "Check out the latest episode of Goth's Shadowplay where we take a look at the Axis Unseen Demo, https://m.youtube.com/watch?v=IX3viVzUz4s",
+        time: 1920000,
+        channel: config.twitchChannelUsername,
+      },
+      {
+        title: "tekkenhalloween",
+        message:
+          "Devil Lili an experiment turned into chaos! Find out more here and Happy Halloween:https://www.tiktok.com/@rockagoth/video/7423845247391747359",
+        time: 2100000,
+        channel: config.twitchChannelUsername,
+      },
+      {
+        title: "special",
+        message:
+          "NextFest is going on now! This Thursday 2pm pst we highlight NextFest Featured game World Seekers with dev Jeff D. Come celebrate NextFest with us! Demo out now! Wishlist on Steam! https://store.steampowered.com/app/3031060/Worldseekers__Deckbuilding_RPG/",
+        time: 1320000,
+        channel: config.twitchChannelUsername,
+      },
     // {
     //     title: "saCommands",
     //     message: "Join in the avatar fun! You can !jump, !sit, !duel (user) (points), !fart, !roll, !8ball (question), !slots (points), !attack (user), !hug (user), and !dance",
