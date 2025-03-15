@@ -72,6 +72,7 @@ export const customShoutouts = {
     "soundcloud":"Check out l1ght's sound cloud https://soundcloud.com/special-ops-1",
     "mental": "becoming a master upon yoshis in tekken! Follow my journey: https://www.twitch.tv/mentalgamingttv",
     "seattletkn":"Check out Seattle Tekken! Live Matches every Thursday! https://www.twitch.tv/seattletekken",
+    "bracket":"https://matcherino.com/tournaments/136838/bracket/bracket",
 
 }
 

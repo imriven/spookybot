@@ -1,46 +1,41 @@
 import { getOrdinalNum, msToTime } from "./utils.js"
 // import { zwiftTimer } from "./zwift/utils.js"
 import { spookyFacts, dailyTips, exercises } from "./data.js"
-import { refreshVipMods, getFollowers, checkIfLive, getNumChatters, getNumViewers, streamersLive} from "./twitch/utils.js"
+import { refreshVipMods, getFollowers, checkIfLive, getNumChatters, getNumViewers, streamersLive } from "./twitch/utils.js"
 import config from "./config/appConfig.js"
+
 
 const timers = [
     {
         title: "thanks",
         message: "Thank you so much for stopping by and hanging out! 🎉",
-        time: 3000000,  //50 minutes
-        channel: config.twitchChannelUsername,
-    },
-    {
-        title: "tekken",
-        message: "I'm 2 years into tekken thanks for joining me on my journey as we grow and learn together! My biggest goal is to bring people together through tekken!",
-        time: 4500000, // 75 minutes
+        time: 7000000,  //
         channel: config.twitchChannelUsername,
     },
     {
         title: "follow",
         message: "✨ Please FOLLOW to show your support! ✨ Thank You! 🤗",
-        time: 4200000, // 70 minutes
+        time: 4700000, // 
         channel: config.twitchChannelUsername,
     },
     {
         title: "rules",
         message: "This is a place of positivity - Leave the negative vibes at the door!",
-        time: 3600000,  //60 minutes
+        time: 6600000,  //60 minutes
         channel: config.twitchChannelUsername,
     },
-    {
-        title: "spooky",
-        message: "Hey I'm Spooky. Feel free to !lurk !slap !so !socials !spooky for spooky facts and more. Type in the word 'help' to find out more! ",
-        time: 6000000,
-        channel: config.twitchChannelUsername,
-    },
-    {
-        title: "discord",
-        message: "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86",
-        time: 8400000, // 140 minutes
-        channel: config.twitchChannelUsername,
-    },
+    // {
+    //     title: "spooky",
+    //     message: "Hey I'm Spooky. Feel free to !lurk !slap !so !socials !spooky for spooky facts and more. Type in the word 'help' to find out more! ",
+    //     time: 6000000,
+    //     channel: config.twitchChannelUsername,
+    // },
+    // {
+    //     title: "discord",
+    //     message: "Join the Gaming in the Basement discord! https://discord.gg/B4NGMMmh86",
+    //     time: 8400000, // 140 minutes
+    //     channel: config.twitchChannelUsername,
+    // },
     {
         title: "socials",
         message: "Check out RockAGoth's socials! https://linktr.ee/rockagoth",
@@ -58,51 +53,21 @@ const timers = [
         message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
         time: 3200000,
         channel: config.twitchChannelUsername,
-    },     {
-        title: "shadowplay",
-        message:
-          "Check out the latest episode of Goth's Shadowplay where we take a look at the Axis Unseen Demo, https://m.youtube.com/watch?v=IX3viVzUz4s",
-        time: 1920000,
-        channel: config.twitchChannelUsername,
-      },
-      {
-        title: "tekkenhalloween",
-        message:
-          "Devil Lili an experiment turned into chaos! Find out more here and Happy Halloween:https://www.tiktok.com/@rockagoth/video/7423845247391747359",
-        time: 2100000,
-        channel: config.twitchChannelUsername,
-      },
-      {
-        title: "special",
-        message:
-          "NextFest is going on now! This Thursday 2pm pst we highlight NextFest Featured game World Seekers with dev Jeff D. Come celebrate NextFest with us! Demo out now! Wishlist on Steam! https://store.steampowered.com/app/3031060/Worldseekers__Deckbuilding_RPG/",
-        time: 1320000,
-        channel: config.twitchChannelUsername,
-      },
-    // {
-    //     title: "saCommands",
-    //     message: "Join in the avatar fun! You can !jump, !sit, !duel (user) (points), !fart, !roll, !8ball (question), !slots (points), !attack (user), !hug (user), and !dance",
-    //     time: 9000000,
-    //     channel: config.twitchChannelUsername,
-    // },
-    // {
-    //     title: "saExtension",
-    //     message: "Check out the stream avatar extension below the stream to change or dress up your avatar",
-    //     time: 9600000,
-    //     channel: config.twitchChannelUsername,
-    // },
-    // {
-    //     title: "saFullCommands",
-    //     message: "Curious about what your avatar can do? Check out the full command list here https://docs.streamavatars.com/stream-avatars/commands",
-    //     time: 12000000,
-    //     channel: config.twitchChannelUsername,
-    // },
+    },
     {
-        title: "podcast",
-        message: "Check out the Gaming in the Basement Podcast! available on several platforms https://anchor.fm/rock-a-goth",
-        time: 7200000,
+        title: "CFW",
+        message: "Cage Free Warriors (CFW) is a non-toxic casual Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
+        time: 6320000,
         channel: config.twitchChannelUsername,
     },
+
+    {
+        title: "streams",
+        message: "I play Tekken every other Tuesday come join the lobby and the fun!",
+        time: 7500000,
+        channel: config.twitchChannelUsername,
+    },
+
 ]
 
 export function setUpLiveTwitchTimers(twitchChatClient, twitchClient, state) {
