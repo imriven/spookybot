@@ -541,13 +541,6 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530",
   },
   {
-    twitchName: "YinCrescent",
-    twitchId: "",
-    discordName: "YINCRESCENT",
-    discordId: "109341268152172544",
-    discordChannelId: "1091642862740971530",
-  },
-  {
     twitchName: "L1ghtthatassup",
     twitchId: "",
     discordName: "L1ghtthatassup",
@@ -587,13 +580,6 @@ export const streamerNotifications = [
     twitchId: "",
     discordName: "RouninRex",
     discordId: "280510994277728257",
-    discordChannelId: "1091642862740971530",
-  },
-  {
-    twitchName: "shigi44",
-    twitchId: "",
-    discordName: "Shigi Akane",
-    discordId: "483501960645967893",
     discordChannelId: "1091642862740971530",
   },
   {
@@ -652,13 +638,13 @@ export const streamerNotifications = [
     discordId: "355676511992545300",
     discordChannelId: "1091642862740971530",
   },
-  {
-    twitchName: "rockagoth_test_stream",
-    twitchId: "",
-    discordName: "Testing",
-    discordId: "459109042619678740",
-    discordChannelId: "1091642862740971530",
-  },
+  // {
+  //   twitchName: "rockagoth_test_stream",
+  //   twitchId: "",
+  //   discordName: "Testing",
+  //   discordId: "459109042619678740",
+  //   discordChannelId: "1091642862740971530",
+  // },
   {
     twitchName: "gothicjinxy",
     twitchId: "",
@@ -912,13 +898,6 @@ export const streamerNotifications = [
     discordChannelId: "1091642862740971530",
   },
   {
-    twitchName: "majorhurricanetV",
-    twitchId: "",
-    discordName: "MajorHurricane",
-    discordId: "418586574469726208",
-    discordChannelId: "1091642862740971530",
-  },
-  {
     twitchName: "fireflameaj1999",
     twitchId: "",
     discordName: "Cosmiccreations",
@@ -992,6 +971,13 @@ export const streamerNotifications = [
     twitchId: "",
     discordName: "Lalaleah",
     discordId: "972360502321770540",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "mrpainandsorrow",
+    twitchId: "",
+    discordName: "MrPainAndSorrow",
+    discordId: "492769837626687489",
     discordChannelId: "1091642862740971530",
   },
 ];

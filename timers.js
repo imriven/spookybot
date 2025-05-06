@@ -12,6 +12,18 @@ const timers = [
         time: 7000000,  //
         channel: config.twitchChannelUsername,
     },
+        {
+        title: "spooky",
+        message: "welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy a lady a shot!",
+        time: 6000000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "thanks",
+        message: "Thank you so much for stopping by and hanging out! 🎉",
+        time: 7000000,  //
+        channel: config.twitchChannelUsername,
+    },
     {
         title: "follow",
         message: "✨ Please FOLLOW to show your support! ✨ Thank You! 🤗",
@@ -38,7 +50,7 @@ const timers = [
     // },
     {
         title: "socials",
-        message: "Check out RockAGoth's socials! https://linktr.ee/rockagoth",
+        message: "Check out RockAGoth's website! https://www.rockagoth.com",
         time: 5100000, // 85 mins
         channel: config.twitchChannelUsername,
     },
@@ -48,25 +60,50 @@ const timers = [
         time: 4380000,  // 73 mins
         channel: config.twitchChannelUsername,
     },
-    {
-        title: "prime",
-        message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
-        time: 3200000,
-        channel: config.twitchChannelUsername,
-    },
+    // {
+    //     title: "prime",
+    //     message: "If you happen to have a prime sub laying around guess who would really really appreciate it?? This girl over here!! Thank you for supporting me 💜!",
+    //     time: 3200000,
+    //     channel: config.twitchChannelUsername,
+    // },
     {
         title: "CFW",
         message: "Cage Free Warriors (CFW) is a non-toxic casual Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
         time: 6320000,
         channel: config.twitchChannelUsername,
     },
-
+    {
+        title: "mst",
+        message: "Born from a passion for competition and camaraderie, MechaStormTitan is more than just a Tekken team based in the PSW—it's a movement!Join us and together we'll unleash the storm! https://www.twitch.tv/mechastormtitan",
+        time: 1260000,
+        channel: config.twitchChannelUsername,
+    },
+    {
+        title: "mentalHealth",
+        message: "May is Mental Health awareness month! Today I'll be collabing with Klayea as we have open, honest, and vulnerable conversations! Her and her community are a vibe please follow and show her some love! https://www.twitch.tv/klayea ",
+        time: 1420000,
+        channel: config.twitchChannelUsername,
+    },
     {
         title: "streams",
         message: "I play Tekken every other Tuesday come join the lobby and the fun!",
         time: 7500000,
         channel: config.twitchChannelUsername,
     },
+    {
+        title: "special",
+        message: "Thanks for joining us for this special mental health stream! Welcome in!",
+        time: 3200000,
+        channel: config.twitchChannelUsername,
+    },
+    // {
+    //     title: "streamers",
+    //     message: "Please show these panel members some love and support if you aren't following! K9OneOne: https://www.twitch.tv/k9_oneone   MrPainAndSorrow: https://www.twitch.tv/mrpainandsorrow  || ObscureMenace:https://www.twitch.tv/obscure_menace || Rockagoth:https://www.twitch.tv/rockagoth",
+    //     time: 3400000,
+    //     channel: config.twitchChannelUsername,
+    // },
+
+
 
 ]
 
