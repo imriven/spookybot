@@ -980,4 +980,20 @@ export const streamerNotifications = [
     discordId: "492769837626687489",
     discordChannelId: "1091642862740971530",
   },
+  {
+    twitchName: "burninggobbo",
+    twitchId: "",
+    discordName: "Gobbo",
+    discordId: "223974832407052290",
+    discordChannelId: "1091642862740971530",
+  },
+  {
+    twitchName: "mangowithclass",
+    twitchId: "",
+    discordName: "mangowithclass",
+    discordId: "931248395962699787",
+    discordChannelId: "1091642862740971530",
+  },
 ];
+
+

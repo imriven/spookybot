@@ -12,12 +12,12 @@ const timers = [
         time: 7000000,  //
         channel: config.twitchChannelUsername,
     },
-        {
-        title: "spooky",
-        message: "welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy a lady a shot!",
-        time: 6000000,
-        channel: config.twitchChannelUsername,
-    },
+    //     {
+    //     title: "spooky",
+    //     message: "welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy a lady a shot!",
+    //     time: 6000000,
+    //     channel: config.twitchChannelUsername,
+    // },
     {
         title: "thanks",
         message: "Thank you so much for stopping by and hanging out! 🎉",
@@ -72,31 +72,37 @@ const timers = [
         time: 6320000,
         channel: config.twitchChannelUsername,
     },
+    // {
+    //     title: "fish",
+    //     message: "if you see a circle with a hook that means you can go fishing. type in !fish to fish and !fishhelp for more help )",
+    //     time: 1000000,
+    //     channel: config.twitchChannelUsername,
+    // },
     {
         title: "mst",
         message: "Born from a passion for competition and camaraderie, MechaStormTitan is more than just a Tekken team based in the PSW—it's a movement!Join us and together we'll unleash the storm! https://www.twitch.tv/mechastormtitan",
         time: 1260000,
         channel: config.twitchChannelUsername,
     },
-    {
-        title: "mentalHealth",
-        message: "May is Mental Health awareness month! Today I'll be collabing with Klayea as we have open, honest, and vulnerable conversations! Her and her community are a vibe please follow and show her some love! https://www.twitch.tv/klayea ",
-        time: 1420000,
-        channel: config.twitchChannelUsername,
-    },
-    {
-        title: "streams",
-        message: "I play Tekken every other Tuesday come join the lobby and the fun!",
-        time: 7500000,
-        channel: config.twitchChannelUsername,
-    },
-    {
-        title: "special",
-        message: "Thanks for joining us for this special mental health stream! Welcome in!",
-        time: 3200000,
-        channel: config.twitchChannelUsername,
-    },
     // {
+    //     title: "mentalHealth",
+    //     message: "May is Mental Health awareness month! Today I'll be letting loose with theGlitterPanda as we have honest conversations with some fun in between! Her and her community are a vibe please follow and show her some love! https://www.twitch.tv/theglitterpanda ",
+    //     time: 1420000,
+    //     channel: config.twitchChannelUsername,
+    // },
+    // {
+    //     title: "streams",
+    //     message: "I play Tekken every other Tuesday come join the lobby and the fun!",
+    //     time: 7500000,
+    //     channel: config.twitchChannelUsername,
+    // },
+    // {
+    //     title: "special",
+    //     message: "Thanks for joining us for this special mental health stream! Welcome in!",
+    //     time: 3200000,
+    //     channel: config.twitchChannelUsername,
+    // },
+    // // {
     //     title: "streamers",
     //     message: "Please show these panel members some love and support if you aren't following! K9OneOne: https://www.twitch.tv/k9_oneone   MrPainAndSorrow: https://www.twitch.tv/mrpainandsorrow  || ObscureMenace:https://www.twitch.tv/obscure_menace || Rockagoth:https://www.twitch.tv/rockagoth",
     //     time: 3400000,
