@@ -18,12 +18,12 @@ const timers = [
     //     time: 6000000,
     //     channel: config.twitchChannelUsername,
     // },
-    {
-        title: "thanks",
-        message: "Thank you so much for stopping by and hanging out! 🎉",
-        time: 7000000,  //
-        channel: config.twitchChannelUsername,
-    },
+    // {
+    //     title: "thanks",
+    //     message: "Thank you so much for stopping by and hanging out! 🎉",
+    //     time: 7000000,  //
+    //     channel: config.twitchChannelUsername,
+    // },
     {
         title: "follow",
         message: "✨ Please FOLLOW to show your support! ✨ Thank You! 🤗",
@@ -68,7 +68,7 @@ const timers = [
     // },
     {
         title: "CFW",
-        message: "Cage Free Warriors (CFW) is a non-toxic casual Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
+        message: "Cage Free Warriors (CFW) is a non-toxic Community Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
         time: 6320000,
         channel: config.twitchChannelUsername,
     },
@@ -81,7 +81,13 @@ const timers = [
     {
         title: "mst",
         message: "Born from a passion for competition and camaraderie, MechaStormTitan is more than just a Tekken team based in the PSW—it's a movement!Join us and together we'll unleash the storm! https://www.twitch.tv/mechastormtitan",
-        time: 1260000,
+        time: 6350000,
+        channel: config.twitchChannelUsername,
+    },
+        {
+        title: "tournament",
+        message: "Join the Tournament of Power this friday 7pm cst / 5pm pst! Sign up here: https://www.start.gg/tournament/tekken-8-tournament-of-power-1/event/tekken-8-tournament-of-power/overview",
+        time: 6450000,
         channel: config.twitchChannelUsername,
     },
     // {

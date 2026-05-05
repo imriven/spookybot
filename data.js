@@ -994,6 +994,13 @@ export const streamerNotifications = [
     discordId: "931248395962699787",
     discordChannelId: "1091642862740971530",
   },
+    {
+    twitchName: "mrmove_tlg",
+    twitchId: "",
+    discordName: "tlg91",
+    discordId: "296632868795580417",
+    discordChannelId: "1091642862740971530",
+  },
 ];
 
 
