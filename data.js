@@ -1001,6 +1001,13 @@ export const streamerNotifications = [
     discordId: "296632868795580417",
     discordChannelId: "1091642862740971530",
   },
+  {
+    twitchName: "lauracakees",
+    twitchId: "",
+    discordName: "lauracakees",
+    discordId: "662851641833291795",
+    discordChannelId: "1091642862740971530",
+  },
 ];
 
 

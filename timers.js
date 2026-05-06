@@ -66,12 +66,12 @@ const timers = [
     //     time: 3200000,
     //     channel: config.twitchChannelUsername,
     // },
-    {
-        title: "CFW",
-        message: "Cage Free Warriors (CFW) is a non-toxic Community Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
-        time: 6320000,
-        channel: config.twitchChannelUsername,
-    },
+    // {
+    //     title: "CFW",
+    //     message: "Cage Free Warriors (CFW) is a non-toxic Community Tekken Team! We play and learn together! Join us on Playstation! All Levels welcome! Follow our Youtube channel https://www.youtube.com/@CageFreeWarriors and join us! )",
+    //     time: 6320000,
+    //     channel: config.twitchChannelUsername,
+    // },
     // {
     //     title: "fish",
     //     message: "if you see a circle with a hook that means you can go fishing. type in !fish to fish and !fishhelp for more help )",
@@ -84,12 +84,12 @@ const timers = [
         time: 6350000,
         channel: config.twitchChannelUsername,
     },
-        {
-        title: "tournament",
-        message: "Join the Tournament of Power this friday 7pm cst / 5pm pst! Sign up here: https://www.start.gg/tournament/tekken-8-tournament-of-power-1/event/tekken-8-tournament-of-power/overview",
-        time: 6450000,
-        channel: config.twitchChannelUsername,
-    },
+    //     {
+    //     title: "tournament",
+    //     message: "Join the Tournament of Power this friday 7pm cst / 5pm pst! Sign up here: https://www.start.gg/tournament/tekken-8-tournament-of-power-1/event/tekken-8-tournament-of-power/overview",
+    //     time: 6450000,
+    //     channel: config.twitchChannelUsername,
+    // },
     // {
     //     title: "mentalHealth",
     //     message: "May is Mental Health awareness month! Today I'll be letting loose with theGlitterPanda as we have honest conversations with some fun in between! Her and her community are a vibe please follow and show her some love! https://www.twitch.tv/theglitterpanda ",
