@@ -17,7 +17,6 @@ export default class TimerManager {
   async start() {
     this.registerBackgroundJob("live-status", 300000, () => this.checkIfLive());
     this.registerBackgroundJob("streamers-live", 300000, () => this.syncStreamerNotifications());
-    this.registerBackgroundJob("vip-mod-refresh", 3600000, () => this.refreshVipMods());
     this.registerBackgroundJob("daily-exercises", 3600000, () => this.postDailyExercises());
     this.registerBackgroundJob("follower-sync", 86400000, () => this.syncFollowers());
     this.registerBackgroundJob("daily-tips", 3600000, () => this.postDailyTip());
@@ -39,7 +38,6 @@ export default class TimerManager {
   async setTwitchClients({ apiClient, chatClient }) {
     this.apiClient = apiClient;
     this.chatClient = chatClient;
-    await this.refreshVipMods();
     await this.syncDynamicTimers();
     await this.syncStreamerNotifications();
     await this.checkIfLive();
@@ -162,27 +160,6 @@ export default class TimerManager {
       this.state.numChatters = chatterCount;
       this.state.numViewers = viewerCount;
     });
-  }
-
-  async refreshVipMods() {
-    if (!this.apiClient) {
-      return;
-    }
-
-    const vips = await this.twitchManager.executeAsBotUser("get-vips", async (client) => {
-      const paginator = client.channels.getVipsPaginated(config.twitchChannelId);
-      return paginator.getAll();
-    });
-
-    const mods = await this.twitchManager.executeAsBotUser("get-mods", async (client) => {
-      const paginator = client.moderation.getModeratorsPaginated(config.twitchChannelId);
-      return paginator.getAll();
-    });
-
-    this.state.vips = (vips ?? []).map((vip) => vip.name ?? vip.userName).filter(Boolean);
-    const modNames = (mods ?? []).map((mod) => mod.userName ?? mod.name).filter(Boolean);
-    modNames.push(config.twitchChannelUsername);
-    this.state.mods = [...new Set(modNames)];
   }
 
   async syncStreamerNotifications() {

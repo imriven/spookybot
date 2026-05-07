@@ -2,10 +2,9 @@ function say(client, channel, message) {
   return client.say(channel, message);
 }
 
-function isPrivileged(state, username) {
-  const normalized = username.toLowerCase();
-  return state.mods.some((mod) => mod.toLowerCase() === normalized)
-    || state.vips.some((vip) => vip.toLowerCase() === normalized);
+function isPrivileged(msg) {
+  const userInfo = msg?.userInfo;
+  return Boolean(userInfo?.isBroadcaster || userInfo?.isMod || userInfo?.isVip);
 }
 
 function listCommands(client, channel, username) {
@@ -114,7 +113,7 @@ function counter(client, channel, tags, state, message) {
 }
 
 export function registerChatHandlers(chatClient, { contentService, state, onTitleChange }) {
-  chatClient.onMessage(async (channel, user, message) => {
+  chatClient.onMessage(async (channel, user, message, msg) => {
     const command = message.split(" ")[0].toLowerCase();
     const tags = { username: user };
     const shoutouts = contentService.getEnabledCustomShoutoutMap();
@@ -168,7 +167,7 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
         break;
       }
       case "!slap": {
-        if (!isPrivileged(state, user)) {
+        if (!isPrivileged(msg)) {
           await say(chatClient, channel, "Must be a VIP or Mod to do that!");
           break;
         }
@@ -179,7 +178,7 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
         break;
       }
       case "!so": {
-        if (!isPrivileged(state, user)) {
+        if (!isPrivileged(msg)) {
           await say(chatClient, channel, "Must be a VIP or Mod to do that!");
           break;
         }
@@ -209,7 +208,7 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
         break;
       }
       case "!counter":
-        if (!isPrivileged(state, user)) {
+        if (!isPrivileged(msg)) {
           await say(chatClient, channel, "Must be a VIP or Mod to do that!");
           break;
         }
@@ -219,7 +218,7 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
         await help(chatClient, channel, user, message);
         break;
       case "!title":
-        if (!isPrivileged(state, user)) {
+        if (!isPrivileged(msg)) {
           await say(chatClient, channel, "Must be a VIP or Mod to do that!");
           break;
         }
