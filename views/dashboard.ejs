@@ -1,289 +1,508 @@
 <%- include("partials/head", { title: "Spookybot Admin" }) %>
 <section class="hero">
   <span class="badge">Internal Admin</span>
-  <h1>Spookybot Control Panel</h1>
-  <p>Editable bot content now lives in Postgres. Changes here update the single running instance immediately.</p>
-  <div class="meta">Logged in as <strong><%= adminUser.displayName %></strong> (<%= adminUser.login %>)</div>
+  <h1>Spookybot Sanctum</h1>
+  <p>Control timers, shoutouts, tracked streamers, and editorial content from one place without redeploying the bot.</p>
+  <div class="meta">Signed in as <strong><%= adminUser.displayName %></strong> (<%= adminUser.login %>)</div>
 </section>
 
 <%- include("partials/flash", { flash }) %>
 
-<section class="panel">
-  <h2>Twitch Auth</h2>
-  <div class="status-banner <%= authStatus.kind %>">
-    <strong><%= authStatus.kind.replaceAll("_", " ") %></strong>
-    <div class="muted"><%= authStatus.detail %></div>
-  </div>
-  <div class="kv">
-    <strong>Runtime connected</strong>
-    <span><%= runtimeConnected ? "Yes" : "No" %></span>
-    <strong>Bot login</strong>
-    <span><%= authStatus.currentLogin || "None" %></span>
-    <strong>Display name</strong>
-    <span><%= authStatus.displayName || "None" %></span>
-    <strong>Token expires</strong>
-    <span><%= formatDate(authStatus.expiresAt) %></span>
-    <strong>Last refresh</strong>
-    <span><%= formatDate(authStatus.lastRefreshAt) %></span>
-    <strong>Last refresh error</strong>
-    <span><%= authStatus.lastRefreshError || "None" %></span>
-  </div>
-  <div class="actions" style="margin-top: 18px;">
-    <form action="/admin/login" method="get">
-      <input type="hidden" name="start" value="1" />
-      <button type="submit">Reconnect Twitch</button>
-    </form>
-    <form action="/admin/logout" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <button type="submit" class="secondary">Log Out</button>
-    </form>
-  </div>
-</section>
+<div class="overview-grid">
+  <div class="workspace">
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Twitch Runtime</h2>
+          <div class="panel-subtitle">Auth state, token lifecycle, and current bot identity.</div>
+        </div>
+        <span class="pill <%= runtimeConnected ? 'live' : 'disabled' %>"><%= runtimeConnected ? "Connected" : "Offline" %></span>
+      </div>
+      <div class="status-banner <%= authStatus.kind %>">
+        <strong><%= authStatus.kind.replaceAll("_", " ") %></strong>
+        <div class="muted"><%= authStatus.detail %></div>
+      </div>
+      <div class="kv">
+        <strong>Runtime</strong>
+        <span><%= runtimeConnected ? "Active in-process" : "Not connected in-process" %></span>
+        <strong>Bot login</strong>
+        <span><%= authStatus.currentLogin || "None" %></span>
+        <strong>Display name</strong>
+        <span><%= authStatus.displayName || "None" %></span>
+        <strong>Token expires</strong>
+        <span><%= formatDate(authStatus.expiresAt) %></span>
+        <strong>Last refresh</strong>
+        <span><%= formatDate(authStatus.lastRefreshAt) %></span>
+        <strong>Refresh error</strong>
+        <span><%= authStatus.lastRefreshError || "None" %></span>
+      </div>
+      <div class="actions" style="margin-top: 18px;">
+        <form action="/admin/login" method="get">
+          <input type="hidden" name="start" value="1" />
+          <button type="submit">Reconnect Twitch</button>
+        </form>
+        <form action="/admin/logout" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <button type="submit" class="secondary">Log Out</button>
+        </form>
+      </div>
+    </section>
 
-<div class="grid grid-2" style="margin-top: 20px;">
-  <section class="panel">
-    <h2>Diagnostics</h2>
-    <div class="counts">
-      <div class="count-card"><span>Timers</span><strong><%= counts.timers %></strong></div>
-      <div class="count-card"><span>Streamers</span><strong><%= counts.streamerNotifications %></strong></div>
-      <div class="count-card"><span>Shoutouts</span><strong><%= counts.customShoutouts %></strong></div>
-      <div class="count-card"><span>Facts</span><strong><%= counts.facts %></strong></div>
-      <div class="count-card"><span>Tips</span><strong><%= counts.tips %></strong></div>
-      <div class="count-card"><span>Exercises</span><strong><%= counts.exercises %></strong></div>
+    <section class="panel">
+      <div class="panel-head compact">
+        <div>
+          <h2>Diagnostics</h2>
+          <div class="panel-subtitle">Quick view of editable runtime inventory.</div>
+        </div>
+      </div>
+      <div class="counts">
+        <div class="count-card"><span>Timers</span><strong><%= counts.timers %></strong></div>
+        <div class="count-card"><span>Streamers</span><strong><%= counts.streamerNotifications %></strong></div>
+        <div class="count-card"><span>Shoutouts</span><strong><%= counts.customShoutouts %></strong></div>
+        <div class="count-card"><span>Facts</span><strong><%= counts.facts %></strong></div>
+        <div class="count-card"><span>Tips</span><strong><%= counts.tips %></strong></div>
+        <div class="count-card"><span>Exercises</span><strong><%= counts.exercises %></strong></div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="section-nav">
+    <div class="nav-card">
+      <span class="badge">Workspaces</span>
+      <div class="panel-subtitle" style="margin-top: 12px;">Jump to the area you need without hunting through one long page.</div>
+      <div class="nav-list">
+        <a class="nav-link" href="#timers">
+          <strong>Timers</strong>
+          <span class="pill"><%= counts.timers %></span>
+        </a>
+        <a class="nav-link" href="#streamers">
+          <strong>Tracked Streamers</strong>
+          <span class="pill"><%= counts.streamerNotifications %></span>
+        </a>
+        <a class="nav-link" href="#shoutouts">
+          <strong>Custom Shoutouts</strong>
+          <span class="pill"><%= counts.customShoutouts %></span>
+        </a>
+        <a class="nav-link" href="#facts">
+          <strong>Facts</strong>
+          <span class="pill"><%= counts.facts %></span>
+        </a>
+        <a class="nav-link" href="#tips">
+          <strong>Tips</strong>
+          <span class="pill"><%= counts.tips %></span>
+        </a>
+        <a class="nav-link" href="#exercises">
+          <strong>Exercises</strong>
+          <span class="pill"><%= counts.exercises %></span>
+        </a>
+      </div>
     </div>
-  </section>
-
-  <section class="panel">
-    <h2>Create Timer</h2>
-    <form class="stack" action="/admin/timers" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <div class="row">
-        <label>Name<input name="name" required /></label>
-        <label>Interval ms<input name="interval_ms" type="number" value="60000" required /></label>
-        <label>Channel<input name="channel" value="<%= content.timers[0]?.channel || '' %>" required /></label>
-        <label>Sort order<input name="sort_order" type="number" value="0" /></label>
-      </div>
-      <label>Message<textarea name="message" required></textarea></label>
-      <div class="actions">
-        <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-        <label class="inline-check"><input type="checkbox" name="live_only" checked /> Live only</label>
-        <button type="submit">Add Timer</button>
-      </div>
-    </form>
-  </section>
+  </aside>
 </div>
 
-<section class="panel" style="margin-top: 20px;">
-  <h2>Timers</h2>
-  <div class="entity-list">
-    <% content.timers.forEach((timer) => { %>
-      <div class="entity">
-        <form class="stack" action="/admin/timers/<%= timer.id %>" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <h3><%= timer.name %></h3>
-          <div class="row">
-            <label>Name<input name="name" value="<%= timer.name %>" required /></label>
-            <label>Interval ms<input name="interval_ms" type="number" value="<%= timer.intervalMs %>" required /></label>
-            <label>Channel<input name="channel" value="<%= timer.channel %>" required /></label>
-            <label>Sort order<input name="sort_order" type="number" value="<%= timer.sortOrder %>" /></label>
-          </div>
-          <label>Message<textarea name="message" required><%= timer.message %></textarea></label>
-          <div class="actions">
-            <label class="inline-check"><input type="checkbox" name="enabled" <%= timer.enabled ? "checked" : "" %> /> Enabled</label>
-            <label class="inline-check"><input type="checkbox" name="live_only" <%= timer.liveOnly ? "checked" : "" %> /> Live only</label>
-            <button type="submit">Save Timer</button>
-          </div>
-        </form>
-        <form action="/admin/timers/<%= timer.id %>/delete" method="post" style="margin-top: 10px;">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <button class="danger" type="submit">Delete</button>
-        </form>
+<section id="timers" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Timers</h2>
+      <div class="panel-subtitle">Recurring chat prompts, pacing, and live-only automation.</div>
+    </div>
+    <span class="pill"><%= counts.timers %> total</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Create Timer</h2>
+          <div class="field-note">Use this for recurring in-chat reminders and promo messages.</div>
         </div>
-    <% }) %>
+      </div>
+      <form class="stack" action="/admin/timers" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <div class="row">
+          <label>Name<input name="name" required /></label>
+          <label>Interval ms<input name="interval_ms" type="number" value="60000" required /></label>
+        </div>
+        <div class="row">
+          <label>Channel<input name="channel" value="<%= content.timers[0]?.channel || '' %>" required /></label>
+          <label>Sort order<input name="sort_order" type="number" value="0" /></label>
+        </div>
+        <label>Message<textarea name="message" required></textarea></label>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <label class="inline-check"><input type="checkbox" name="live_only" checked /> Live only</label>
+          <button type="submit">Add Timer</button>
+        </div>
+      </form>
+    </div>
+    <div class="entity-list">
+      <% content.timers.forEach((timer) => { %>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3><%= timer.name %></h3>
+                <div class="entity-preview"><%= timer.message %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill"><%= timer.intervalMs %> ms</span>
+                <span class="pill"><%= timer.channel %></span>
+                <span class="pill <%= timer.enabled ? 'live' : 'disabled' %>"><%= timer.enabled ? "Enabled" : "Disabled" %></span>
+                <span class="pill"><%= timer.liveOnly ? "Live only" : "Always on" %></span>
+              </div>
+            </div>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/timers/<%= timer.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <div class="row">
+                <label>Name<input name="name" value="<%= timer.name %>" required /></label>
+                <label>Interval ms<input name="interval_ms" type="number" value="<%= timer.intervalMs %>" required /></label>
+              </div>
+              <div class="row">
+                <label>Channel<input name="channel" value="<%= timer.channel %>" required /></label>
+                <label>Sort order<input name="sort_order" type="number" value="<%= timer.sortOrder %>" /></label>
+              </div>
+              <label>Message<textarea name="message" required><%= timer.message %></textarea></label>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= timer.enabled ? "checked" : "" %> /> Enabled</label>
+                <label class="inline-check"><input type="checkbox" name="live_only" <%= timer.liveOnly ? "checked" : "" %> /> Live only</label>
+                <button type="submit">Save Timer</button>
+              </div>
+            </form>
+            <form action="/admin/timers/<%= timer.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Timer</button>
+            </form>
+          </div>
+        </details>
+      <% }) %>
+    </div>
   </div>
 </section>
 
-<div class="grid grid-2" style="margin-top: 20px;">
-  <section class="panel">
-    <h2>Create Streamer Notification</h2>
-    <form class="stack" action="/admin/streamers" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <div class="row">
-        <label>Twitch name<input name="twitch_name" required /></label>
-        <label>Twitch ID<input name="twitch_id" /></label>
+<section id="streamers" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Tracked Streamers</h2>
+      <div class="panel-subtitle">Discord live notifications for selected Twitch accounts.</div>
+    </div>
+    <span class="pill"><%= counts.streamerNotifications %> tracked</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Add Tracked Streamer</h2>
+          <div class="field-note">Tie a Twitch user to the Discord identity and channel that should be pinged.</div>
+        </div>
       </div>
-      <div class="row">
-        <label>Discord name<input name="discord_name" /></label>
-        <label>Discord ID<input name="discord_id" /></label>
+      <form class="stack" action="/admin/streamers" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <div class="row">
+          <label>Twitch name<input name="twitch_name" required /></label>
+          <label>Twitch ID<input name="twitch_id" /></label>
+        </div>
+        <div class="row">
+          <label>Discord name<input name="discord_name" /></label>
+          <label>Discord ID<input name="discord_id" /></label>
+        </div>
         <label>Discord channel ID<input name="discord_channel_id" /></label>
-      </div>
-      <div class="actions">
-        <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-        <button type="submit">Add Streamer</button>
-      </div>
-    </form>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <button type="submit">Add Streamer</button>
+        </div>
+      </form>
+    </div>
     <div class="entity-list">
       <% content.streamerNotifications.forEach((streamer) => { %>
-        <div class="entity">
-          <form class="stack" action="/admin/streamers/<%= streamer.id %>" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <h3><%= streamer.twitchName %></h3>
-            <div class="row">
-              <label>Twitch name<input name="twitch_name" value="<%= streamer.twitchName %>" required /></label>
-              <label>Twitch ID<input name="twitch_id" value="<%= streamer.twitchId || '' %>" /></label>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3><%= streamer.twitchName %></h3>
+                <div class="entity-preview">Discord: <%= streamer.discordName || "Unassigned" %> • Channel: <%= streamer.discordChannelId || "Not set" %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill"><%= streamer.twitchId || "No Twitch ID" %></span>
+                <span class="pill"><%= streamer.discordId || "No Discord ID" %></span>
+                <span class="pill <%= streamer.enabled ? 'live' : 'disabled' %>"><%= streamer.enabled ? "Enabled" : "Disabled" %></span>
+              </div>
             </div>
-            <div class="row">
-              <label>Discord name<input name="discord_name" value="<%= streamer.discordName || '' %>" /></label>
-              <label>Discord ID<input name="discord_id" value="<%= streamer.discordId || '' %>" /></label>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/streamers/<%= streamer.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <div class="row">
+                <label>Twitch name<input name="twitch_name" value="<%= streamer.twitchName %>" required /></label>
+                <label>Twitch ID<input name="twitch_id" value="<%= streamer.twitchId || '' %>" /></label>
+              </div>
+              <div class="row">
+                <label>Discord name<input name="discord_name" value="<%= streamer.discordName || '' %>" /></label>
+                <label>Discord ID<input name="discord_id" value="<%= streamer.discordId || '' %>" /></label>
+              </div>
               <label>Discord channel ID<input name="discord_channel_id" value="<%= streamer.discordChannelId || '' %>" /></label>
-            </div>
-            <div class="actions">
-              <label class="inline-check"><input type="checkbox" name="enabled" <%= streamer.enabled ? "checked" : "" %> /> Enabled</label>
-              <button type="submit">Save Streamer</button>
-            </div>
-          </form>
-          <form action="/admin/streamers/<%= streamer.id %>/delete" method="post" style="margin-top: 10px;">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <button class="danger" type="submit">Delete</button>
-          </form>
-        </div>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= streamer.enabled ? "checked" : "" %> /> Enabled</label>
+                <button type="submit">Save Streamer</button>
+              </div>
+            </form>
+            <form action="/admin/streamers/<%= streamer.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Streamer</button>
+            </form>
+          </div>
+        </details>
       <% }) %>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="panel">
-    <h2>Create Custom Shoutout</h2>
-    <form class="stack" action="/admin/shoutouts" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <label>Name<input name="name" required /></label>
-      <label>Message<textarea name="message" required></textarea></label>
-      <div class="actions">
-        <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-        <button type="submit">Add Shoutout</button>
+<section id="shoutouts" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Custom Shoutouts</h2>
+      <div class="panel-subtitle">Shortcut command aliases and bespoke shoutout copy.</div>
+    </div>
+    <span class="pill"><%= counts.customShoutouts %> entries</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Create Shoutout</h2>
+          <div class="field-note">These become `!name`-style custom shoutout commands.</div>
+        </div>
       </div>
-    </form>
+      <form class="stack" action="/admin/shoutouts" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <label>Name<input name="name" required /></label>
+        <label>Message<textarea name="message" required></textarea></label>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <button type="submit">Add Shoutout</button>
+        </div>
+      </form>
+    </div>
     <div class="entity-list">
       <% content.customShoutouts.forEach((shoutout) => { %>
-        <div class="entity">
-          <form class="stack" action="/admin/shoutouts/<%= shoutout.id %>" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <h3><%= shoutout.name %></h3>
-            <label>Name<input name="name" value="<%= shoutout.name %>" required /></label>
-            <label>Message<textarea name="message" required><%= shoutout.message %></textarea></label>
-            <div class="actions">
-              <label class="inline-check"><input type="checkbox" name="enabled" <%= shoutout.enabled ? "checked" : "" %> /> Enabled</label>
-              <button type="submit">Save Shoutout</button>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3>!<%= shoutout.name %></h3>
+                <div class="entity-preview"><%= shoutout.message %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill <%= shoutout.enabled ? 'live' : 'disabled' %>"><%= shoutout.enabled ? "Enabled" : "Disabled" %></span>
+              </div>
             </div>
-          </form>
-          <form action="/admin/shoutouts/<%= shoutout.id %>/delete" method="post" style="margin-top: 10px;">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <button class="danger" type="submit">Delete</button>
-          </form>
-        </div>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/shoutouts/<%= shoutout.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <label>Name<input name="name" value="<%= shoutout.name %>" required /></label>
+              <label>Message<textarea name="message" required><%= shoutout.message %></textarea></label>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= shoutout.enabled ? "checked" : "" %> /> Enabled</label>
+                <button type="submit">Save Shoutout</button>
+              </div>
+            </form>
+            <form action="/admin/shoutouts/<%= shoutout.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Shoutout</button>
+            </form>
+          </div>
+        </details>
       <% }) %>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<div class="grid grid-2" style="margin-top: 20px;">
-  <section class="panel">
-    <h2>Facts</h2>
-    <form class="stack" action="/admin/facts" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <label>New fact<textarea name="content" required></textarea></label>
-      <div class="row">
+<section id="facts" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Facts</h2>
+      <div class="panel-subtitle">Random fact rotation used by `!spooky` and automatic fact timers.</div>
+    </div>
+    <span class="pill"><%= counts.facts %> facts</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Add Fact</h2>
+          <div class="field-note">Keep each fact self-contained so the timer can post it cleanly in chat.</div>
+        </div>
+      </div>
+      <form class="stack" action="/admin/facts" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <label>New fact<textarea name="content" required></textarea></label>
         <label>Sort order<input name="sort_order" type="number" value="0" /></label>
-      </div>
-      <div class="actions">
-        <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-        <button type="submit">Add Fact</button>
-      </div>
-    </form>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <button type="submit">Add Fact</button>
+        </div>
+      </form>
+    </div>
     <div class="entity-list">
       <% content.facts.forEach((fact) => { %>
-        <div class="entity">
-          <form class="stack" action="/admin/facts/<%= fact.id %>" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <label>Fact<textarea name="content" required><%= fact.content %></textarea></label>
-            <div class="actions">
-              <label class="inline-check"><input type="checkbox" name="enabled" <%= fact.enabled ? "checked" : "" %> /> Enabled</label>
-              <label>Sort order<input name="sort_order" type="number" value="<%= fact.sortOrder %>" /></label>
-              <button type="submit">Save Fact</button>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3>Fact #<%= fact.id %></h3>
+                <div class="entity-preview"><%= fact.content %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill">Order <%= fact.sortOrder %></span>
+                <span class="pill <%= fact.enabled ? 'live' : 'disabled' %>"><%= fact.enabled ? "Enabled" : "Disabled" %></span>
+              </div>
             </div>
-          </form>
-          <form action="/admin/facts/<%= fact.id %>/delete" method="post" style="margin-top: 10px;">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <button class="danger" type="submit">Delete</button>
-          </form>
-        </div>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/facts/<%= fact.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <label>Fact<textarea name="content" required><%= fact.content %></textarea></label>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= fact.enabled ? "checked" : "" %> /> Enabled</label>
+                <label>Sort order<input name="sort_order" type="number" value="<%= fact.sortOrder %>" /></label>
+                <button type="submit">Save Fact</button>
+              </div>
+            </form>
+            <form action="/admin/facts/<%= fact.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Fact</button>
+            </form>
+          </div>
+        </details>
       <% }) %>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="panel">
-    <h2>Tips</h2>
-    <form class="stack" action="/admin/tips" method="post">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-      <label>Title<input name="title" required /></label>
-      <label>Tip<textarea name="content" required></textarea></label>
-      <div class="actions">
-        <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-        <label>Sort order<input name="sort_order" type="number" value="0" /></label>
-        <button type="submit">Add Tip</button>
+<section id="tips" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Tips</h2>
+      <div class="panel-subtitle">Daily rotating educational tips sent into Discord.</div>
+    </div>
+    <span class="pill"><%= counts.tips %> tips</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Add Tip</h2>
+          <div class="field-note">Tips rotate in order, so sort order matters if you want a curated sequence.</div>
+        </div>
       </div>
-    </form>
+      <form class="stack" action="/admin/tips" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <label>Title<input name="title" required /></label>
+        <label>Tip<textarea name="content" required></textarea></label>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <label>Sort order<input name="sort_order" type="number" value="0" /></label>
+          <button type="submit">Add Tip</button>
+        </div>
+      </form>
+    </div>
     <div class="entity-list">
       <% content.tips.forEach((tip) => { %>
-        <div class="entity">
-          <form class="stack" action="/admin/tips/<%= tip.id %>" method="post">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <label>Title<input name="title" value="<%= tip.title %>" required /></label>
-            <label>Tip<textarea name="content" required><%= tip.content %></textarea></label>
-            <div class="actions">
-              <label class="inline-check"><input type="checkbox" name="enabled" <%= tip.enabled ? "checked" : "" %> /> Enabled</label>
-              <label>Sort order<input name="sort_order" type="number" value="<%= tip.sortOrder %>" /></label>
-              <button type="submit">Save Tip</button>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3><%= tip.title %></h3>
+                <div class="entity-preview"><%= tip.content %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill">Order <%= tip.sortOrder %></span>
+                <span class="pill <%= tip.enabled ? 'live' : 'disabled' %>"><%= tip.enabled ? "Enabled" : "Disabled" %></span>
+              </div>
             </div>
-          </form>
-          <form action="/admin/tips/<%= tip.id %>/delete" method="post" style="margin-top: 10px;">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <button class="danger" type="submit">Delete</button>
-          </form>
-        </div>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/tips/<%= tip.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <label>Title<input name="title" value="<%= tip.title %>" required /></label>
+              <label>Tip<textarea name="content" required><%= tip.content %></textarea></label>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= tip.enabled ? "checked" : "" %> /> Enabled</label>
+                <label>Sort order<input name="sort_order" type="number" value="<%= tip.sortOrder %>" /></label>
+                <button type="submit">Save Tip</button>
+              </div>
+            </form>
+            <form action="/admin/tips/<%= tip.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Tip</button>
+            </form>
+          </div>
+        </details>
       <% }) %>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<section class="panel" style="margin-top: 20px;">
-  <h2>Exercises</h2>
-  <form class="stack" action="/admin/exercises" method="post">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-    <label>New exercise<textarea name="exercise" required></textarea></label>
-    <div class="actions">
-      <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
-      <label>Sort order<input name="sort_order" type="number" value="0" /></label>
-      <button type="submit">Add Exercise</button>
+<section id="exercises" class="panel section-anchor" style="margin-top: 22px;">
+  <div class="panel-head">
+    <div>
+      <h2>Exercises</h2>
+      <div class="panel-subtitle">Daily challenge pool used for workout prompts in Discord.</div>
     </div>
-  </form>
-  <div class="entity-list">
-    <% content.exercises.forEach((exercise) => { %>
-      <div class="entity">
-        <form class="stack" action="/admin/exercises/<%= exercise.id %>" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <label>Exercise<textarea name="exercise" required><%= exercise.exercise %></textarea></label>
-          <div class="actions">
-            <label class="inline-check"><input type="checkbox" name="enabled" <%= exercise.enabled ? "checked" : "" %> /> Enabled</label>
-            <label>Sort order<input name="sort_order" type="number" value="<%= exercise.sortOrder %>" /></label>
-            <button type="submit">Save Exercise</button>
-          </div>
-        </form>
-        <form action="/admin/exercises/<%= exercise.id %>/delete" method="post" style="margin-top: 10px;">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-          <button class="danger" type="submit">Delete</button>
-        </form>
+    <span class="pill"><%= counts.exercises %> exercises</span>
+  </div>
+  <div class="split-panel">
+    <div class="create-card">
+      <div class="panel-head compact">
+        <div>
+          <h2>Add Exercise</h2>
+          <div class="field-note">Short, readable lines work best for the daily challenge post.</div>
         </div>
-    <% }) %>
+      </div>
+      <form class="stack" action="/admin/exercises" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <label>New exercise<textarea name="exercise" required></textarea></label>
+        <div class="actions">
+          <label class="inline-check"><input type="checkbox" name="enabled" checked /> Enabled</label>
+          <label>Sort order<input name="sort_order" type="number" value="0" /></label>
+          <button type="submit">Add Exercise</button>
+        </div>
+      </form>
+    </div>
+    <div class="entity-list">
+      <% content.exercises.forEach((exercise) => { %>
+        <details class="entity">
+          <summary>
+            <div class="entity-summary">
+              <div>
+                <h3>Exercise #<%= exercise.id %></h3>
+                <div class="entity-preview"><%= exercise.exercise %></div>
+              </div>
+              <div class="entity-meta">
+                <span class="pill">Order <%= exercise.sortOrder %></span>
+                <span class="pill <%= exercise.enabled ? 'live' : 'disabled' %>"><%= exercise.enabled ? "Enabled" : "Disabled" %></span>
+              </div>
+            </div>
+          </summary>
+          <div class="entity-body">
+            <form class="stack" action="/admin/exercises/<%= exercise.id %>" method="post">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <label>Exercise<textarea name="exercise" required><%= exercise.exercise %></textarea></label>
+              <div class="actions">
+                <label class="inline-check"><input type="checkbox" name="enabled" <%= exercise.enabled ? "checked" : "" %> /> Enabled</label>
+                <label>Sort order<input name="sort_order" type="number" value="<%= exercise.sortOrder %>" /></label>
+                <button type="submit">Save Exercise</button>
+              </div>
+            </form>
+            <form action="/admin/exercises/<%= exercise.id %>/delete" method="post" style="margin-top: 12px;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button class="danger" type="submit">Delete Exercise</button>
+            </form>
+          </div>
+        </details>
+      <% }) %>
+    </div>
   </div>
 </section>
 <%- include("partials/footer") %>
