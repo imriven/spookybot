@@ -188,11 +188,13 @@ export default class TwitchManager {
         },
       });
 
-      await authProvider.addUser(
-        botUser.id,
+      const resolvedUserId = await authProvider.addUserForToken(
         storedTokenToTwurpleToken(storedToken),
-        config.twitchRequiredScopes,
+        ["chat"],
       );
+      if (resolvedUserId !== botUser.id) {
+        throw exposedError("Stored Twitch token belongs to a different user than TWITCH_BOT_ID.");
+      }
 
       const apiClient = new ApiClient({ authProvider });
       const chatClient = new ChatClient({
