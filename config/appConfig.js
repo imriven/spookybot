@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 
-dotenv.config();
-
 const environment = process.env.ENVIRONMENT || process.env.NODE_ENV || "development";
 const isLocal = environment === "development" || environment === "test";
 const isProduction = environment === "production";
 const port = Number.parseInt(process.env.PORT ?? "3000", 10);
+
+if (isLocal) {
+  dotenv.config();
+}
 
 if (!process.env.SESSION_SECRET) {
   throw new Error("SESSION_SECRET must be set.");
@@ -41,7 +43,7 @@ const config = {
   discordChallengeChannelId: process.env.DISCORD_CHALLENGE_CHANNEL_ID,
   discordTipChannelId: process.env.DISCORD_TIP_CHANNEL_ID,
   discordUnfollowsChannelId: process.env.DISCORD_UNFOLLOWS_CHANNEL_ID,
-  dbConnectionString: process.env.DATABASE_CONN,
+  dbConnectionString: process.env.DATABASE_URL,
   redisFlyConnect: process.env.REDIS_FLY_CONNECT,
   redisFlyConnectDev: process.env.REDIS_FLY_CONNECTD,
   sessionSecret: process.env.SESSION_SECRET,
