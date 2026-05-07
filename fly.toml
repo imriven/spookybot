@@ -4,10 +4,10 @@ app = "spookybot"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
-services = []
 
 [env]
   ALLOW_EOL_SHIMMED_BUILDER = "1"
+  PORT = "3000"
 
 [experimental]
   allowed_public_ports = []
@@ -18,4 +18,22 @@ services = []
   builder = "heroku/builder:24"
 
 [build.args]
-  ALLOW_EOL_SHIMMED_BUILDER="1"
+  ALLOW_EOL_SHIMMED_BUILDER = "1"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  processes = ["app"]
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "10s"
+    interval = "15s"
+    timeout = "2s"

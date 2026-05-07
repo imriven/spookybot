@@ -1,37 +1,28 @@
-import config from "./config/appConfig"
+import path from "path";
+import { fileURLToPath } from "url";
+import config from "./config/appConfig.js";
 
-export default environments = {
-  development: {
-    client: "pg",
-    connection: config.dbConnectionString,
-  
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      directory: "./data/migrations",
-    },
-    seeds: {
-      directory: "./data/seeds",
-    },
-    scripts: {
-      server: "nodemon index.js",
-    },
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const shared = {
+  client: "pg",
+  connection: config.dbConnectionString,
+  pool: {
+    min: 2,
+    max: 10,
   },
-  
- production: {
-    client: "pg",
-    connection: "",
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      directory: "./data/migrations",
-    },
-    seeds: {
-      directory: "./data/seeds",
-    },
+  migrations: {
+    directory: path.join(__dirname, "data", "migrations"),
+    extension: "cjs",
   },
-} 
+  seeds: {
+    directory: path.join(__dirname, "data", "seeds"),
+    extension: "cjs",
+  },
+};
+
+export default {
+  development: shared,
+  production: shared,
+};

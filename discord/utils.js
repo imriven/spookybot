@@ -1,23 +1,25 @@
-import { Client, GatewayIntentBits, ThreadMemberFlags } from 'discord.js'
-import config from '../config/appConfig.js';
+import { Client, GatewayIntentBits } from "discord.js";
+import config from "../config/appConfig.js";
 
 export default async function DiscordClient() {
-    const discord = new Client({
-        intents: [
-            GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.GuildMessageReactions,
-            GatewayIntentBits.MessageContent,
-        ]
-    })
+  if (!config.discordToken) {
+    console.warn("DISCORD_TOKEN is not set. Discord features are disabled.");
+    return null;
+  }
 
-    discord.on('ready', () => {
-        console.log(`Logged in as ${discord.user.tag}!`);
-    });
-    discord.on('messageReactionAdd', (reaction, user) => {
-        console.dir(reaction, user)
-    })
+  const discord = new Client({
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.MessageContent,
+    ],
+  });
 
-    await discord.login(config.discordToken);
-    return discord
+  discord.on("ready", () => {
+    console.log(`Logged in to Discord as ${discord.user.tag}`);
+  });
+
+  await discord.login(config.discordToken);
+  return discord;
 }

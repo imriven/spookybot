@@ -1,0 +1,35 @@
+<%- include("partials/head", { title: "Spookybot Admin Login" }) %>
+<section class="hero">
+  <span class="badge">Spookybot Admin</span>
+  <h1>Twitch Bot Control</h1>
+  <p>Sign in with the exact Twitch bot account configured in <code>TWITCH_BOT_ID</code>. That OAuth token becomes the runtime source for both Twitch API access and chat.</p>
+</section>
+
+<%- include("partials/flash", { flash }) %>
+
+<section class="panel">
+  <h2>Connection Status</h2>
+  <div class="status-banner <%= authStatus.kind %>">
+    <strong><%= authStatus.kind.replaceAll("_", " ") %></strong>
+    <div class="muted"><%= authStatus.detail %></div>
+  </div>
+  <div class="kv">
+    <strong>Current login</strong>
+    <span><%= authStatus.currentLogin || "None" %></span>
+    <strong>Display name</strong>
+    <span><%= authStatus.displayName || "None" %></span>
+    <strong>Expires at</strong>
+    <span><%= formatDate(authStatus.expiresAt) %></span>
+    <strong>Last refresh</strong>
+    <span><%= formatDate(authStatus.lastRefreshAt) %></span>
+    <strong>Last refresh error</strong>
+    <span><%= authStatus.lastRefreshError || "None" %></span>
+  </div>
+  <div class="actions" style="margin-top: 18px;">
+    <form action="/admin/login" method="get">
+      <input type="hidden" name="start" value="1" />
+      <button type="submit">Log In With Twitch</button>
+    </form>
+  </div>
+</section>
+<%- include("partials/footer") %>

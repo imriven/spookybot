@@ -1,22 +1,51 @@
-// config.js
-import dotenv from "dotenv"
-dotenv.config()
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const environment = process.env.ENVIRONMENT || process.env.NODE_ENV || "development";
+const isLocal = environment === "development" || environment === "test";
+const isProduction = environment === "production";
+const port = Number.parseInt(process.env.PORT ?? "3000", 10);
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET must be set.");
+}
+
+if (!process.env.TOKEN_ENCRYPTION_KEY) {
+  throw new Error("TOKEN_ENCRYPTION_KEY must be set.");
+}
 
 const config = {
-    twitchChannelUsername: process.env.TWITCH_CHANNEL_USERNAME,
-    twitchChannelId: process.env.TWITCH_CHANNEL_ID,
-    twitchOauthToken: process.env.TWITCH_OAUTH_TOKEN,
-    twitchClientId: process.env.TWITCH_CLIENT_ID,
-    twitchClientSecret: process.env.TWITCH_CLIENT_SECRET,    
-    twitchBotUsername: process.env.TWITCH_BOT_USERNAME,
-    twitchBotId: process.env.TWITCH_BOT_ID,
-    discordToken: process.env.DISCORD_TOKEN,
-    discordChallengeChannelId: process.env.DISCORD_CHALLENGE_CHANNEL_ID,
-    discordTipChannelId: process.env.DISCORD_TIP_CHANNEL_ID,
-    discordUnfollowsChannelId: process.env.DISCORD_UNFOLLOWS_CHANNEL_ID,
-    dbConnectionString: process.env.DATABASE_CONN,
-    redisFlyConnect: process.env.REDIS_FLY_CONNECT,
-    redisFlyConnectDev: process.env.REDIS_FLY_CONNECTD,
+  environment,
+  isLocal,
+  isProduction,
+  sessionCookieSecure: !isLocal,
+  port,
+  twitchChannelUsername: process.env.TWITCH_CHANNEL_USERNAME,
+  twitchChannelId: process.env.TWITCH_CHANNEL_ID,
+  twitchClientId: process.env.TWITCH_CLIENT_ID,
+  twitchClientSecret: process.env.TWITCH_CLIENT_SECRET,
+  twitchBotUsername: process.env.TWITCH_BOT_USERNAME,
+  twitchBotId: process.env.TWITCH_BOT_ID,
+  twitchRedirectUri: process.env.TWITCH_REDIRECT_URI || `http://localhost:${port}/auth/twitch/callback`,
+  twitchRequiredScopes: [
+    "chat:read",
+    "chat:edit",
+    "channel:read:vips",
+    "moderation:read",
+    "moderator:read:followers",
+    "moderator:read:chatters",
+    "channel:manage:broadcast",
+  ],
+  discordToken: process.env.DISCORD_TOKEN,
+  discordChallengeChannelId: process.env.DISCORD_CHALLENGE_CHANNEL_ID,
+  discordTipChannelId: process.env.DISCORD_TIP_CHANNEL_ID,
+  discordUnfollowsChannelId: process.env.DISCORD_UNFOLLOWS_CHANNEL_ID,
+  dbConnectionString: process.env.DATABASE_CONN,
+  redisFlyConnect: process.env.REDIS_FLY_CONNECT,
+  redisFlyConnectDev: process.env.REDIS_FLY_CONNECTD,
+  sessionSecret: process.env.SESSION_SECRET,
+  tokenEncryptionKey: process.env.TOKEN_ENCRYPTION_KEY,
 };
 
 export default config;

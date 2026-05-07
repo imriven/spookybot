@@ -1,113 +1,113 @@
 export default class BotState {
-    constructor() {
-        this._counters = {};
-        this._numViewers = 0;
-        this._numChatters = 0;
-        this._mods = [];
-        this._vips = [];
-        this._twitchTimers = {};
-        this._isLive = false;
-        this._followers = null;
-        this._liveStreamers = {};
-    }
-    set mods(mods) {
-        this._mods = mods;
-    }
+  constructor() {
+    this._counters = {};
+    this._numViewers = 0;
+    this._numChatters = 0;
+    this._mods = [];
+    this._vips = [];
+    this._twitchTimers = {};
+    this._isLive = false;
+    this._followers = null;
+    this._liveStreamers = {};
+  }
 
-    get mods() {
-        return this._mods;
-    }
+  set mods(mods) {
+    this._mods = mods;
+  }
 
-    set numViewers(viewers) {
-        this.numViewers = viewers;
-    }
+  get mods() {
+    return this._mods;
+  }
 
-    get numViewers() {
-        return this._numViewers;
-    }
+  set numViewers(viewers) {
+    this._numViewers = viewers;
+  }
 
-    set numChatters(chatters) {
-        this._numChatters = chatters;
-    }
+  get numViewers() {
+    return this._numViewers;
+  }
 
-    get numChatters() {
-        return this._numChatters;
-    }
+  set numChatters(chatters) {
+    this._numChatters = chatters;
+  }
 
+  get numChatters() {
+    return this._numChatters;
+  }
 
-    set isLive(isLive) {
-        this._isLive = isLive;
-    }
+  set isLive(isLive) {
+    this._isLive = isLive;
+  }
 
-    get isLive() {
-        return this._isLive;
-    }
+  get isLive() {
+    return this._isLive;
+  }
 
-    set vips(vips) {
-        this._vips = vips;
-    }
+  set vips(vips) {
+    this._vips = vips;
+  }
 
-    get vips() {
-        return this._vips;
-    }
+  get vips() {
+    return this._vips;
+  }
 
-    set counters(counters) {
-        this._counters = counters;
-    }
+  set counters(counters) {
+    this._counters = counters;
+  }
 
-    get counters() {
-        return this._counters;
-    }
+  get counters() {
+    return this._counters;
+  }
 
-    set followers(followers) {
-        this._followers = followers;
-    }
+  set followers(followers) {
+    this._followers = followers;
+  }
 
-    get followers() {
-        return this._followers;
-    }
+  get followers() {
+    return this._followers;
+  }
 
-    deleteCounter(counterName) {
-        delete this._counters[counterName]
-    }
+  deleteCounter(counterName) {
+    delete this._counters[counterName];
+  }
 
-    incrementCounter(counterName, amount = 1) {
-        this._counters[counterName].value += amount
-    }
+  incrementCounter(counterName, amount = 1) {
+    this._counters[counterName].value += amount;
+  }
 
-    decrementCounter(counterName, amount = 1) {
-        this._counters[counterName].value -= amount
-    }
+  decrementCounter(counterName, amount = 1) {
+    this._counters[counterName].value -= amount;
+  }
 
-    setCounter(counterName, value) {
-        this._counters[counterName] = value
-    }
+  setCounter(counterName, value) {
+    this._counters[counterName] = value;
+  }
 
-    set twitchTimers(timers) {
-        this._twitchTimers = timers;
-    }
+  set twitchTimers(timers) {
+    this._twitchTimers = timers;
+  }
 
-    get twitchTimers() {
-        return this._twitchTimers;
-    }
+  get twitchTimers() {
+    return this._twitchTimers;
+  }
 
-    setTwitchTimer(timerName, intervalFunction) {
-        this._twitchTimers[timerName] = intervalFunction
-    }
+  setTwitchTimer(timerName, intervalFunction) {
+    this._twitchTimers[timerName] = intervalFunction;
+  }
 
-    deleteTwitchTimer(timerName) {
-        delete this._twitchTimers[timerName]
-    }
+  deleteTwitchTimer(timerName) {
+    delete this._twitchTimers[timerName];
+  }
 
-    get liveStreamers(){
-        return this._liveStreamers
-    }
+  get liveStreamers() {
+    return this._liveStreamers;
+  }
 
-    addLiveStreamer(streamerName, messageId){
-        this._liveStreamers[streamerName] = messageId
-    }
+  addLiveStreamer(streamerName, messageId) {
+    this._liveStreamers[streamerName] = messageId;
+  }
 
-    deleteLiveStreamer(streamerName){
-        delete this._liveStreamers[streamerName]
-    }
+  deleteLiveStreamer(streamerName) {
+    delete this._liveStreamers[streamerName];
+  }
 }
