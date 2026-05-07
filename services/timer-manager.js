@@ -133,8 +133,8 @@ export default class TimerManager {
     });
 
     this.registerDynamicInterval("cvu", 3600000, async () => {
-      const currentChatters = await this.executeWithApi("chatters", (client) =>
-        client.chat.getChattersPaginated(config.twitchChannelId, this.twitchManager.getBotUserId()).getAll(),
+      const currentChatters = await this.twitchManager.executeAsBotUser("chatters", (client) =>
+        client.chat.getChattersPaginated(config.twitchChannelId).getAll(),
       );
       const currentViewersStream =
         stream
@@ -169,13 +169,13 @@ export default class TimerManager {
       return;
     }
 
-    const vips = await this.executeWithApi("get-vips", async (client) => {
-      const paginator = await client.channels.getVipsPaginated(config.twitchChannelId);
+    const vips = await this.twitchManager.executeAsBotUser("get-vips", async (client) => {
+      const paginator = client.channels.getVipsPaginated(config.twitchChannelId);
       return paginator.getAll();
     });
 
-    const mods = await this.executeWithApi("get-mods", async (client) => {
-      const paginator = await client.moderation.getModeratorsPaginated(config.twitchChannelId);
+    const mods = await this.twitchManager.executeAsBotUser("get-mods", async (client) => {
+      const paginator = client.moderation.getModeratorsPaginated(config.twitchChannelId);
       return paginator.getAll();
     });
 
@@ -252,11 +252,8 @@ export default class TimerManager {
       return;
     }
 
-    const fetchedFollowers = await this.executeWithApi("followers", async (client) => {
-      const paginator = await client.channels.getChannelFollowersPaginated(
-        config.twitchChannelId,
-        this.twitchManager.getBotUserId(),
-      );
+    const fetchedFollowers = await this.twitchManager.executeAsBotUser("followers", async (client) => {
+      const paginator = client.channels.getChannelFollowersPaginated(config.twitchChannelId);
       const followers = await paginator.getAll();
       return followers.map((follower) => follower.userName ?? follower.name).filter(Boolean);
     });

@@ -280,6 +280,22 @@ export default class TwitchManager {
     }
   }
 
+  async executeAsBotUser(label, operation) {
+    if (!this.apiClient) {
+      return null;
+    }
+
+    try {
+      return await this.apiClient.asUser(this.getBotUserId(), operation);
+    } catch (error) {
+      console.error(`[twitch:${label}]`, error);
+      if (isAuthFailure(error)) {
+        await this.markAuthFailure(error);
+      }
+      throw error;
+    }
+  }
+
   async say(channel, message) {
     if (!this.chatClient || !message) {
       return;
