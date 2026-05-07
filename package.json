@@ -39,7 +39,6 @@
         "knex": "^2.4.2",
         "pg": "^8.10.0",
         "redis": "^4.6.5",
-        "tmi.js": "^1.8.5",
-        "zwift-mobile-api": "github:johnharris85/zwift-mobile-api"
+        "tmi.js": "^1.8.5"
     }
 }

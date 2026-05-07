@@ -8,7 +8,6 @@ export default class BotState {
         this._twitchTimers = {};
         this._isLive = false;
         this._followers = null;
-        this._currentZwiftActivityId = null;
         this._liveStreamers = {};
     }
     set mods(mods) {
@@ -82,14 +81,6 @@ export default class BotState {
 
     setCounter(counterName, value) {
         this._counters[counterName] = value
-    }
-
-    set zwiftActivityId(activityId) {
-        this._currentZwiftActivityId = activityId;
-    }
-
-    get zwiftActivityId() {
-        return this._currentZwiftActivityId;
     }
 
     set twitchTimers(timers) {

@@ -15,7 +15,7 @@ services = []
   private_network = true
 
 [build]
-  builder = "heroku/buildpacks:20"
+  builder = "heroku/builder:24"
 
 [build.args]
   ALLOW_EOL_SHIMMED_BUILDER="1"
