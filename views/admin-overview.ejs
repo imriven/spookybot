@@ -1,0 +1,91 @@
+<%- include("partials/admin-shell-start", { title: "Spookybot Admin Overview", adminUser, activePage, navItems, csrfToken }) %>
+
+<section class="hero">
+  <span class="badge">Overview</span>
+  <h1>Admin Runtime</h1>
+  <p>Keep Twitch auth healthy, watch editable inventory counts, and jump straight into the dataset you need.</p>
+  <div class="meta">Signed in as <strong><%= adminUser.displayName %></strong> (<%= adminUser.login %>)</div>
+</section>
+
+<%- include("partials/flash", { flash }) %>
+
+<div class="overview-grid">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>Twitch Runtime</h2>
+        <div class="panel-subtitle">Auth state, token lifecycle, and current bot identity.</div>
+      </div>
+      <span class="pill <%= runtimeConnected ? 'live' : 'disabled' %>"><%= runtimeConnected ? "Connected" : "Offline" %></span>
+    </div>
+    <div class="status-banner <%= authStatus.kind %>">
+      <strong><%= authStatus.kind.replaceAll("_", " ") %></strong>
+      <div class="muted"><%= authStatus.detail %></div>
+    </div>
+    <div class="kv">
+      <strong>Runtime</strong>
+      <span><%= runtimeConnected ? "Active in-process" : "Not connected in-process" %></span>
+      <strong>Bot login</strong>
+      <span><%= authStatus.currentLogin || "None" %></span>
+      <strong>Display name</strong>
+      <span><%= authStatus.displayName || "None" %></span>
+      <strong>Token expires</strong>
+      <span><%= formatDate(authStatus.expiresAt) %></span>
+      <strong>Last refresh</strong>
+      <span><%= formatDate(authStatus.lastRefreshAt) %></span>
+      <strong>Refresh error</strong>
+      <span><%= authStatus.lastRefreshError || "None" %></span>
+    </div>
+    <div class="actions" style="margin-top: 18px;">
+      <form action="/admin/login" method="get">
+        <input type="hidden" name="start" value="1" />
+        <button type="submit">Reconnect Twitch</button>
+      </form>
+      <form action="/admin/logout" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="_returnTo" value="/admin" />
+        <button type="submit" class="secondary">Log Out</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head compact">
+      <div>
+        <h2>Diagnostics</h2>
+        <div class="panel-subtitle">Quick view of editable runtime inventory.</div>
+      </div>
+    </div>
+    <div class="counts">
+      <div class="count-card"><span>Timers</span><strong><%= counts.timers %></strong></div>
+      <div class="count-card"><span>Streamers</span><strong><%= counts.streamerNotifications %></strong></div>
+      <div class="count-card"><span>Shoutouts</span><strong><%= counts.customShoutouts %></strong></div>
+      <div class="count-card"><span>Facts</span><strong><%= counts.facts %></strong></div>
+      <div class="count-card"><span>Tips</span><strong><%= counts.tips %></strong></div>
+      <div class="count-card"><span>Exercises</span><strong><%= counts.exercises %></strong></div>
+      <div class="count-card"><span>Commands</span><strong><%= counts.chatCommands %></strong></div>
+    </div>
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>Quick Links</h2>
+      <div class="panel-subtitle">Each editor now lives on its own page with filtering and compact expandable cards.</div>
+    </div>
+  </div>
+  <div class="link-grid">
+    <% datasetPages.forEach((page) => { %>
+      <a class="quick-link-card" href="<%= page.path %>">
+        <div class="quick-link-head">
+          <strong><%= page.title %></strong>
+          <span class="pill"><%= counts[page.countKey] %></span>
+        </div>
+        <div class="muted"><%= page.description %></div>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<%- include("partials/admin-shell-end") %>

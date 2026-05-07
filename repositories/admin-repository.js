@@ -28,6 +28,24 @@ export async function listExercises() {
   return orderBy(db("exercises").select("id", "exercise", "enabled", "sort_order", "updated_at"));
 }
 
+export async function listChatCommands() {
+  return orderBy(
+    db("chat_commands").select(
+      "id",
+      "name",
+      "handler",
+      "response",
+      "description",
+      "usage",
+      "enabled",
+      "listed",
+      "requires_privilege",
+      "sort_order",
+      "updated_at",
+    ),
+  );
+}
+
 export async function createTimer(timer) {
   return db("timers").insert(timer).returning("*");
 }
@@ -100,14 +118,27 @@ export async function deleteExercise(id) {
   return db("exercises").where({ id }).del();
 }
 
+export async function createChatCommand(command) {
+  return db("chat_commands").insert(command).returning("*");
+}
+
+export async function updateChatCommand(id, command) {
+  return db("chat_commands").where({ id }).update({ ...command, updated_at: db.fn.now() }).returning("*");
+}
+
+export async function deleteChatCommand(id) {
+  return db("chat_commands").where({ id }).del();
+}
+
 export async function getDiagnosticsCounts() {
-  const [timers, streamers, shoutouts, facts, tips, exercises] = await Promise.all([
+  const [timers, streamers, shoutouts, facts, tips, exercises, commands] = await Promise.all([
     db("timers").count("* as count").first(),
     db("streamer_notifications").count("* as count").first(),
     db("custom_shoutouts").count("* as count").first(),
     db("facts").count("* as count").first(),
     db("tips").count("* as count").first(),
     db("exercises").count("* as count").first(),
+    db("chat_commands").count("* as count").first(),
   ]);
 
   return {
@@ -117,5 +148,6 @@ export async function getDiagnosticsCounts() {
     facts: Number(facts?.count ?? 0),
     tips: Number(tips?.count ?? 0),
     exercises: Number(exercises?.count ?? 0),
+    chatCommands: Number(commands?.count ?? 0),
   };
 }

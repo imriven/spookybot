@@ -16,10 +16,6 @@ const shared = {
     directory: path.join(__dirname, "data", "migrations"),
     extension: "cjs",
   },
-  seeds: {
-    directory: path.join(__dirname, "data", "seeds"),
-    extension: "cjs",
-  },
 };
 
 export default {

@@ -10,11 +10,13 @@ export default class ContentService {
       facts: [],
       tips: [],
       exercises: [],
+      chatCommands: [],
+      chatCommandMap: {},
     };
   }
 
   async reload() {
-    const [timers, streamerNotifications, customShoutouts, facts, tips, exercises] =
+    const [timers, streamerNotifications, customShoutouts, facts, tips, exercises, chatCommands] =
       await Promise.all([
         adminRepository.listTimers(),
         adminRepository.listStreamerNotifications(),
@@ -22,6 +24,7 @@ export default class ContentService {
         adminRepository.listFacts(),
         adminRepository.listTips(),
         adminRepository.listExercises(),
+        adminRepository.listChatCommands(),
       ]);
 
     this.cache = {
@@ -74,7 +77,25 @@ export default class ContentService {
         enabled: Boolean(exercise.enabled),
         sortOrder: exercise.sort_order,
       })),
+      chatCommands: chatCommands.map((command) => ({
+        id: command.id,
+        name: command.name,
+        handler: command.handler,
+        response: command.response,
+        description: command.description,
+        usage: command.usage,
+        enabled: Boolean(command.enabled),
+        listed: Boolean(command.listed),
+        requiresPrivilege: Boolean(command.requires_privilege),
+        sortOrder: command.sort_order,
+      })),
     };
+
+    this.cache.chatCommandMap = Object.fromEntries(
+      this.cache.chatCommands
+        .filter((command) => command.enabled)
+        .map((command) => [command.name.toLowerCase(), command]),
+    );
 
     return this.cache;
   }
@@ -106,6 +127,22 @@ export default class ContentService {
 
   getEnabledTips() {
     return this.cache.tips.filter((tip) => tip.enabled);
+  }
+
+  getEnabledChatCommand(name) {
+    if (!name) {
+      return null;
+    }
+
+    return this.cache.chatCommandMap[name.toLowerCase()] ?? null;
+  }
+
+  getListedChatCommands() {
+    return this.cache.chatCommands.filter((command) => command.enabled && command.listed);
+  }
+
+  getChatCommands() {
+    return this.cache.chatCommands;
   }
 
   getRandomExercises(count = 3) {

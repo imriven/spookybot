@@ -1,0 +1,25 @@
+<div class="sidebar-card">
+  <div class="sidebar-brand">
+    <span class="badge">Internal Admin</span>
+    <h1>Spookybot Sanctum</h1>
+    <p>Signed in as <strong><%= adminUser.displayName %></strong></p>
+    <div class="meta"><%= adminUser.login %></div>
+  </div>
+
+  <nav class="sidebar-nav" aria-label="Admin sections">
+    <% navItems.forEach((item) => { %>
+      <a class="nav-link <%= item.active ? 'active' : '' %>" href="<%= item.path %>">
+        <span><%= item.label %></span>
+        <% if (item.count !== null) { %>
+          <span class="pill"><%= item.count %></span>
+        <% } %>
+      </a>
+    <% }) %>
+  </nav>
+
+  <form action="/admin/logout" method="post" class="sidebar-actions">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <input type="hidden" name="_returnTo" value="<%= navItems.find((item) => item.active)?.path || '/admin' %>" />
+    <button type="submit" class="secondary sidebar-button">Log Out</button>
+  </form>
+</div>

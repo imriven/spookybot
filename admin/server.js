@@ -42,7 +42,7 @@ function requireCsrf(sessionStore) {
         type: "error",
         message: "Your session could not be verified. Try again.",
       });
-      res.redirect("/admin");
+      res.redirect(sanitizeReturnTo(req.body?._returnTo) || inferRedirectPath(req.path));
       return;
     }
 
@@ -106,10 +106,39 @@ function normalizeExercise(body) {
   };
 }
 
+function normalizeChatCommand(body) {
+  return {
+    name: body.name?.trim()?.toLowerCase(),
+    handler: body.handler?.trim()?.toLowerCase(),
+    response: body.response?.trim() || null,
+    description: body.description?.trim() || null,
+    usage: body.usage?.trim() || null,
+    enabled: toBoolean(body.enabled),
+    listed: toBoolean(body.listed),
+    requires_privilege: toBoolean(body.requires_privilege),
+    sort_order: toInteger(body.sort_order, 0),
+  };
+}
+
 function validateRequired(fields) {
   const missing = fields.filter(([_, value]) => !value).map(([name]) => name);
   if (missing.length > 0) {
     throw new ValidationError(`Missing required fields: ${missing.join(", ")}`);
+  }
+}
+
+function validateChatCommand(command) {
+  validateRequired([
+    ["name", command.name],
+    ["handler", command.handler],
+  ]);
+
+  if (!CHAT_COMMAND_HANDLERS.has(command.handler)) {
+    throw new ValidationError(`Unsupported command handler: ${command.handler}`);
+  }
+
+  if (["text", "template", "help"].includes(command.handler) && !command.response) {
+    throw new ValidationError(`Response is required for ${command.handler} commands.`);
   }
 }
 
@@ -133,6 +162,333 @@ function formatDate(value) {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));
+}
+
+const DATASET_PAGES = [
+  {
+    key: "timers",
+    path: "/admin/timers",
+    label: "Timers",
+    listKey: "timers",
+    countKey: "timers",
+    title: "Timers",
+    description: "Recurring chat prompts, pacing, and live-only automation.",
+    createTitle: "Create Timer",
+    createNote: "Use this for recurring in-chat reminders and promo messages.",
+    searchPlaceholder: "Filter timers by name, message, channel, interval, or status",
+    emptyMessage: "No timers match that search.",
+    recordsEmptyMessage: "No timers have been created yet.",
+    guide: {
+      summary: "Timers send recurring chat messages on an interval.",
+      required: [
+        "Name identifies the timer in admin and should stay unique.",
+        "Message is the exact chat text the bot will post.",
+        "Channel is the Twitch channel where the timer should speak.",
+      ],
+      toggles: [
+        "Enabled turns the timer on or off without deleting it.",
+        "Live only restricts the timer to when the stream is live.",
+      ],
+      extras: [
+        "Interval ms is the repeat cadence in milliseconds.",
+        "Sort order controls display ordering in admin.",
+      ],
+    },
+  },
+  {
+    key: "streamers",
+    path: "/admin/streamers",
+    label: "Streamers",
+    listKey: "streamerNotifications",
+    countKey: "streamerNotifications",
+    title: "Tracked Streamers",
+    description: "Discord live notifications for selected Twitch accounts.",
+    createTitle: "Add Tracked Streamer",
+    createNote: "Tie a Twitch user to the Discord identity and channel that should be pinged.",
+    searchPlaceholder: "Filter streamers by Twitch or Discord identity",
+    emptyMessage: "No tracked streamers match that search.",
+    recordsEmptyMessage: "No tracked streamers have been added yet.",
+    guide: {
+      summary: "Tracked streamers drive Discord live notifications.",
+      required: [
+        "Twitch name is required and should match the streamer login exactly.",
+      ],
+      toggles: [
+        "Enabled turns notifications on or off for that streamer.",
+      ],
+      extras: [
+        "Twitch ID is optional but useful for stable identity.",
+        "Discord ID and Discord channel ID are both needed to send a mention into Discord.",
+      ],
+    },
+  },
+  {
+    key: "shoutouts",
+    path: "/admin/shoutouts",
+    label: "Shoutouts",
+    listKey: "customShoutouts",
+    countKey: "customShoutouts",
+    title: "Custom Shoutouts",
+    description: "Shortcut command aliases and bespoke shoutout copy.",
+    createTitle: "Create Shoutout",
+    createNote: "These become !name-style custom shoutout commands.",
+    searchPlaceholder: "Filter shoutouts by command name or message",
+    emptyMessage: "No shoutouts match that search.",
+    recordsEmptyMessage: "No custom shoutouts have been created yet.",
+    guide: {
+      summary: "Custom shoutouts create direct !alias commands and also power the !so fallback.",
+      required: [
+        "Name becomes the command trigger without the leading !.",
+        "Message is the full shoutout text sent to chat.",
+      ],
+      toggles: [
+        "Enabled turns the shoutout on or off without removing it.",
+      ],
+      extras: [
+        "Keep names short and lowercase to avoid confusion in chat.",
+      ],
+    },
+  },
+  {
+    key: "facts",
+    path: "/admin/facts",
+    label: "Facts",
+    listKey: "facts",
+    countKey: "facts",
+    title: "Facts",
+    description: "Random fact rotation used by !spooky and automatic fact timers.",
+    createTitle: "Add Fact",
+    createNote: "Keep each fact self-contained so the timer can post it cleanly in chat.",
+    searchPlaceholder: "Filter facts by content",
+    emptyMessage: "No facts match that search.",
+    recordsEmptyMessage: "No facts have been created yet.",
+    guide: {
+      summary: "Facts are used by the !spooky command and the automated fact timer.",
+      required: [
+        "Content is the exact fact text the bot may post.",
+      ],
+      toggles: [
+        "Enabled controls whether the fact can be selected at runtime.",
+      ],
+      extras: [
+        "Sort order only affects admin ordering, not random selection.",
+      ],
+    },
+  },
+  {
+    key: "tips",
+    path: "/admin/tips",
+    label: "Tips",
+    listKey: "tips",
+    countKey: "tips",
+    title: "Tips",
+    description: "Daily rotating educational tips sent into Discord.",
+    createTitle: "Add Tip",
+    createNote: "Tips rotate in order, so sort order matters if you want a curated sequence.",
+    searchPlaceholder: "Filter tips by title or content",
+    emptyMessage: "No tips match that search.",
+    recordsEmptyMessage: "No tips have been created yet.",
+    guide: {
+      summary: "Tips are posted into Discord on the tip schedule.",
+      required: [
+        "Title is the heading shown before the tip body.",
+        "Tip content is the full Discord message body.",
+      ],
+      toggles: [
+        "Enabled controls whether the tip participates in rotation.",
+      ],
+      extras: [
+        "Sort order controls the rotation sequence when the bot steps through tips.",
+      ],
+    },
+  },
+  {
+    key: "exercises",
+    path: "/admin/exercises",
+    label: "Exercises",
+    listKey: "exercises",
+    countKey: "exercises",
+    title: "Exercises",
+    description: "Daily challenge pool used for workout prompts in Discord.",
+    createTitle: "Add Exercise",
+    createNote: "Short, readable lines work best for the daily challenge post.",
+    searchPlaceholder: "Filter exercises by text",
+    emptyMessage: "No exercises match that search.",
+    recordsEmptyMessage: "No exercises have been created yet.",
+    guide: {
+      summary: "Exercises feed the daily challenge post in Discord.",
+      required: [
+        "Exercise is the exact line that may appear in the challenge message.",
+      ],
+      toggles: [
+        "Enabled controls whether the exercise can be randomly selected.",
+      ],
+      extras: [
+        "Sort order only affects admin ordering, not random selection.",
+      ],
+    },
+  },
+  {
+    key: "commands",
+    path: "/admin/commands",
+    label: "Commands",
+    listKey: "chatCommands",
+    countKey: "chatCommands",
+    title: "Chat Commands",
+    description: "Command registry for simple responses and system-backed chat actions.",
+    createTitle: "Add Chat Command",
+    createNote: "Use text/template handlers for content commands and system handlers for special bot behavior.",
+    searchPlaceholder: "Filter commands by name, handler, response, or help text",
+    emptyMessage: "No commands match that search.",
+    recordsEmptyMessage: "No chat commands have been configured yet.",
+    guide: {
+      summary: "Commands define what chat triggers exist and which handler powers each one.",
+      required: [
+        "Command name is the trigger users type, like !discord or help.",
+        "Handler selects the behavior the bot should run for that command.",
+      ],
+      toggles: [
+        "Enabled turns the command on or off without deleting it.",
+        "Listed controls whether the command appears in the commands output.",
+        "Requires privilege restricts the command to broadcaster, mods, and VIPs.",
+      ],
+      extras: [
+        "Response is used by text, template, and help handlers.",
+        "Template responses can use {user}, {target}, and {channel}.",
+        "Usage and description feed admin context and help output.",
+      ],
+    },
+  },
+];
+
+const ADMIN_PAGES = [
+  {
+    key: "overview",
+    path: "/admin",
+    label: "Overview",
+  },
+  ...DATASET_PAGES.map(({ key, path, label, countKey }) => ({
+    key,
+    path,
+    label,
+    countKey,
+  })),
+];
+
+const ALLOWED_RETURN_PATHS = new Set(ADMIN_PAGES.map((page) => page.path));
+const CHAT_COMMAND_HANDLERS = new Set([
+  "text",
+  "template",
+  "random_fact",
+  "shoutout_lookup",
+  "counter",
+  "title_update",
+  "help",
+  "list",
+]);
+
+function getCountsFromContent(content) {
+  return {
+    timers: content.timers.length,
+    streamerNotifications: content.streamerNotifications.length,
+    customShoutouts: content.customShoutouts.length,
+    facts: content.facts.length,
+    tips: content.tips.length,
+    exercises: content.exercises.length,
+    chatCommands: content.chatCommands.length,
+  };
+}
+
+function buildNavItems(counts, activePage) {
+  return ADMIN_PAGES.map((page) => ({
+    ...page,
+    active: page.key === activePage,
+    count: page.countKey ? counts[page.countKey] : null,
+  }));
+}
+
+function normalizeSearchText(parts) {
+  return parts
+    .filter(Boolean)
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function buildSearchText(pageKey, record) {
+  switch (pageKey) {
+    case "timers":
+      return normalizeSearchText([
+        record.name,
+        record.message,
+        record.channel,
+        `${record.intervalMs} ms`,
+        record.enabled ? "enabled" : "disabled",
+        record.liveOnly ? "live only" : "always on",
+      ]);
+    case "streamers":
+      return normalizeSearchText([
+        record.twitchName,
+        record.twitchId,
+        record.discordName,
+        record.discordId,
+        record.discordChannelId,
+      ]);
+    case "shoutouts":
+      return normalizeSearchText([record.name, record.message]);
+    case "facts":
+      return normalizeSearchText([record.content]);
+    case "tips":
+      return normalizeSearchText([record.title, record.content]);
+    case "exercises":
+      return normalizeSearchText([record.exercise]);
+    case "commands":
+      return normalizeSearchText([
+        record.name,
+        record.handler,
+        record.response,
+        record.description,
+        record.usage,
+        record.enabled ? "enabled" : "disabled",
+        record.listed ? "listed" : "hidden",
+        record.requiresPrivilege ? "privileged" : "public",
+      ]);
+    default:
+      return "";
+  }
+}
+
+function sanitizeReturnTo(returnTo) {
+  if (typeof returnTo !== "string") {
+    return null;
+  }
+
+  return ALLOWED_RETURN_PATHS.has(returnTo) ? returnTo : null;
+}
+
+function inferRedirectPath(pathname) {
+  const matchedPage = DATASET_PAGES.find((page) => pathname.startsWith(page.path));
+  return matchedPage?.path || "/admin";
+}
+
+async function buildViewModel({ activePage, authStatus = null, contentService, csrfToken, flash, req }) {
+  await contentService.reload();
+  const content = contentService.getAll();
+  const counts = getCountsFromContent(content);
+
+  return {
+    activePage,
+    adminUser: req.session.admin,
+    authStatus,
+    content,
+    counts,
+    csrfToken,
+    datasetPages: DATASET_PAGES,
+    flash,
+    formatDate,
+    navItems: buildNavItems(counts, activePage),
+  };
 }
 
 export default function createAdminServer({
@@ -232,20 +588,50 @@ export default function createAdminServer({
   });
 
   app.get("/admin", requireAdmin(sessionStore), async (req, res) => {
-    await contentService.reload();
-    res.render("dashboard", {
-      adminUser: req.session.admin,
-      authStatus: await twitchManager.getAuthStatus(),
-      content: contentService.getAll(),
-      counts: await contentService.getDiagnosticsCounts(),
-      csrfToken: sessionStore.getCsrfToken(req, res),
-      flash: sessionStore.consumeFlash(req, res),
-      formatDate,
+    const csrfToken = sessionStore.getCsrfToken(req, res);
+    const flash = sessionStore.consumeFlash(req, res);
+    const [authStatus, viewModel] = await Promise.all([
+      twitchManager.getAuthStatus(),
+      buildViewModel({
+        activePage: "overview",
+        contentService,
+        csrfToken,
+        flash,
+        req,
+      }),
+    ]);
+
+    res.render("admin-overview", {
+      ...viewModel,
+      authStatus,
       runtimeConnected: Boolean(twitchManager.apiClient && twitchManager.chatClient),
     });
   });
 
-  async function handleMutation(req, res, action, successMessage) {
+  DATASET_PAGES.forEach((page) => {
+    app.get(page.path, requireAdmin(sessionStore), async (req, res) => {
+      const viewModel = await buildViewModel({
+        activePage: page.key,
+        contentService,
+        csrfToken: sessionStore.getCsrfToken(req, res),
+        flash: sessionStore.consumeFlash(req, res),
+        req,
+      });
+
+      res.render("admin-dataset", {
+        ...viewModel,
+        page,
+        records: viewModel.content[page.listKey].map((record) => ({
+          ...record,
+          searchText: buildSearchText(page.key, record),
+        })),
+      });
+    });
+  });
+
+  async function handleMutation(req, res, action, successMessage, fallbackRedirect) {
+    const redirectTo = sanitizeReturnTo(req.body?._returnTo) || fallbackRedirect;
+
     try {
       await action();
       await timerManager.handleContentReload();
@@ -261,7 +647,7 @@ export default function createAdminServer({
       });
     }
 
-    res.redirect("/admin");
+    res.redirect(redirectTo);
   }
 
   app.post("/admin/timers", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -273,7 +659,7 @@ export default function createAdminServer({
         ["channel", timer.channel],
       ]);
       await adminRepository.createTimer(timer);
-    }, "Timer created.");
+    }, "Timer created.", "/admin/timers");
   });
 
   app.post("/admin/timers/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -285,11 +671,11 @@ export default function createAdminServer({
         ["channel", timer.channel],
       ]);
       await adminRepository.updateTimer(req.params.id, timer);
-    }, "Timer updated.");
+    }, "Timer updated.", "/admin/timers");
   });
 
   app.post("/admin/timers/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteTimer(req.params.id), "Timer deleted.");
+    await handleMutation(req, res, () => adminRepository.deleteTimer(req.params.id), "Timer deleted.", "/admin/timers");
   });
 
   app.post("/admin/streamers", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -297,7 +683,7 @@ export default function createAdminServer({
       const streamer = normalizeStreamer(req.body);
       validateRequired([["twitch_name", streamer.twitch_name]]);
       await adminRepository.createStreamerNotification(streamer);
-    }, "Streamer notification created.");
+    }, "Streamer notification created.", "/admin/streamers");
   });
 
   app.post("/admin/streamers/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -305,11 +691,17 @@ export default function createAdminServer({
       const streamer = normalizeStreamer(req.body);
       validateRequired([["twitch_name", streamer.twitch_name]]);
       await adminRepository.updateStreamerNotification(req.params.id, streamer);
-    }, "Streamer notification updated.");
+    }, "Streamer notification updated.", "/admin/streamers");
   });
 
   app.post("/admin/streamers/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteStreamerNotification(req.params.id), "Streamer notification deleted.");
+    await handleMutation(
+      req,
+      res,
+      () => adminRepository.deleteStreamerNotification(req.params.id),
+      "Streamer notification deleted.",
+      "/admin/streamers",
+    );
   });
 
   app.post("/admin/shoutouts", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -320,7 +712,7 @@ export default function createAdminServer({
         ["message", shoutout.message],
       ]);
       await adminRepository.createCustomShoutout(shoutout);
-    }, "Custom shoutout created.");
+    }, "Custom shoutout created.", "/admin/shoutouts");
   });
 
   app.post("/admin/shoutouts/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -331,11 +723,17 @@ export default function createAdminServer({
         ["message", shoutout.message],
       ]);
       await adminRepository.updateCustomShoutout(req.params.id, shoutout);
-    }, "Custom shoutout updated.");
+    }, "Custom shoutout updated.", "/admin/shoutouts");
   });
 
   app.post("/admin/shoutouts/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteCustomShoutout(req.params.id), "Custom shoutout deleted.");
+    await handleMutation(
+      req,
+      res,
+      () => adminRepository.deleteCustomShoutout(req.params.id),
+      "Custom shoutout deleted.",
+      "/admin/shoutouts",
+    );
   });
 
   app.post("/admin/facts", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -343,7 +741,7 @@ export default function createAdminServer({
       const fact = normalizeFact(req.body);
       validateRequired([["content", fact.content]]);
       await adminRepository.createFact(fact);
-    }, "Fact created.");
+    }, "Fact created.", "/admin/facts");
   });
 
   app.post("/admin/facts/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -351,11 +749,11 @@ export default function createAdminServer({
       const fact = normalizeFact(req.body);
       validateRequired([["content", fact.content]]);
       await adminRepository.updateFact(req.params.id, fact);
-    }, "Fact updated.");
+    }, "Fact updated.", "/admin/facts");
   });
 
   app.post("/admin/facts/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteFact(req.params.id), "Fact deleted.");
+    await handleMutation(req, res, () => adminRepository.deleteFact(req.params.id), "Fact deleted.", "/admin/facts");
   });
 
   app.post("/admin/tips", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -366,7 +764,7 @@ export default function createAdminServer({
         ["content", tip.content],
       ]);
       await adminRepository.createTip(tip);
-    }, "Tip created.");
+    }, "Tip created.", "/admin/tips");
   });
 
   app.post("/admin/tips/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -377,11 +775,11 @@ export default function createAdminServer({
         ["content", tip.content],
       ]);
       await adminRepository.updateTip(req.params.id, tip);
-    }, "Tip updated.");
+    }, "Tip updated.", "/admin/tips");
   });
 
   app.post("/admin/tips/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteTip(req.params.id), "Tip deleted.");
+    await handleMutation(req, res, () => adminRepository.deleteTip(req.params.id), "Tip deleted.", "/admin/tips");
   });
 
   app.post("/admin/exercises", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -389,7 +787,7 @@ export default function createAdminServer({
       const exercise = normalizeExercise(req.body);
       validateRequired([["exercise", exercise.exercise]]);
       await adminRepository.createExercise(exercise);
-    }, "Exercise created.");
+    }, "Exercise created.", "/admin/exercises");
   });
 
   app.post("/admin/exercises/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -397,11 +795,37 @@ export default function createAdminServer({
       const exercise = normalizeExercise(req.body);
       validateRequired([["exercise", exercise.exercise]]);
       await adminRepository.updateExercise(req.params.id, exercise);
-    }, "Exercise updated.");
+    }, "Exercise updated.", "/admin/exercises");
   });
 
   app.post("/admin/exercises/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteExercise(req.params.id), "Exercise deleted.");
+    await handleMutation(
+      req,
+      res,
+      () => adminRepository.deleteExercise(req.params.id),
+      "Exercise deleted.",
+      "/admin/exercises",
+    );
+  });
+
+  app.post("/admin/commands", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
+    await handleMutation(req, res, async () => {
+      const command = normalizeChatCommand(req.body);
+      validateChatCommand(command);
+      await adminRepository.createChatCommand(command);
+    }, "Command created.", "/admin/commands");
+  });
+
+  app.post("/admin/commands/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
+    await handleMutation(req, res, async () => {
+      const command = normalizeChatCommand(req.body);
+      validateChatCommand(command);
+      await adminRepository.updateChatCommand(req.params.id, command);
+    }, "Command updated.", "/admin/commands");
+  });
+
+  app.post("/admin/commands/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
+    await handleMutation(req, res, () => adminRepository.deleteChatCommand(req.params.id), "Command deleted.", "/admin/commands");
   });
 
   return app;

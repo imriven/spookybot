@@ -1,0 +1,38 @@
+<script>
+  document.querySelectorAll("[data-filter-root]").forEach((root) => {
+    const input = root.querySelector("[data-filter-input]");
+    const cards = Array.from(root.querySelectorAll("[data-filter-card]"));
+    const emptyState = root.querySelector("[data-filter-empty]");
+    const countNode = root.querySelector("[data-filter-count]");
+
+    if (!input || cards.length === 0) {
+      return;
+    }
+
+    const applyFilter = () => {
+      const query = input.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const haystack = card.dataset.searchText || "";
+        const matches = !query || haystack.includes(query);
+        card.hidden = !matches;
+
+        if (matches) {
+          visibleCount += 1;
+        }
+      });
+
+      if (countNode) {
+        countNode.textContent = `${visibleCount} of ${cards.length} shown`;
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount !== 0;
+      }
+    };
+
+    input.addEventListener("input", applyFilter);
+    applyFilter();
+  });
+</script>

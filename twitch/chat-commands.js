@@ -7,33 +7,67 @@ function isPrivileged(msg) {
   return Boolean(userInfo?.isBroadcaster || userInfo?.isMod || userInfo?.isVip);
 }
 
-function listCommands(client, channel, username) {
-  return say(
-    client,
-    channel,
-    `@${username}, available commands are: commands, help, !lurk, !discord, !podcast, !gamer, !tuesday, !throwback, !thirsty, !friday, !socials, !counter, !spooky, !slap, !so, !name, !hug, !title`,
-  );
+function renderTemplate(template, { channel, target, user }) {
+  return (template || "")
+    .replaceAll("{channel}", channel)
+    .replaceAll("{target}", target || "")
+    .replaceAll("{user}", user);
 }
 
-function help(client, channel, username, message) {
-  const parts = message.trim().split(/\s+/);
-  if (parts[1] !== "counter") {
-    return say(
-      client,
-      channel,
-      `@${username}, try commands, !spooky, !lurk, !discord, !podcast, !gamer, !hug <user>, !slap <user>, !so <user>, !counter, or help counter.`,
-    );
+function commandCandidates(rawName) {
+  const normalized = (rawName || "").trim().toLowerCase();
+  if (!normalized) {
+    return [];
   }
 
-  return say(
-    client,
-    channel,
-    'Counter help: "!counter" lists counters, "!counter name" creates one, "!counter name +5" adds, "!counter name -2" subtracts, "!counter name status" shows it, "!counter name delete" removes it.',
-  );
+  if (normalized.startsWith("!")) {
+    return [normalized, normalized.slice(1)];
+  }
+
+  return [normalized, `!${normalized}`];
+}
+
+function listCommands(client, channel, username, contentService) {
+  const commandNames = contentService.getListedChatCommands().map((command) => command.name);
+  if (commandNames.length === 0) {
+    return say(client, channel, `@${username}, no chat commands are currently enabled.`);
+  }
+
+  return say(client, channel, `@${username}, available commands are: ${commandNames.join(", ")}`);
+}
+
+function help(client, channel, username, message, contentService, helpCommand) {
+  const parts = message.trim().split(/\s+/);
+  const requested = parts[1];
+
+  if (!requested) {
+    const fallback = `@${username}, try commands or help <command>.`;
+    return say(client, channel, renderTemplate(helpCommand?.response || fallback, { channel, user: username }));
+  }
+
+  const targetCommand = commandCandidates(requested)
+    .map((name) => contentService.getEnabledChatCommand(name))
+    .find(Boolean);
+
+  if (!targetCommand) {
+    return say(client, channel, `@${username}, no help is available for ${requested}.`);
+  }
+
+  const helpText = [targetCommand.description, targetCommand.usage ? `Usage: ${targetCommand.usage}` : null]
+    .filter(Boolean)
+    .join(" ");
+
+  if (!helpText) {
+    return say(client, channel, `@${username}, no help is available for ${targetCommand.name}.`);
+  }
+
+  return say(client, channel, helpText);
 }
 
 function counter(client, channel, tags, state, message) {
-  if (message === "!counter") {
+  const splitMessage = message.trim().split(/\s+/);
+
+  if (splitMessage.length === 1) {
     const counters = Object.entries(state.counters);
     if (counters.length === 0) {
       return say(client, channel, "No counters have been created yet.");
@@ -45,7 +79,6 @@ function counter(client, channel, tags, state, message) {
     return;
   }
 
-  const splitMessage = message.trim().split(/\s+/);
   const counterName = splitMessage[1];
   if (!counterName) {
     say(client, channel, "Counter name is required.");
@@ -112,116 +145,81 @@ function counter(client, channel, tags, state, message) {
   say(client, channel, "Counter doesn't exist.");
 }
 
+function runTemplateCommand(client, channel, user, message, command) {
+  const target = message.trim().split(/\s+/)[1];
+  if (!target) {
+    return say(client, channel, command.usage || "A target user is required.");
+  }
+
+  return say(client, channel, renderTemplate(command.response, { channel, target, user }));
+}
+
+function runTextCommand(client, channel, user, command) {
+  if (!command.response) {
+    return null;
+  }
+
+  return say(client, channel, renderTemplate(command.response, { channel, user }));
+}
+
+function runShoutoutLookup(client, channel, message, shoutouts) {
+  let soUser = message.trim().split(/\s+/)[1];
+  if (!soUser) {
+    return null;
+  }
+
+  if (soUser.startsWith("@")) {
+    soUser = soUser.slice(1);
+  }
+
+  const custom = shoutouts[soUser.toLowerCase()];
+  if (custom) {
+    return say(client, channel, custom);
+  }
+
+  return say(client, channel, `Please check out and follow ${soUser} at Twitch.tv/${soUser}`);
+}
+
 export function registerChatHandlers(chatClient, { contentService, state, onTitleChange }) {
   chatClient.onMessage(async (channel, user, message, msg) => {
-    const command = message.split(" ")[0].toLowerCase();
+    const commandName = message.trim().split(/\s+/)[0].toLowerCase();
     const tags = { username: user };
     const shoutouts = contentService.getEnabledCustomShoutoutMap();
+    const command = contentService.getEnabledChatCommand(commandName);
 
-    switch (command) {
-      case "commands":
-        await listCommands(chatClient, channel, user);
+    if (!command) {
+      if (commandName.startsWith("!") && shoutouts[commandName.slice(1)]) {
+        await say(chatClient, channel, shoutouts[commandName.slice(1)]);
+      }
+      return;
+    }
+
+    if (command.requiresPrivilege && !isPrivileged(msg)) {
+      await say(chatClient, channel, "Must be a VIP or Mod to do that!");
+      return;
+    }
+
+    switch (command.handler) {
+      case "text":
+        await runTextCommand(chatClient, channel, user, command);
         break;
-      case "!lurk":
-        await say(
-          chatClient,
-          channel,
-          `@${user}, has entered the shadowy realm of the LURK, ever watching, ever present, but silent among the mists... Thank you for the support and LURK ON!`,
-        );
+      case "template":
+        await runTemplateCommand(chatClient, channel, user, message, command);
         break;
-      case "!discord":
-        await say(chatClient, channel, `@${user}, https://discord.gg/B4NGMMmh86`);
-        break;
-      case "!podcast":
-        await say(chatClient, channel, `@${user}, https://spotifyanchor-web.app.link/e/hlkZhLRHLAb6`);
-        break;
-      case "!gamer":
-        await say(chatClient, channel, `@${user}, psn: imriven | switch: SW-1842-0535-8897 | steam: 1531719496`);
-        break;
-      case "!dreewmods":
-        await say(chatClient, channel, "visit the t7g patreon for exclusive Tekken mods! https://www.patreon.com/T7G");
-        break;
-      case "!tuesday":
-        await say(chatClient, channel, "welcome to Tekken Tuesday!!! Where it's Tuesday and there is Tekken and tequila, now please buy a lady a shot!");
-        break;
-      case "!warrior":
-        await say(chatClient, channel, "Welcome to Warrior Wednesday where we throw down with a fighting game!!!");
-        break;
-      case "!throwback":
-        await say(chatClient, channel, "visit the t7g patreon for exclusive Tekken mods! https://www.patreon.com/T7G");
-        break;
-      case "!thirsty":
-        await say(chatClient, channel, "welcome to Thirsty Thursday where we play anything from retro to next gen and I'm thirsty for a cocktail. Buy a lady a drink!");
-        break;
-      case "!friday":
-        await say(chatClient, channel, "Welcome in to Fiesty Friday. We have no agenda we vibe, we chill and hangout!");
-        break;
-      case "!socials":
-        await say(chatClient, channel, "visit my linktree for my socials! https://linktr.ee/rockagoth");
-        break;
-      case "!spooky": {
+      case "random_fact": {
         const fact = contentService.getRandomFact();
         if (fact) {
           await say(chatClient, channel, fact);
         }
         break;
       }
-      case "!slap": {
-        if (!isPrivileged(msg)) {
-          await say(chatClient, channel, "Must be a VIP or Mod to do that!");
-          break;
-        }
-        const slappedUser = message.trim().split(/\s+/)[1];
-        if (slappedUser) {
-          await say(chatClient, channel, `${slappedUser} just got slapped by ${user}`);
-        }
+      case "shoutout_lookup":
+        await runShoutoutLookup(chatClient, channel, message, shoutouts);
         break;
-      }
-      case "!so": {
-        if (!isPrivileged(msg)) {
-          await say(chatClient, channel, "Must be a VIP or Mod to do that!");
-          break;
-        }
-        let soUser = message.trim().split(/\s+/)[1];
-        if (!soUser) {
-          break;
-        }
-        if (soUser.startsWith("@")) {
-          soUser = soUser.slice(1);
-        }
-        const custom = shoutouts[soUser.toLowerCase()];
-        if (custom) {
-          await say(chatClient, channel, custom);
-        } else {
-          await say(chatClient, channel, `Please check out and follow ${soUser} at Twitch.tv/${soUser}`);
-        }
-        break;
-      }
-      case "!name":
-        await say(chatClient, channel, `Hello @${user}, my name is SpookyBot! Boo!`);
-        break;
-      case "!hug": {
-        const huggedUser = message.trim().split(/\s+/)[1];
-        if (huggedUser) {
-          await say(chatClient, channel, `${huggedUser} just got hugged by ${user}`);
-        }
-        break;
-      }
-      case "!counter":
-        if (!isPrivileged(msg)) {
-          await say(chatClient, channel, "Must be a VIP or Mod to do that!");
-          break;
-        }
+      case "counter":
         counter(chatClient, channel, tags, state, message);
         break;
-      case "help":
-        await help(chatClient, channel, user, message);
-        break;
-      case "!title":
-        if (!isPrivileged(msg)) {
-          await say(chatClient, channel, "Must be a VIP or Mod to do that!");
-          break;
-        }
+      case "title_update":
         try {
           await onTitleChange(message.split(" ").slice(1).join(" ").trim());
           await say(chatClient, channel, "Stream title updated.");
@@ -229,11 +227,15 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
           await say(chatClient, channel, `Title update failed: ${error.message}`);
         }
         break;
-      default: {
-        if (command.startsWith("!") && shoutouts[command.slice(1)]) {
-          await say(chatClient, channel, shoutouts[command.slice(1)]);
-        }
-      }
+      case "help":
+        await help(chatClient, channel, user, message, contentService, command);
+        break;
+      case "list":
+        await listCommands(chatClient, channel, user, contentService);
+        break;
+      default:
+        await say(chatClient, channel, `Command ${command.name} is misconfigured.`);
+        break;
     }
   });
 }
