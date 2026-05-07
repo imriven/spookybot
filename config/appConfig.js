@@ -33,8 +33,6 @@ const config = {
   twitchRequiredScopes: [
     "chat:read",
     "chat:edit",
-    "channel:read:vips",
-    "moderation:read",
     "moderator:read:followers",
     "moderator:read:chatters",
     "channel:manage:broadcast",

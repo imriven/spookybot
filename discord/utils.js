@@ -10,9 +10,6 @@ export default async function DiscordClient() {
   const discord = new Client({
     intents: [
       GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.GuildMessageReactions,
-      GatewayIntentBits.MessageContent,
     ],
   });
 

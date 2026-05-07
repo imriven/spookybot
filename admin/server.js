@@ -3,6 +3,11 @@ import path from "path";
 import express from "express";
 import helmet from "helmet";
 import * as adminRepository from "../repositories/admin-repository.js";
+import {
+  isValidTimerInterval,
+  MAX_TIMER_INTERVAL_MS,
+  MIN_TIMER_INTERVAL_MS,
+} from "../config/runtime-limits.js";
 
 class ValidationError extends Error {
   constructor(message) {
@@ -139,6 +144,20 @@ function validateChatCommand(command) {
 
   if (["text", "template", "help"].includes(command.handler) && !command.response) {
     throw new ValidationError(`Response is required for ${command.handler} commands.`);
+  }
+}
+
+function validateTimer(timer) {
+  validateRequired([
+    ["name", timer.name],
+    ["message", timer.message],
+    ["channel", timer.channel],
+  ]);
+
+  if (!isValidTimerInterval(timer.interval_ms)) {
+    throw new ValidationError(
+      `Interval ms must be a whole number between ${MIN_TIMER_INTERVAL_MS} and ${MAX_TIMER_INTERVAL_MS}.`,
+    );
   }
 }
 
@@ -529,10 +548,7 @@ export default function createAdminServer({
     }
 
     res.render("login", {
-      authStatus: await twitchManager.getAuthStatus(),
-      csrfToken: sessionStore.getCsrfToken(req, res),
       flash: sessionStore.consumeFlash(req, res),
-      formatDate,
     });
   });
 
@@ -653,11 +669,7 @@ export default function createAdminServer({
   app.post("/admin/timers", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const timer = normalizeTimer(req.body);
-      validateRequired([
-        ["name", timer.name],
-        ["message", timer.message],
-        ["channel", timer.channel],
-      ]);
+      validateTimer(timer);
       await adminRepository.createTimer(timer);
     }, "Timer created.", "/admin/timers");
   });
@@ -665,11 +677,7 @@ export default function createAdminServer({
   app.post("/admin/timers/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const timer = normalizeTimer(req.body);
-      validateRequired([
-        ["name", timer.name],
-        ["message", timer.message],
-        ["channel", timer.channel],
-      ]);
+      validateTimer(timer);
       await adminRepository.updateTimer(req.params.id, timer);
     }, "Timer updated.", "/admin/timers");
   });

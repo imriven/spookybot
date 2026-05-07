@@ -1,4 +1,5 @@
 import config from "../config/appConfig.js";
+import { isValidTimerInterval } from "../config/runtime-limits.js";
 import { getOrdinalNum, msToTime } from "../utils.js";
 
 export default class TimerManager {
@@ -111,7 +112,15 @@ export default class TimerManager {
     const isLive = this.state.isLive || Boolean(stream);
     const timers = this.contentService
       .getEnabledTimers()
-      .filter((timer) => isLive || !timer.liveOnly);
+      .filter((timer) => isLive || !timer.liveOnly)
+      .filter((timer) => {
+        if (isValidTimerInterval(timer.intervalMs)) {
+          return true;
+        }
+
+        console.warn(`[timer:skip-invalid] Skipping timer "${timer.name}" with interval ${timer.intervalMs}.`);
+        return false;
+      });
 
     timers.forEach((timer) => {
       this.registerDynamicInterval(timer.name, timer.intervalMs, async () => {
