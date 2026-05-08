@@ -1,22 +1,70 @@
 <%- include("partials/head", { title: "Spookybot Admin Login" }) %>
-<section class="hero">
-  <span class="badge">Spookybot Admin</span>
-  <h1>Enter The Sanctum</h1>
-  <p>Authenticate as the exact Twitch bot account configured in <code>TWITCH_BOT_ID</code>. The same OAuth token powers both Twitch API access and chat runtime.</p>
-</section>
+<div class="auth-shell">
+  <section class="hero">
+    <span class="badge">Spookybot Admin</span>
+    <h1>Enter The Sanctum</h1>
+    <p>Authenticate as the exact Twitch bot account configured in <code>TWITCH_BOT_ID</code>. The same OAuth token powers both Twitch API access and chat runtime.</p>
+    <div class="badge-row">
+      <span class="pill">Twitch OAuth</span>
+      <span class="pill">Single bot identity</span>
+      <span class="pill">Mobile friendly admin</span>
+    </div>
+  </section>
 
-<%- include("partials/flash", { flash }) %>
+  <%- include("partials/flash", { flash }) %>
 
-<div class="overview-grid">
-  <aside class="nav-card">
-    <span class="badge">Login Flow</span>
-    <div class="panel-subtitle" style="margin-top: 12px;">Use the button below to start the Twitch OAuth flow. Runtime status stays inside the authenticated admin area.</div>
-    <div class="actions" style="margin-top: 18px;">
-      <form action="/admin/login" method="get">
+  <section class="auth-grid">
+    <article class="auth-card">
+      <div class="panel-head stack">
+        <div>
+          <div class="auth-kicker">Access Pattern</div>
+          <h2>What Happens Next</h2>
+        </div>
+        <span class="pill">Exact account match required</span>
+      </div>
+
+      <div class="auth-steps">
+        <div class="auth-step">
+          <span class="auth-step-number">1</span>
+          <div class="auth-step-copy">
+            <strong>Start the Twitch sign-in flow.</strong>
+            <p>The button below sends you through the configured OAuth callback for this deployment.</p>
+          </div>
+        </div>
+        <div class="auth-step">
+          <span class="auth-step-number">2</span>
+          <div class="auth-step-copy">
+            <strong>Confirm the bot identity.</strong>
+            <p>Only the Twitch account whose ID matches <code>TWITCH_BOT_ID</code> is accepted for admin access.</p>
+          </div>
+        </div>
+        <div class="auth-step">
+          <span class="auth-step-number">3</span>
+          <div class="auth-step-copy">
+            <strong>Land inside the protected admin.</strong>
+            <p>Runtime status, editing controls, and operational details stay inside the authenticated interface.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <aside class="auth-card">
+      <div class="panel-head stack">
+        <div>
+          <div class="auth-kicker">Login Flow</div>
+          <h2>Connect With Twitch</h2>
+        </div>
+      </div>
+
+      <div class="auth-panel-note">
+        Use the Twitch OAuth flow below to establish the bot session for this admin. If the wrong account signs in, access is rejected after callback validation.
+      </div>
+
+      <form class="auth-form" action="/admin/login" method="get">
         <input type="hidden" name="start" value="1" />
         <button type="submit">Log In With Twitch</button>
       </form>
-    </div>
-  </aside>
+    </aside>
+  </section>
 </div>
 <%- include("partials/footer") %>

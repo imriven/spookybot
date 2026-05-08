@@ -144,6 +144,20 @@
         gap: 22px;
       }
 
+      .auth-shell {
+        width: min(1040px, 100%);
+        margin: 0 auto;
+        display: grid;
+        gap: 22px;
+      }
+
+      .auth-grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+        align-items: start;
+      }
+
       .admin-shell {
         display: grid;
         gap: 24px;
@@ -175,6 +189,11 @@
 
       .panel-head.compact {
         margin-bottom: 10px;
+      }
+
+      .panel-head.stack {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
       .status-banner {
@@ -244,6 +263,13 @@
         background: rgba(159, 95, 255, 0.14);
         border: 1px solid rgba(202, 158, 255, 0.22);
         color: #eedbff;
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
       }
 
       .pill {
@@ -457,6 +483,14 @@
         align-items: center;
       }
 
+      .actions.stack-mobile {
+        align-items: stretch;
+      }
+
+      .actions.stack-mobile > * {
+        flex: 0 0 auto;
+      }
+
       .split-panel {
         display: grid;
         gap: 18px;
@@ -475,6 +509,109 @@
         border-radius: 18px;
         background: linear-gradient(180deg, rgba(50, 28, 82, 0.52), rgba(20, 13, 34, 0.4));
         border: 1px solid rgba(202, 158, 255, 0.18);
+      }
+
+      .auth-card {
+        display: grid;
+        gap: 16px;
+        padding: 22px;
+        border-radius: 22px;
+        border: 1px solid rgba(202, 158, 255, 0.16);
+        background: linear-gradient(180deg, rgba(30, 19, 48, 0.88), rgba(14, 10, 24, 0.9));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .auth-card strong {
+        color: #f0e4ff;
+      }
+
+      .auth-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .auth-kicker {
+        font-size: 0.76rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent-bright);
+      }
+
+      .auth-steps {
+        display: grid;
+        gap: 12px;
+      }
+
+      .auth-step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .auth-step-number {
+        display: inline-grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(159, 95, 255, 0.28), rgba(111, 53, 216, 0.38));
+        color: #fff8ff;
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      .auth-step-copy {
+        display: grid;
+        gap: 4px;
+      }
+
+      .auth-step-copy p {
+        margin: 0;
+      }
+
+      .auth-panel-note {
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(202, 158, 255, 0.14);
+        background: rgba(159, 95, 255, 0.08);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .auth-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .auth-form button,
+      .auth-form .button-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .button-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 11px 18px;
+        border: 1px solid var(--line-strong);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.03);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .button-link:hover {
+        background: rgba(255, 255, 255, 0.07);
+        color: #fff8ff;
       }
 
       .dataset-list-panel {
@@ -692,6 +829,7 @@
       }
 
       @media (max-width: 1080px) {
+        .auth-grid,
         .admin-shell,
         .overview-grid,
         .split-panel,
@@ -710,6 +848,10 @@
           grid-template-columns: 1fr;
         }
 
+        .hero {
+          padding: 22px 18px;
+        }
+
         .entity-summary {
           flex-direction: column;
         }
@@ -720,10 +862,26 @@
 
         main {
           width: min(100vw - 18px, 1480px);
+          padding: 18px 0 48px;
         }
 
         .filter-bar {
           padding: 14px;
+        }
+
+        .auth-card,
+        .nav-card,
+        .panel {
+          padding: 18px;
+          border-radius: 20px;
+        }
+
+        .auth-step {
+          grid-template-columns: 1fr;
+        }
+
+        .actions.stack-mobile {
+          display: grid;
         }
       }
     </style>
