@@ -43,10 +43,7 @@
       <span><%= authStatus.lastRefreshError || "None" %></span>
     </div>
     <div class="actions section-spacer">
-      <form action="/admin/login" method="get">
-        <input type="hidden" name="start" value="1" />
-        <button type="submit">Reconnect Twitch</button>
-      </form>
+      <a class="button-link" href="/admin/login?start=1">Reconnect Twitch</a>
       <form action="/admin/logout" method="post">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <input type="hidden" name="_returnTo" value="/admin" />

@@ -60,10 +60,9 @@
         Use the Twitch OAuth flow below to establish the bot session for this admin. If the wrong account signs in, access is rejected after callback validation.
       </div>
 
-      <form class="auth-form" action="/admin/login" method="get">
-        <input type="hidden" name="start" value="1" />
-        <button type="submit">Log In With Twitch</button>
-      </form>
+      <div class="auth-form">
+        <a class="button-link" href="/admin/login?start=1">Log In With Twitch</a>
+      </div>
     </aside>
   </section>
 </div>
