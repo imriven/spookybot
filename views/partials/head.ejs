@@ -974,5 +974,5 @@
       }
     </style>
   </head>
-  <body data-target-theme="<%= targetTheme || 'main' %>">
+  <body data-target-theme="<%= typeof targetTheme !== 'undefined' ? targetTheme : 'main' %>">
     <main>
