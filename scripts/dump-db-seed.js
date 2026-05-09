@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 
 const DEFAULT_TABLES = [
+  "app_settings",
   "chat_commands",
   "custom_shoutouts",
   "exercises",
@@ -188,6 +189,26 @@ async function insertRows(trx, tableName, rows, chunkSize = 100) {
   }
 }
 
+async function resetSequence(trx, tableName, rows) {
+  const sequenceResult = await trx.raw(
+    "select pg_get_serial_sequence(?, 'id') as sequence_name",
+    [tableName],
+  );
+  const sequenceName = sequenceResult.rows?.[0]?.sequence_name;
+  if (!sequenceName) {
+    return;
+  }
+
+  const numericIds = rows
+    .map((row) => Number.parseInt(row.id, 10))
+    .filter((value) => Number.isInteger(value) && value > 0);
+
+  const nextValue = numericIds.length > 0 ? Math.max(...numericIds) : 1;
+  const isCalled = numericIds.length > 0;
+
+  await trx.raw("select setval(?::regclass, ?, ?)", [sequenceName, nextValue, isCalled]);
+}
+
 exports.seed = async function seed(knex) {
   const tables = Object.entries(DATA);
 
@@ -198,6 +219,7 @@ exports.seed = async function seed(knex) {
 
     for (const [tableName, rows] of tables) {
       await insertRows(trx, tableName, rows);
+      await resetSequence(trx, tableName, rows);
     }
   });
 };

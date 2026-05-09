@@ -46,6 +46,25 @@ export async function listChatCommands() {
   );
 }
 
+export async function getAppSetting(key) {
+  const row = await db("app_settings").where({ key }).first();
+  return row?.value ?? null;
+}
+
+export async function setAppSetting(key, value) {
+  const payload = {
+    key,
+    value,
+    updated_at: db.fn.now(),
+  };
+
+  return db("app_settings")
+    .insert(payload)
+    .onConflict("key")
+    .merge({ value, updated_at: db.fn.now() })
+    .returning("*");
+}
+
 export async function createTimer(timer) {
   return db("timers").insert(timer).returning("*");
 }

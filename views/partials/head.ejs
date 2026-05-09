@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= title %></title>
-    <style>
+    <style nonce="<%= cspNonce %>">
       :root {
         --bg: #09050f;
         --bg-top: #140a23;
@@ -23,6 +23,25 @@
         --warning: #e5b45d;
         --danger: #ff6d8c;
         --shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      body[data-target-theme="test"] {
+        --bg: #110709;
+        --bg-top: #2a0f12;
+        --bg-bottom: #060202;
+        --panel: rgba(39, 15, 18, 0.9);
+        --panel-strong: rgba(65, 22, 25, 0.96);
+        --panel-soft: rgba(90, 32, 28, 0.72);
+        --line: rgba(255, 133, 94, 0.22);
+        --line-strong: rgba(255, 177, 116, 0.4);
+        --text: #fff3e8;
+        --muted: #e0bda7;
+        --accent: #ff7a4f;
+        --accent-bright: #ffd06f;
+        --accent-soft: rgba(255, 122, 79, 0.16);
+        --success: #63d9a6;
+        --warning: #ffd06f;
+        --danger: #ff7f7f;
       }
 
       * {
@@ -55,6 +74,23 @@
           linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
         background-size: 24px 24px;
         mask-image: radial-gradient(circle at center, black, transparent 82%);
+      }
+
+      body[data-target-theme="test"]::before {
+        background-image:
+          linear-gradient(rgba(255, 209, 170, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 209, 170, 0.03) 1px, transparent 1px);
+      }
+
+      body[data-target-theme="test"] .hero,
+      body[data-target-theme="test"] .panel,
+      body[data-target-theme="test"] .sidebar-card,
+      body[data-target-theme="test"] .count-card,
+      body[data-target-theme="test"] .quick-link-card,
+      body[data-target-theme="test"] .create-card,
+      body[data-target-theme="test"] .filter-bar,
+      body[data-target-theme="test"] .entity {
+        background: linear-gradient(180deg, rgba(54, 20, 24, 0.94), rgba(20, 8, 11, 0.92));
       }
 
       a {
@@ -390,6 +426,46 @@
         width: 100%;
       }
 
+      .sidebar-section {
+        display: grid;
+        gap: 12px;
+      }
+
+      .sidebar-section-label {
+        font-size: 0.76rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent-bright);
+      }
+
+      .sidebar-target-card,
+      .target-banner {
+        display: grid;
+        gap: 8px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      }
+
+      .sidebar-target-card.test,
+      .target-banner.test {
+        background: linear-gradient(180deg, rgba(255, 122, 79, 0.15), rgba(102, 31, 16, 0.18));
+        border-color: rgba(255, 177, 116, 0.3);
+      }
+
+      .target-banner {
+        grid-template-columns: minmax(0, 1fr);
+        margin-bottom: 18px;
+      }
+
+      .target-banner-copy {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        align-items: center;
+      }
+
       label {
         display: grid;
         gap: 6px;
@@ -466,6 +542,10 @@
         background: linear-gradient(135deg, #39275d, #26193b);
       }
 
+      body[data-target-theme="test"] button.secondary {
+        background: linear-gradient(135deg, #5a2d24, #31150f);
+      }
+
       button.ghost {
         background: transparent;
         border: 1px solid var(--line-strong);
@@ -481,6 +561,14 @@
         flex-wrap: wrap;
         gap: 10px;
         align-items: center;
+      }
+
+      .section-spacer {
+        margin-top: 18px;
+      }
+
+      .form-spacer {
+        margin-top: 12px;
       }
 
       .actions.stack-mobile {
@@ -886,5 +974,5 @@
       }
     </style>
   </head>
-  <body>
+  <body data-target-theme="<%= targetTheme || 'main' %>">
     <main>

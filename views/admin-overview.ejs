@@ -1,4 +1,4 @@
-<%- include("partials/admin-shell-start", { title: "Spookybot Admin Overview", adminUser, activePage, navItems, csrfToken }) %>
+<%- include("partials/admin-shell-start", { title: "Spookybot Admin Overview", adminUser, activePage, navItems, csrfToken, activeTarget, availableTargets, targetTheme }) %>
 
 <section class="hero">
   <span class="badge">Overview</span>
@@ -25,6 +25,12 @@
     <div class="kv">
       <strong>Runtime</strong>
       <span><%= runtimeConnected ? "Active in-process" : "Not connected in-process" %></span>
+      <strong>Target role</strong>
+      <span><%= activeTarget.isTest ? "Test" : "Main" %></span>
+      <strong>Target login</strong>
+      <span><%= activeTarget.username %></span>
+      <strong>Target channel ID</strong>
+      <span><%= activeTarget.channelId %></span>
       <strong>Bot login</strong>
       <span><%= authStatus.currentLogin || "None" %></span>
       <strong>Display name</strong>
@@ -36,7 +42,7 @@
       <strong>Refresh error</strong>
       <span><%= authStatus.lastRefreshError || "None" %></span>
     </div>
-    <div class="actions" style="margin-top: 18px;">
+    <div class="actions section-spacer">
       <form action="/admin/login" method="get">
         <input type="hidden" name="start" value="1" />
         <button type="submit">Reconnect Twitch</button>

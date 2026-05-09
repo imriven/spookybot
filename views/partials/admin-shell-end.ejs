@@ -1,3 +1,10 @@
   </section>
 </div>
+<script nonce="<%= cspNonce %>">
+  document.querySelectorAll("[data-auto-submit]").forEach((element) => {
+    element.addEventListener("change", () => {
+      element.form?.requestSubmit();
+    });
+  });
+</script>
 <%- include("footer") %>

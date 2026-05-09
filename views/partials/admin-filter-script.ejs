@@ -1,4 +1,4 @@
-<script>
+<script nonce="<%= cspNonce %>">
   document.querySelectorAll("[data-filter-root]").forEach((root) => {
     const input = root.querySelector("[data-filter-input]");
     const cards = Array.from(root.querySelectorAll("[data-filter-card]"));

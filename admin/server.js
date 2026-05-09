@@ -491,14 +491,25 @@ function inferRedirectPath(pathname) {
   return matchedPage?.path || "/admin";
 }
 
-async function buildViewModel({ activePage, authStatus = null, contentService, csrfToken, flash, req }) {
+async function buildViewModel({
+  activePage,
+  authStatus = null,
+  contentService,
+  csrfToken,
+  flash,
+  req,
+  twitchTargetService,
+}) {
   await contentService.reload();
   const content = contentService.getAll();
   const counts = getCountsFromContent(content);
+  const activeTarget = twitchTargetService.getActiveTarget();
 
   return {
     activePage,
+    activeTarget,
     adminUser: req.session.admin,
+    availableTargets: twitchTargetService.listAvailableTargets(),
     authStatus,
     content,
     counts,
@@ -507,6 +518,7 @@ async function buildViewModel({ activePage, authStatus = null, contentService, c
     flash,
     formatDate,
     navItems: buildNavItems(counts, activePage),
+    targetTheme: activeTarget?.isTest ? "test" : "main",
   };
 }
 
@@ -516,6 +528,7 @@ export default function createAdminServer({
   sessionStore,
   timerManager,
   twitchManager,
+  twitchTargetService,
 }) {
   const app = express();
 
@@ -523,7 +536,25 @@ export default function createAdminServer({
   app.set("trust proxy", 1);
   app.set("view engine", "ejs");
   app.set("views", path.join(process.cwd(), "views"));
-  app.use(helmet({ contentSecurityPolicy: false }));
+  app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString("base64");
+    next();
+  });
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          baseUri: ["'self'"],
+          formAction: ["'self'"],
+          frameAncestors: ["'none'"],
+          imgSrc: ["'self'", "data:"],
+          objectSrc: ["'none'"],
+          scriptSrc: ["'self'", (_req, res) => `'nonce-${res.locals.cspNonce}'`],
+          styleSrc: ["'self'", (_req, res) => `'nonce-${res.locals.cspNonce}'`],
+        },
+      },
+    }),
+  );
   app.use(express.urlencoded({ extended: false, limit: "50kb" }));
   app.use(sessionStore.middleware());
 
@@ -603,6 +634,70 @@ export default function createAdminServer({
     res.redirect("/admin/login");
   });
 
+  app.post("/admin/target", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
+    const redirectTo = sanitizeReturnTo(req.body?._returnTo) || "/admin";
+    const previousTarget = twitchTargetService.getActiveTarget();
+    const nextTarget = twitchTargetService.resolveTarget(req.body?.target);
+
+    if (!nextTarget) {
+      sessionStore.setFlash(req, res, {
+        type: "error",
+        message: "Invalid Twitch target selection. No runtime changes were applied.",
+      });
+      res.redirect(redirectTo);
+      return;
+    }
+
+    if (nextTarget.key === previousTarget?.key) {
+      try {
+        await twitchTargetService.persistActiveTarget(nextTarget);
+        sessionStore.setFlash(req, res, {
+          type: "success",
+          message: `Active Twitch target remains ${nextTarget.username} / ${nextTarget.channelId}.`,
+        });
+      } catch (error) {
+        console.error("[admin:target-persist]", error);
+        sessionStore.setFlash(req, res, {
+          type: "error",
+          message: toUserMessage(error, "Unable to persist the active Twitch target."),
+        });
+      }
+
+      res.redirect(redirectTo);
+      return;
+    }
+
+    try {
+      await twitchManager.switchTarget(nextTarget);
+      await twitchTargetService.persistActiveTarget(nextTarget);
+      sessionStore.setFlash(req, res, {
+        type: "success",
+        message: `Switched active Twitch target to ${nextTarget.username} / ${nextTarget.channelId}.`,
+      });
+    } catch (error) {
+      console.error("[admin:target-switch]", error);
+
+      try {
+        if (previousTarget) {
+          await twitchManager.switchTarget(previousTarget);
+        }
+      } catch (rollbackError) {
+        console.error("[admin:target-switch:rollback]", rollbackError);
+      }
+
+      twitchTargetService.setActiveTarget(previousTarget);
+      sessionStore.setFlash(req, res, {
+        type: "error",
+        message: toUserMessage(
+          error,
+          `Unable to switch Twitch target. The runtime stayed on ${previousTarget.username} / ${previousTarget.channelId}.`,
+        ),
+      });
+    }
+
+    res.redirect(redirectTo);
+  });
+
   app.get("/admin", requireAdmin(sessionStore), async (req, res) => {
     const csrfToken = sessionStore.getCsrfToken(req, res);
     const flash = sessionStore.consumeFlash(req, res);
@@ -614,6 +709,7 @@ export default function createAdminServer({
         csrfToken,
         flash,
         req,
+        twitchTargetService,
       }),
     ]);
 
@@ -632,6 +728,7 @@ export default function createAdminServer({
         csrfToken: sessionStore.getCsrfToken(req, res),
         flash: sessionStore.consumeFlash(req, res),
         req,
+        twitchTargetService,
       });
 
       res.render("admin-dataset", {

@@ -1,6 +1,13 @@
-<%- include("head", { title }) %>
+<%- include("head", { title, targetTheme }) %>
 <div class="admin-shell">
   <aside class="admin-sidebar">
-    <%- include("admin-sidebar", { adminUser, activePage, navItems, csrfToken }) %>
+    <%- include("admin-sidebar", { adminUser, activePage, navItems, csrfToken, activeTarget, availableTargets }) %>
   </aside>
   <section class="admin-main">
+    <section class="target-banner <%= activeTarget?.isTest ? 'test' : 'main' %>">
+      <div class="target-banner-copy">
+        <span class="badge"><%= activeTarget?.isTest ? "Test Target" : "Main Target" %></span>
+        <strong><%= activeTarget?.label || activeTarget?.username %></strong>
+        <span class="muted">#<%= activeTarget?.username %> · <%= activeTarget?.channelId %></span>
+      </div>
+    </section>

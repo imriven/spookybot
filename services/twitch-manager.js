@@ -54,9 +54,10 @@ function exposedError(message) {
 }
 
 export default class TwitchManager {
-  constructor({ contentService, state, onConnectionChange }) {
+  constructor({ contentService, state, twitchTargetService, onConnectionChange }) {
     this.contentService = contentService;
     this.state = state;
+    this.twitchTargetService = twitchTargetService;
     this.onConnectionChange = onConnectionChange;
     this.apiClient = null;
     this.chatClient = null;
@@ -68,8 +69,18 @@ export default class TwitchManager {
     };
   }
 
+  getActiveTarget() {
+    return this.twitchTargetService.getActiveTarget();
+  }
+
   getBotUserId() {
     return this.botUser?.id ?? config.twitchBotId;
+  }
+
+  buildConnectedDetail(botLogin = this.botUser?.login) {
+    const target = this.getActiveTarget();
+    const channelLabel = target?.username ? ` in #${target.username}` : "";
+    return `Connected as ${botLogin ?? config.twitchBotUsername}${channelLabel}`;
   }
 
   getAuthorizeUrl(state) {
@@ -183,7 +194,7 @@ export default class TwitchManager {
           await clearRefreshError();
           this.runtimeStatus = {
             kind: "connected",
-            detail: `Connected as ${botUser.login}`,
+            detail: this.buildConnectedDetail(botUser.login),
           };
         },
       });
@@ -197,25 +208,7 @@ export default class TwitchManager {
       }
 
       const apiClient = new ApiClient({ authProvider });
-      const chatClient = new ChatClient({
-        authProvider,
-        channels: [config.twitchChannelUsername],
-      });
-
-      registerChatHandlers(chatClient, {
-        contentService: this.contentService,
-        state: this.state,
-        onTitleChange: async (title) => {
-          if (!title) {
-            throw new Error("Title cannot be empty.");
-          }
-          await this.executeWithApi("change-title", (client) =>
-            client.channels.updateChannelInfo(config.twitchChannelId, { title }),
-          );
-        },
-      });
-
-      await chatClient.connect();
+      const chatClient = await this.connectChatClient(authProvider);
 
       this.authProvider = authProvider;
       this.apiClient = apiClient;
@@ -223,7 +216,7 @@ export default class TwitchManager {
       this.botUser = botUser;
       this.runtimeStatus = {
         kind: "connected",
-        detail: `Connected as ${botUser.login}`,
+        detail: this.buildConnectedDetail(botUser.login),
       };
       await clearRefreshError();
       await this.notifyConnectionChange();
@@ -238,6 +231,37 @@ export default class TwitchManager {
     }
   }
 
+  createChatClient(authProvider) {
+    const target = this.getActiveTarget();
+    const chatClient = new ChatClient({
+      authProvider,
+      channels: [target.username],
+    });
+
+    registerChatHandlers(chatClient, {
+      contentService: this.contentService,
+      state: this.state,
+      onTitleChange: async (title) => {
+        if (!title) {
+          throw new Error("Title cannot be empty.");
+        }
+
+        const activeTarget = this.getActiveTarget();
+        await this.executeWithApi("change-title", (client) =>
+          client.channels.updateChannelInfo(activeTarget.channelId, { title }),
+        );
+      },
+    });
+
+    return chatClient;
+  }
+
+  async connectChatClient(authProvider) {
+    const chatClient = this.createChatClient(authProvider);
+    await chatClient.connect();
+    return chatClient;
+  }
+
   async notifyConnectionChange() {
     if (this.onConnectionChange) {
       await this.onConnectionChange({
@@ -248,22 +272,80 @@ export default class TwitchManager {
     }
   }
 
-  async disconnect() {
-    if (this.chatClient) {
-      try {
-        if (typeof this.chatClient.quit === "function") {
-          await this.chatClient.quit();
-        } else if (typeof this.chatClient.disconnect === "function") {
-          await this.chatClient.disconnect();
-        }
-      } catch (error) {
-        console.error("[twitch:disconnect]", error);
-      }
+  async disconnectChatClient() {
+    if (!this.chatClient) {
+      return;
     }
 
-    this.apiClient = null;
+    try {
+      if (typeof this.chatClient.quit === "function") {
+        await this.chatClient.quit();
+      } else if (typeof this.chatClient.disconnect === "function") {
+        await this.chatClient.disconnect();
+      }
+    } catch (error) {
+      console.error("[twitch:disconnect]", error);
+    }
+
     this.chatClient = null;
+  }
+
+  async disconnect() {
+    await this.disconnectChatClient();
+    this.apiClient = null;
     this.authProvider = null;
+  }
+
+  async switchTarget(nextTarget) {
+    const target = nextTarget ? this.twitchTargetService.setActiveTarget(nextTarget) : this.getActiveTarget();
+    const storedToken = await getStoredToken();
+
+    if (!storedToken) {
+      this.runtimeStatus = {
+        kind: "not_connected",
+        detail: `No saved Twitch token. Active target set to #${target.username}.`,
+      };
+      await this.notifyConnectionChange();
+      return {
+        target,
+        runtimeConnected: false,
+      };
+    }
+
+    if (!this.authProvider || !this.apiClient || !this.botUser) {
+      const initialized = await this.initializeFromStoredToken();
+      if (!initialized) {
+        throw exposedError(`Unable to connect Twitch runtime for #${target.username}.`);
+      }
+
+      return {
+        target,
+        runtimeConnected: true,
+      };
+    }
+
+    await this.disconnectChatClient();
+
+    try {
+      const chatClient = await this.connectChatClient(this.authProvider);
+      this.chatClient = chatClient;
+      this.runtimeStatus = {
+        kind: "connected",
+        detail: this.buildConnectedDetail(),
+      };
+      await this.notifyConnectionChange();
+
+      return {
+        target,
+        runtimeConnected: true,
+      };
+    } catch (error) {
+      console.error("[twitch:switch-target]", error);
+      if (isAuthFailure(error)) {
+        await this.markAuthFailure(error);
+      }
+      throw exposedError(`Failed to switch Twitch chat to #${target.username}.`);
+    }
   }
 
   async executeWithApi(label, operation) {
@@ -299,12 +381,15 @@ export default class TwitchManager {
   }
 
   async say(channel, message) {
-    if (!this.chatClient || !message) {
+    const resolvedChannel = message === undefined ? this.getActiveTarget()?.username : channel;
+    const resolvedMessage = message === undefined ? channel : message;
+
+    if (!this.chatClient || !resolvedMessage) {
       return;
     }
 
     try {
-      await this.chatClient.say(channel, message);
+      await this.chatClient.say(resolvedChannel, resolvedMessage);
     } catch (error) {
       console.error("[twitch:say]", error);
       if (isAuthFailure(error)) {

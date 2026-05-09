@@ -6,6 +6,33 @@
     <div class="meta"><%= adminUser.login %></div>
   </div>
 
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Twitch Target</div>
+    <div class="sidebar-target-card <%= activeTarget?.isTest ? 'test' : 'main' %>">
+      <div class="actions">
+        <span class="pill <%= activeTarget?.isTest ? 'disabled' : 'live' %>"><%= activeTarget?.isTest ? "Test" : "Main" %></span>
+      </div>
+      <strong><%= activeTarget?.label || activeTarget?.username %></strong>
+      <div class="muted">#<%= activeTarget?.username %></div>
+      <div class="meta"><%= activeTarget?.channelId %></div>
+    </div>
+    <form action="/admin/target" method="post" class="stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input type="hidden" name="_returnTo" value="<%= navItems.find((item) => item.active)?.path || '/admin' %>" />
+      <label>
+        Active target
+        <select name="target" data-auto-submit>
+          <% availableTargets.forEach((target) => { %>
+            <option value="<%= target.key %>" <%= activeTarget?.key === target.key ? "selected" : "" %>>
+              <%= target.isTest ? "Test" : "Main" %> · <%= target.username %> · <%= target.channelId %>
+            </option>
+          <% }) %>
+        </select>
+      </label>
+      <div class="field-note">Switches immediately for every authenticated admin session.</div>
+    </form>
+  </div>
+
   <nav class="sidebar-nav" aria-label="Admin sections">
     <% navItems.forEach((item) => { %>
       <a class="nav-link <%= item.active ? 'active' : '' %>" href="<%= item.path %>">

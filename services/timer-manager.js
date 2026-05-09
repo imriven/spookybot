@@ -3,16 +3,21 @@ import { isValidTimerInterval } from "../config/runtime-limits.js";
 import { getOrdinalNum, msToTime } from "../utils.js";
 
 export default class TimerManager {
-  constructor({ contentService, discordClient, redisClient, state, twitchManager }) {
+  constructor({ contentService, discordClient, redisClient, state, twitchManager, twitchTargetService }) {
     this.contentService = contentService;
     this.discordClient = discordClient;
     this.redisClient = redisClient;
     this.state = state;
     this.twitchManager = twitchManager;
+    this.twitchTargetService = twitchTargetService;
     this.apiClient = null;
     this.chatClient = null;
     this.backgroundIntervals = [];
     this.dynamicIntervals = new Map();
+  }
+
+  getActiveTarget() {
+    return this.twitchTargetService.getActiveTarget();
   }
 
   async start() {
@@ -39,6 +44,10 @@ export default class TimerManager {
   async setTwitchClients({ apiClient, chatClient }) {
     this.apiClient = apiClient;
     this.chatClient = chatClient;
+    this.state.followers = null;
+    this.state.numChatters = 0;
+    this.state.numViewers = 0;
+    this.state.isLive = false;
     await this.syncDynamicTimers();
     await this.syncStreamerNotifications();
     await this.checkIfLive();
@@ -47,6 +56,9 @@ export default class TimerManager {
   async clearTwitchClients() {
     this.apiClient = null;
     this.chatClient = null;
+    this.state.followers = null;
+    this.state.numChatters = 0;
+    this.state.numViewers = 0;
     this.state.isLive = false;
     this.clearDynamicIntervals();
   }
@@ -69,8 +81,9 @@ export default class TimerManager {
       return;
     }
 
+    const activeTarget = this.getActiveTarget();
     const stream = await this.executeWithApi("check-live", (client) =>
-      client.streams.getStreamByUserId(config.twitchChannelId),
+      client.streams.getStreamByUserId(activeTarget.channelId),
     );
 
     const isLive = Boolean(stream);
@@ -124,7 +137,7 @@ export default class TimerManager {
 
     timers.forEach((timer) => {
       this.registerDynamicInterval(timer.name, timer.intervalMs, async () => {
-        await this.twitchManager.say(timer.channel || config.twitchChannelUsername, timer.message);
+        await this.twitchManager.say(timer.channel || this.getActiveTarget().username, timer.message);
       });
     });
 
@@ -135,18 +148,19 @@ export default class TimerManager {
     this.registerDynamicInterval("fact", 4800000, async () => {
       const fact = this.contentService.getRandomFact();
       if (fact) {
-        await this.twitchManager.say(config.twitchChannelUsername, fact);
+        await this.twitchManager.say(this.getActiveTarget().username, fact);
       }
     });
 
     this.registerDynamicInterval("cvu", 3600000, async () => {
+      const activeTarget = this.getActiveTarget();
       const currentChatters = await this.twitchManager.executeAsBotUser("chatters", (client) =>
-        client.chat.getChattersPaginated(config.twitchChannelId).getAll(),
+        client.chat.getChattersPaginated(activeTarget.channelId).getAll(),
       );
       const currentViewersStream =
         stream
         || await this.executeWithApi("viewer-count", (client) =>
-          client.streams.getStreamByUserId(config.twitchChannelId),
+          client.streams.getStreamByUserId(activeTarget.channelId),
         );
 
       if (!currentViewersStream) {
@@ -162,7 +176,7 @@ export default class TimerManager {
       const streamTime = Math.abs(currentDate.getTime() - twitchTime);
 
       await this.twitchManager.say(
-        config.twitchChannelUsername,
+        activeTarget.username,
         `stream time: ${msToTime(streamTime)}, chatters: ${chatterCount} (${chatterDiff}) viewers: ${viewerCount} (${viewerDiff})`,
       );
 
@@ -238,8 +252,9 @@ export default class TimerManager {
       return;
     }
 
+    const activeTarget = this.getActiveTarget();
     const fetchedFollowers = await this.twitchManager.executeAsBotUser("followers", async (client) => {
-      const paginator = client.channels.getChannelFollowersPaginated(config.twitchChannelId);
+      const paginator = client.channels.getChannelFollowersPaginated(activeTarget.channelId);
       const followers = await paginator.getAll();
       return followers.map((follower) => follower.userName ?? follower.name).filter(Boolean);
     });

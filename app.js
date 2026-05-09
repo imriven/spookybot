@@ -9,12 +9,15 @@ import { prepareDatabase } from "./services/bootstrap-data.js";
 import ContentService from "./services/content-service.js";
 import TimerManager from "./services/timer-manager.js";
 import TwitchManager from "./services/twitch-manager.js";
+import TwitchTargetService from "./services/twitch-target-service.js";
 
 await prepareDatabase();
 
 const state = new BotState();
 const sessionStore = new SessionStore();
 const contentService = new ContentService();
+const twitchTargetService = new TwitchTargetService();
+await twitchTargetService.initialize();
 await contentService.reload();
 
 const discordClient = await DiscordClient();
@@ -24,6 +27,7 @@ let timerManager = null;
 const twitchManager = new TwitchManager({
   contentService,
   state,
+  twitchTargetService,
   onConnectionChange: async ({ apiClient, chatClient }) => {
     if (!timerManager) {
       return;
@@ -44,6 +48,7 @@ timerManager = new TimerManager({
   redisClient,
   state,
   twitchManager,
+  twitchTargetService,
 });
 
 await timerManager.start();
@@ -55,6 +60,7 @@ const adminApp = createAdminServer({
   sessionStore,
   timerManager,
   twitchManager,
+  twitchTargetService,
 });
 
 const server = http.createServer(adminApp);

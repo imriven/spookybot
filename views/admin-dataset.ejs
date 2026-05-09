@@ -1,4 +1,4 @@
-<%- include("partials/admin-shell-start", { title: `Spookybot Admin ${page.title}`, adminUser, activePage, navItems, csrfToken }) %>
+<%- include("partials/admin-shell-start", { title: `Spookybot Admin ${page.title}`, adminUser, activePage, navItems, csrfToken, activeTarget, availableTargets, targetTheme }) %>
 
 <section class="hero hero-compact">
   <span class="badge">Dataset</span>
@@ -330,7 +330,7 @@
                       <button type="submit">Save Timer</button>
                     </div>
                   </form>
-                  <form action="/admin/timers/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/timers/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Timer</button>
@@ -355,7 +355,7 @@
                       <button type="submit">Save Streamer</button>
                     </div>
                   </form>
-                  <form action="/admin/streamers/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/streamers/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Streamer</button>
@@ -373,7 +373,7 @@
                       <button type="submit">Save Shoutout</button>
                     </div>
                   </form>
-                  <form action="/admin/shoutouts/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/shoutouts/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Shoutout</button>
@@ -391,7 +391,7 @@
                       <button type="submit">Save Fact</button>
                     </div>
                   </form>
-                  <form action="/admin/facts/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/facts/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Fact</button>
@@ -410,7 +410,7 @@
                       <button type="submit">Save Tip</button>
                     </div>
                   </form>
-                  <form action="/admin/tips/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/tips/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Tip</button>
@@ -428,7 +428,7 @@
                       <button type="submit">Save Exercise</button>
                     </div>
                   </form>
-                  <form action="/admin/exercises/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/exercises/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Exercise</button>
@@ -468,7 +468,7 @@
                       <button type="submit">Save Command</button>
                     </div>
                   </form>
-                  <form action="/admin/commands/<%= record.id %>/delete" method="post" style="margin-top: 12px;">
+                  <form action="/admin/commands/<%= record.id %>/delete" method="post" class="form-spacer">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
                     <input type="hidden" name="_returnTo" value="<%= page.path %>" />
                     <button class="danger" type="submit">Delete Command</button>

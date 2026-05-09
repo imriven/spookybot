@@ -7,6 +7,7 @@
     "scripts": {
         "start": "node app.js",
         "dump:seed": "node scripts/dump-db-seed.js",
+        "restore:seed": "node scripts/restore-db-seed.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
