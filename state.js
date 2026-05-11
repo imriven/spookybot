@@ -8,7 +8,6 @@ export default class BotState {
     this._twitchTimers = {};
     this._isLive = false;
     this._followers = null;
-    this._liveStreamers = {};
   }
 
   set mods(mods) {
@@ -97,17 +96,5 @@ export default class BotState {
 
   deleteTwitchTimer(timerName) {
     delete this._twitchTimers[timerName];
-  }
-
-  get liveStreamers() {
-    return this._liveStreamers;
-  }
-
-  addLiveStreamer(streamerName, messageId) {
-    this._liveStreamers[streamerName] = messageId;
-  }
-
-  deleteLiveStreamer(streamerName) {
-    delete this._liveStreamers[streamerName];
   }
 }

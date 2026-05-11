@@ -8,24 +8,48 @@ export async function listTimers() {
   return db("timers").orderBy("sort_order", "asc").orderBy("id", "asc");
 }
 
+export async function getTimerById(id) {
+  return db("timers").where({ id }).first();
+}
+
 export async function listStreamerNotifications() {
   return db("streamer_notifications").orderBy("twitch_name", "asc").orderBy("id", "asc");
+}
+
+export async function getStreamerNotificationById(id) {
+  return db("streamer_notifications").where({ id }).first();
 }
 
 export async function listCustomShoutouts() {
   return db("custom_shoutouts").orderBy("name", "asc").orderBy("id", "asc");
 }
 
+export async function getCustomShoutoutById(id) {
+  return db("custom_shoutouts").where({ id }).first();
+}
+
 export async function listFacts() {
   return orderBy(db("facts").select("id", "content", "enabled", "sort_order", "updated_at"));
+}
+
+export async function getFactById(id) {
+  return db("facts").where({ id }).first();
 }
 
 export async function listTips() {
   return orderBy(db("tips").select("id", "title", "content", "enabled", "sort_order", "updated_at"));
 }
 
+export async function getTipById(id) {
+  return db("tips").where({ id }).first();
+}
+
 export async function listExercises() {
   return orderBy(db("exercises").select("id", "exercise", "enabled", "sort_order", "updated_at"));
+}
+
+export async function getExerciseById(id) {
+  return db("exercises").where({ id }).first();
 }
 
 export async function listChatCommands() {
@@ -44,6 +68,10 @@ export async function listChatCommands() {
       "updated_at",
     ),
   );
+}
+
+export async function getChatCommandById(id) {
+  return db("chat_commands").where({ id }).first();
 }
 
 export async function getAppSetting(key) {

@@ -2,6 +2,7 @@ import crypto from "crypto";
 import path from "path";
 import express from "express";
 import helmet from "helmet";
+import { logInfo } from "../logger.js";
 import * as adminRepository from "../repositories/admin-repository.js";
 import {
   isValidTimerInterval,
@@ -23,6 +24,78 @@ function toBoolean(value) {
 function toInteger(value, fallback = 0) {
   const parsed = Number.parseInt(value ?? "", 10);
   return Number.isNaN(parsed) ? fallback : parsed;
+}
+
+function takeFirst(result) {
+  return Array.isArray(result) ? (result[0] ?? null) : (result ?? null);
+}
+
+function getAdminActor(req) {
+  return req.session?.admin?.login ?? req.session?.admin?.displayName ?? "unknown";
+}
+
+function summarizeTimer(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    name: record?.name,
+    channel: record?.channel,
+    enabled: record?.enabled,
+    liveOnly: record?.live_only,
+    intervalMs: record?.interval_ms,
+  };
+}
+
+function summarizeStreamer(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    twitchName: record?.twitch_name,
+    discordChannelId: record?.discord_channel_id,
+    enabled: record?.enabled,
+  };
+}
+
+function summarizeShoutout(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    name: record?.name,
+    enabled: record?.enabled,
+  };
+}
+
+function summarizeFact(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    enabled: record?.enabled,
+    sortOrder: record?.sort_order,
+  };
+}
+
+function summarizeTip(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    title: record?.title,
+    enabled: record?.enabled,
+    sortOrder: record?.sort_order,
+  };
+}
+
+function summarizeExercise(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    enabled: record?.enabled,
+    sortOrder: record?.sort_order,
+  };
+}
+
+function summarizeChatCommand(record, fallbackId = null) {
+  return {
+    id: record?.id ?? fallbackId,
+    name: record?.name,
+    handler: record?.handler,
+    enabled: record?.enabled,
+    listed: record?.listed,
+    requiresPrivilege: record?.requires_privilege,
+  };
 }
 
 function requireAdmin(sessionStore) {
@@ -742,11 +815,17 @@ export default function createAdminServer({
     });
   });
 
-  async function handleMutation(req, res, action, successMessage, fallbackRedirect) {
+  async function handleMutation(req, res, action, successMessage, fallbackRedirect, logEvent = null) {
     const redirectTo = sanitizeReturnTo(req.body?._returnTo) || fallbackRedirect;
 
     try {
-      await action();
+      const mutationDetails = await action();
+      if (logEvent) {
+        logInfo(logEvent, {
+          actor: getAdminActor(req),
+          ...mutationDetails,
+        });
+      }
       await timerManager.handleContentReload();
       sessionStore.setFlash(req, res, {
         type: "success",
@@ -767,45 +846,58 @@ export default function createAdminServer({
     await handleMutation(req, res, async () => {
       const timer = normalizeTimer(req.body);
       validateTimer(timer);
-      await adminRepository.createTimer(timer);
-    }, "Timer created.", "/admin/timers");
+      const created = takeFirst(await adminRepository.createTimer(timer));
+      return summarizeTimer(created);
+    }, "Timer created.", "/admin/timers", "admin.timer.created");
   });
 
   app.post("/admin/timers/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const timer = normalizeTimer(req.body);
       validateTimer(timer);
-      await adminRepository.updateTimer(req.params.id, timer);
-    }, "Timer updated.", "/admin/timers");
+      const updated = takeFirst(await adminRepository.updateTimer(req.params.id, timer));
+      return summarizeTimer(updated, req.params.id);
+    }, "Timer updated.", "/admin/timers", "admin.timer.updated");
   });
 
   app.post("/admin/timers/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteTimer(req.params.id), "Timer deleted.", "/admin/timers");
+    await handleMutation(req, res, async () => {
+      const existing = await adminRepository.getTimerById(req.params.id);
+      await adminRepository.deleteTimer(req.params.id);
+      return summarizeTimer(existing, req.params.id);
+    }, "Timer deleted.", "/admin/timers", "admin.timer.deleted");
   });
 
   app.post("/admin/streamers", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const streamer = normalizeStreamer(req.body);
       validateRequired([["twitch_name", streamer.twitch_name]]);
-      await adminRepository.createStreamerNotification(streamer);
-    }, "Streamer notification created.", "/admin/streamers");
+      const created = takeFirst(await adminRepository.createStreamerNotification(streamer));
+      return summarizeStreamer(created);
+    }, "Streamer notification created.", "/admin/streamers", "admin.streamer.created");
   });
 
   app.post("/admin/streamers/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const streamer = normalizeStreamer(req.body);
       validateRequired([["twitch_name", streamer.twitch_name]]);
-      await adminRepository.updateStreamerNotification(req.params.id, streamer);
-    }, "Streamer notification updated.", "/admin/streamers");
+      const updated = takeFirst(await adminRepository.updateStreamerNotification(req.params.id, streamer));
+      return summarizeStreamer(updated, req.params.id);
+    }, "Streamer notification updated.", "/admin/streamers", "admin.streamer.updated");
   });
 
   app.post("/admin/streamers/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(
       req,
       res,
-      () => adminRepository.deleteStreamerNotification(req.params.id),
+      async () => {
+        const existing = await adminRepository.getStreamerNotificationById(req.params.id);
+        await adminRepository.deleteStreamerNotification(req.params.id);
+        return summarizeStreamer(existing, req.params.id);
+      },
       "Streamer notification deleted.",
       "/admin/streamers",
+      "admin.streamer.deleted",
     );
   });
 
@@ -816,8 +908,9 @@ export default function createAdminServer({
         ["name", shoutout.name],
         ["message", shoutout.message],
       ]);
-      await adminRepository.createCustomShoutout(shoutout);
-    }, "Custom shoutout created.", "/admin/shoutouts");
+      const created = takeFirst(await adminRepository.createCustomShoutout(shoutout));
+      return summarizeShoutout(created);
+    }, "Custom shoutout created.", "/admin/shoutouts", "admin.shoutout.created");
   });
 
   app.post("/admin/shoutouts/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -827,17 +920,23 @@ export default function createAdminServer({
         ["name", shoutout.name],
         ["message", shoutout.message],
       ]);
-      await adminRepository.updateCustomShoutout(req.params.id, shoutout);
-    }, "Custom shoutout updated.", "/admin/shoutouts");
+      const updated = takeFirst(await adminRepository.updateCustomShoutout(req.params.id, shoutout));
+      return summarizeShoutout(updated, req.params.id);
+    }, "Custom shoutout updated.", "/admin/shoutouts", "admin.shoutout.updated");
   });
 
   app.post("/admin/shoutouts/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(
       req,
       res,
-      () => adminRepository.deleteCustomShoutout(req.params.id),
+      async () => {
+        const existing = await adminRepository.getCustomShoutoutById(req.params.id);
+        await adminRepository.deleteCustomShoutout(req.params.id);
+        return summarizeShoutout(existing, req.params.id);
+      },
       "Custom shoutout deleted.",
       "/admin/shoutouts",
+      "admin.shoutout.deleted",
     );
   });
 
@@ -845,20 +944,26 @@ export default function createAdminServer({
     await handleMutation(req, res, async () => {
       const fact = normalizeFact(req.body);
       validateRequired([["content", fact.content]]);
-      await adminRepository.createFact(fact);
-    }, "Fact created.", "/admin/facts");
+      const created = takeFirst(await adminRepository.createFact(fact));
+      return summarizeFact(created);
+    }, "Fact created.", "/admin/facts", "admin.fact.created");
   });
 
   app.post("/admin/facts/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const fact = normalizeFact(req.body);
       validateRequired([["content", fact.content]]);
-      await adminRepository.updateFact(req.params.id, fact);
-    }, "Fact updated.", "/admin/facts");
+      const updated = takeFirst(await adminRepository.updateFact(req.params.id, fact));
+      return summarizeFact(updated, req.params.id);
+    }, "Fact updated.", "/admin/facts", "admin.fact.updated");
   });
 
   app.post("/admin/facts/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteFact(req.params.id), "Fact deleted.", "/admin/facts");
+    await handleMutation(req, res, async () => {
+      const existing = await adminRepository.getFactById(req.params.id);
+      await adminRepository.deleteFact(req.params.id);
+      return summarizeFact(existing, req.params.id);
+    }, "Fact deleted.", "/admin/facts", "admin.fact.deleted");
   });
 
   app.post("/admin/tips", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -868,8 +973,9 @@ export default function createAdminServer({
         ["title", tip.title],
         ["content", tip.content],
       ]);
-      await adminRepository.createTip(tip);
-    }, "Tip created.", "/admin/tips");
+      const created = takeFirst(await adminRepository.createTip(tip));
+      return summarizeTip(created);
+    }, "Tip created.", "/admin/tips", "admin.tip.created");
   });
 
   app.post("/admin/tips/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
@@ -879,37 +985,49 @@ export default function createAdminServer({
         ["title", tip.title],
         ["content", tip.content],
       ]);
-      await adminRepository.updateTip(req.params.id, tip);
-    }, "Tip updated.", "/admin/tips");
+      const updated = takeFirst(await adminRepository.updateTip(req.params.id, tip));
+      return summarizeTip(updated, req.params.id);
+    }, "Tip updated.", "/admin/tips", "admin.tip.updated");
   });
 
   app.post("/admin/tips/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteTip(req.params.id), "Tip deleted.", "/admin/tips");
+    await handleMutation(req, res, async () => {
+      const existing = await adminRepository.getTipById(req.params.id);
+      await adminRepository.deleteTip(req.params.id);
+      return summarizeTip(existing, req.params.id);
+    }, "Tip deleted.", "/admin/tips", "admin.tip.deleted");
   });
 
   app.post("/admin/exercises", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const exercise = normalizeExercise(req.body);
       validateRequired([["exercise", exercise.exercise]]);
-      await adminRepository.createExercise(exercise);
-    }, "Exercise created.", "/admin/exercises");
+      const created = takeFirst(await adminRepository.createExercise(exercise));
+      return summarizeExercise(created);
+    }, "Exercise created.", "/admin/exercises", "admin.exercise.created");
   });
 
   app.post("/admin/exercises/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const exercise = normalizeExercise(req.body);
       validateRequired([["exercise", exercise.exercise]]);
-      await adminRepository.updateExercise(req.params.id, exercise);
-    }, "Exercise updated.", "/admin/exercises");
+      const updated = takeFirst(await adminRepository.updateExercise(req.params.id, exercise));
+      return summarizeExercise(updated, req.params.id);
+    }, "Exercise updated.", "/admin/exercises", "admin.exercise.updated");
   });
 
   app.post("/admin/exercises/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(
       req,
       res,
-      () => adminRepository.deleteExercise(req.params.id),
+      async () => {
+        const existing = await adminRepository.getExerciseById(req.params.id);
+        await adminRepository.deleteExercise(req.params.id);
+        return summarizeExercise(existing, req.params.id);
+      },
       "Exercise deleted.",
       "/admin/exercises",
+      "admin.exercise.deleted",
     );
   });
 
@@ -917,20 +1035,26 @@ export default function createAdminServer({
     await handleMutation(req, res, async () => {
       const command = normalizeChatCommand(req.body);
       validateChatCommand(command);
-      await adminRepository.createChatCommand(command);
-    }, "Command created.", "/admin/commands");
+      const created = takeFirst(await adminRepository.createChatCommand(command));
+      return summarizeChatCommand(created);
+    }, "Command created.", "/admin/commands", "admin.command.created");
   });
 
   app.post("/admin/commands/:id", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
     await handleMutation(req, res, async () => {
       const command = normalizeChatCommand(req.body);
       validateChatCommand(command);
-      await adminRepository.updateChatCommand(req.params.id, command);
-    }, "Command updated.", "/admin/commands");
+      const updated = takeFirst(await adminRepository.updateChatCommand(req.params.id, command));
+      return summarizeChatCommand(updated, req.params.id);
+    }, "Command updated.", "/admin/commands", "admin.command.updated");
   });
 
   app.post("/admin/commands/:id/delete", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
-    await handleMutation(req, res, () => adminRepository.deleteChatCommand(req.params.id), "Command deleted.", "/admin/commands");
+    await handleMutation(req, res, async () => {
+      const existing = await adminRepository.getChatCommandById(req.params.id);
+      await adminRepository.deleteChatCommand(req.params.id);
+      return summarizeChatCommand(existing, req.params.id);
+    }, "Command deleted.", "/admin/commands", "admin.command.deleted");
   });
 
   return app;

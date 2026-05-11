@@ -1,3 +1,5 @@
+import { logInfo } from "../logger.js";
+
 function say(client, channel, message) {
   return client.say(channel, message);
 }
@@ -98,6 +100,11 @@ function counter(client, channel, tags, state, message) {
 
     if (operation === "delete") {
       state.deleteCounter(counterName);
+      logInfo("twitch.counter.deleted", {
+        channel,
+        counterName,
+        actor: tags.username,
+      });
       say(client, channel, `Counter ${counterName} has been deleted.`);
       return;
     }
@@ -126,6 +133,12 @@ function counter(client, channel, tags, state, message) {
 
   if (!splitMessage[2]) {
     state.setCounter(counterName, { value: 0, creator: tags.username });
+    logInfo("twitch.counter.created", {
+      channel,
+      counterName,
+      actor: tags.username,
+      initialValue: 0,
+    });
     say(client, channel, `Counter ${counterName} created by ${tags.username}.`);
     return;
   }
@@ -138,6 +151,12 @@ function counter(client, channel, tags, state, message) {
     }
 
     state.setCounter(counterName, { value: initialValue, creator: tags.username });
+    logInfo("twitch.counter.created", {
+      channel,
+      counterName,
+      actor: tags.username,
+      initialValue,
+    });
     say(client, channel, `Counter ${counterName} created by ${tags.username}.`);
     return;
   }
@@ -221,7 +240,13 @@ export function registerChatHandlers(chatClient, { contentService, state, onTitl
         break;
       case "title_update":
         try {
-          await onTitleChange(message.split(" ").slice(1).join(" ").trim());
+          const nextTitle = message.split(" ").slice(1).join(" ").trim();
+          await onTitleChange(nextTitle);
+          logInfo("twitch.title.updated", {
+            channel,
+            actor: user,
+            title: nextTitle,
+          });
           await say(chatClient, channel, "Stream title updated.");
         } catch (error) {
           await say(chatClient, channel, `Title update failed: ${error.message}`);

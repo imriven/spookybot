@@ -1,6 +1,18 @@
+import { randomUUID } from "crypto";
 import config from "../config/appConfig.js";
 import { isValidTimerInterval } from "../config/runtime-limits.js";
+import { logInfo } from "../logger.js";
+import {
+  claimAnnouncementDelete,
+  claimAnnouncementSend,
+  listActiveAnnouncements,
+  markAnnouncementEnded,
+  markPendingAnnouncementEnded,
+  markAnnouncementSent,
+} from "../repositories/stream-live-announcement-repository.js";
 import { getOrdinalNum, msToTime } from "../utils.js";
+
+const STREAM_NOTIFICATION_CLAIM_TTL_MS = 5 * 60 * 1000;
 
 export default class TimerManager {
   constructor({ contentService, discordClient, redisClient, state, twitchManager, twitchTargetService }) {
@@ -14,6 +26,7 @@ export default class TimerManager {
     this.chatClient = null;
     this.backgroundIntervals = [];
     this.dynamicIntervals = new Map();
+    this.instanceId = randomUUID();
   }
 
   getActiveTarget() {
@@ -137,6 +150,12 @@ export default class TimerManager {
 
     timers.forEach((timer) => {
       this.registerDynamicInterval(timer.name, timer.intervalMs, async () => {
+        logInfo("timer.fire", {
+          name: timer.name,
+          channel: timer.channel || this.getActiveTarget().username,
+          intervalMs: timer.intervalMs,
+          liveOnly: timer.liveOnly,
+        });
         await this.twitchManager.say(timer.channel || this.getActiveTarget().username, timer.message);
       });
     });
@@ -191,16 +210,18 @@ export default class TimerManager {
     }
 
     const streamers = this.contentService.getEnabledStreamerNotifications();
-    if (streamers.length === 0) {
-      return;
-    }
-
-    const streamerNames = streamers.map((streamer) => streamer.twitchName.toLowerCase());
-    const streams = await this.executeWithApi("streamer-notifications", (client) =>
-      client.streams.getStreamsByUserNames(streamerNames),
+    const trackedStreamersByName = new Map(
+      streamers.map((streamer) => [streamer.twitchName.toLowerCase(), streamer]),
     );
+    const streamerNames = [...trackedStreamersByName.keys()];
+    const streams = streamerNames.length > 0
+      ? await this.executeWithApi("streamer-notifications", (client) =>
+        client.streams.getStreamsByUserNames(streamerNames),
+      )
+      : [];
 
     const nowStreaming = new Set();
+    const staleBefore = new Date(Date.now() - STREAM_NOTIFICATION_CLAIM_TTL_MS);
     for (const stream of streams ?? []) {
       const streamName = (stream.userName ?? stream.userDisplayName ?? "").toLowerCase();
       if (!streamName) {
@@ -208,12 +229,22 @@ export default class TimerManager {
       }
 
       nowStreaming.add(streamName);
-      if (this.state.liveStreamers[streamName]) {
+
+      const streamer = trackedStreamersByName.get(streamName);
+      if (!streamer?.discordChannelId || !streamer?.discordId) {
         continue;
       }
 
-      const streamer = streamers.find((entry) => entry.twitchName.toLowerCase() === streamName);
-      if (!streamer?.discordChannelId || !streamer?.discordId) {
+      const claimedAnnouncement = await claimAnnouncementSend({
+        discordChannelId: streamer.discordChannelId,
+        instanceId: this.instanceId,
+        staleBefore,
+        streamStartedAt: stream.startDate ?? new Date(),
+        twitchName: streamer.twitchName,
+        twitchStreamId: stream.id,
+        twitchUserId: stream.userId ?? streamer.twitchId ?? null,
+      });
+      if (!claimedAnnouncement) {
         continue;
       }
 
@@ -221,29 +252,66 @@ export default class TimerManager {
       const message = await channel.send(
         `<@${streamer.discordId}> (${streamer.twitchName}) is live now streaming ${stream.gameName}. Check them out: https://twitch.tv/${streamer.twitchName}`,
       );
-      this.state.addLiveStreamer(streamName, message.id);
+      await markAnnouncementSent({
+        discordMessageId: message.id,
+        instanceId: this.instanceId,
+        twitchStreamId: stream.id,
+      });
+      logInfo("discord.live.announced", {
+        twitchName: streamer.twitchName,
+        twitchStreamId: stream.id,
+        discordChannelId: streamer.discordChannelId,
+        discordMessageId: message.id,
+        gameName: stream.gameName,
+      });
     }
 
-    for (const [streamerName, messageId] of Object.entries(this.state.liveStreamers)) {
-      if (nowStreaming.has(streamerName)) {
+    const activeAnnouncements = await listActiveAnnouncements();
+    for (const announcement of activeAnnouncements) {
+      const announcementName = announcement.twitchName?.toLowerCase();
+      if (announcementName && nowStreaming.has(announcementName)) {
         continue;
       }
 
-      const streamer = streamers.find((entry) => entry.twitchName.toLowerCase() === streamerName);
-      if (!streamer?.discordChannelId) {
-        this.state.deleteLiveStreamer(streamerName);
+      if (!announcement.discordMessageId) {
+        await markPendingAnnouncementEnded(announcement.twitchStreamId);
+        logInfo("discord.live.discarded", {
+          twitchName: announcement.twitchName,
+          twitchStreamId: announcement.twitchStreamId,
+        });
         continue;
       }
 
+      const claimedAnnouncement = await claimAnnouncementDelete({
+        instanceId: this.instanceId,
+        staleBefore,
+        twitchStreamId: announcement.twitchStreamId,
+      });
+      if (!claimedAnnouncement) {
+        continue;
+      }
+
+      let discordMessageDeleted = false;
       try {
-        const channel = await this.discordClient.channels.fetch(streamer.discordChannelId);
-        const message = await channel.messages.fetch(messageId);
+        const channel = await this.discordClient.channels.fetch(claimedAnnouncement.discordChannelId);
+        const message = await channel.messages.fetch(claimedAnnouncement.discordMessageId);
         await message.delete();
+        discordMessageDeleted = true;
       } catch (error) {
-        console.error(`[streamer-notification:${streamerName}]`, error);
+        console.error(`[streamer-notification:${claimedAnnouncement.twitchName}]`, error);
       }
 
-      this.state.deleteLiveStreamer(streamerName);
+      await markAnnouncementEnded({
+        instanceId: this.instanceId,
+        twitchStreamId: claimedAnnouncement.twitchStreamId,
+      });
+      logInfo("discord.live.ended", {
+        twitchName: claimedAnnouncement.twitchName,
+        twitchStreamId: claimedAnnouncement.twitchStreamId,
+        discordChannelId: claimedAnnouncement.discordChannelId,
+        discordMessageId: claimedAnnouncement.discordMessageId,
+        discordMessageDeleted,
+      });
     }
   }
 
@@ -328,6 +396,10 @@ ${dailyExercises[1] ?? ""}
 *extra credit*
 ${dailyExercises[2] ?? ""}
     `);
+    logInfo("discord.daily-exercise.posted", {
+      channelId: config.discordChallengeChannelId,
+      count: dailyExercises.length,
+    });
   }
 
   async postDailyTip() {
@@ -354,6 +426,11 @@ ${dailyExercises[2] ?? ""}
 **${tip.title}**
 ${tip.content}
     `);
+    logInfo("discord.daily-tip.posted", {
+      channelId: config.discordTipChannelId,
+      tipId: tip.id,
+      title: tip.title,
+    });
 
     const nextIndex = tipIndex >= tips.length - 1 ? 0 : tipIndex + 1;
     await this.redisClient.set("tipCounter", nextIndex);
