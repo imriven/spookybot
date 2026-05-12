@@ -110,21 +110,23 @@ function requireAdmin(sessionStore) {
 
 function requireCsrf(sessionStore) {
   return (req, res, next) => {
-    if (sessionStore.verifyCsrf(req)) {
-      next();
-      return;
-    }
+    (async () => {
+      if (sessionStore.verifyCsrf(req)) {
+        next();
+        return;
+      }
 
-    if (req.session?.admin?.userId) {
-      sessionStore.setFlash(req, res, {
-        type: "error",
-        message: "Your session could not be verified. Try again.",
-      });
-      res.redirect(sanitizeReturnTo(req.body?._returnTo) || inferRedirectPath(req.path));
-      return;
-    }
+      if (req.session?.admin?.userId) {
+        await sessionStore.setFlash(req, res, {
+          type: "error",
+          message: "Your session could not be verified. Try again.",
+        });
+        res.redirect(sanitizeReturnTo(req.body?._returnTo) || inferRedirectPath(req.path));
+        return;
+      }
 
-    res.status(403).send("Invalid CSRF token.");
+      res.status(403).send("Invalid CSRF token.");
+    })().catch(next);
   };
 }
 
@@ -639,9 +641,9 @@ export default function createAdminServer({
 
   app.get("/admin/login", async (req, res) => {
     if (req.query.start === "1") {
-      const session = sessionStore.ensure(req, res);
+      const session = await sessionStore.ensure(req, res);
       session.oauthState = crypto.randomUUID();
-      sessionStore.commit(res, session);
+      await sessionStore.commit(res, session);
       res.redirect(twitchManager.getAuthorizeUrl(session.oauthState));
       return;
     }
@@ -652,7 +654,7 @@ export default function createAdminServer({
     }
 
     res.render("login", {
-      flash: sessionStore.consumeFlash(req, res),
+      flash: await sessionStore.consumeFlash(req, res),
     });
   });
 
@@ -660,7 +662,7 @@ export default function createAdminServer({
     const { code, state, error, error_description: errorDescription } = req.query;
 
     if (error) {
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: `Twitch login failed: ${errorDescription || error}`,
       });
@@ -669,7 +671,7 @@ export default function createAdminServer({
     }
 
     if (!req.session?.oauthState || req.session.oauthState !== state) {
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: "OAuth state mismatch. Start the login flow again.",
       });
@@ -679,7 +681,7 @@ export default function createAdminServer({
 
     try {
       const user = await twitchManager.handleOAuthCallback(code);
-      const session = sessionStore.rotate(req, res);
+      const session = await sessionStore.rotate(req, res);
       session.admin = {
         userId: user.id,
         login: user.login,
@@ -690,11 +692,11 @@ export default function createAdminServer({
         type: "success",
         message: `Connected Twitch bot account ${user.display_name}.`,
       };
-      sessionStore.commit(res, session);
+      await sessionStore.commit(res, session);
       res.redirect("/admin");
     } catch (errorObject) {
       console.error("[admin:twitch-callback]", errorObject);
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: toUserMessage(errorObject, "Twitch login failed. Check server logs for details."),
       });
@@ -702,8 +704,8 @@ export default function createAdminServer({
     }
   });
 
-  app.post("/admin/logout", requireAdmin(sessionStore), requireCsrf(sessionStore), (req, res) => {
-    sessionStore.destroy(req, res);
+  app.post("/admin/logout", requireAdmin(sessionStore), requireCsrf(sessionStore), async (req, res) => {
+    await sessionStore.destroy(req, res);
     res.redirect("/admin/login");
   });
 
@@ -713,7 +715,7 @@ export default function createAdminServer({
     const nextTarget = twitchTargetService.resolveTarget(req.body?.target);
 
     if (!nextTarget) {
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: "Invalid Twitch target selection. No runtime changes were applied.",
       });
@@ -724,13 +726,13 @@ export default function createAdminServer({
     if (nextTarget.key === previousTarget?.key) {
       try {
         await twitchTargetService.persistActiveTarget(nextTarget);
-        sessionStore.setFlash(req, res, {
+        await sessionStore.setFlash(req, res, {
           type: "success",
           message: `Active Twitch target remains ${nextTarget.username} / ${nextTarget.channelId}.`,
         });
       } catch (error) {
         console.error("[admin:target-persist]", error);
-        sessionStore.setFlash(req, res, {
+        await sessionStore.setFlash(req, res, {
           type: "error",
           message: toUserMessage(error, "Unable to persist the active Twitch target."),
         });
@@ -743,7 +745,7 @@ export default function createAdminServer({
     try {
       await twitchManager.switchTarget(nextTarget);
       await twitchTargetService.persistActiveTarget(nextTarget);
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "success",
         message: `Switched active Twitch target to ${nextTarget.username} / ${nextTarget.channelId}.`,
       });
@@ -759,7 +761,7 @@ export default function createAdminServer({
       }
 
       twitchTargetService.setActiveTarget(previousTarget);
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: toUserMessage(
           error,
@@ -772,19 +774,17 @@ export default function createAdminServer({
   });
 
   app.get("/admin", requireAdmin(sessionStore), async (req, res) => {
-    const csrfToken = sessionStore.getCsrfToken(req, res);
-    const flash = sessionStore.consumeFlash(req, res);
-    const [authStatus, viewModel] = await Promise.all([
-      twitchManager.getAuthStatus(),
-      buildViewModel({
-        activePage: "overview",
-        contentService,
-        csrfToken,
-        flash,
-        req,
-        twitchTargetService,
-      }),
-    ]);
+    const csrfToken = await sessionStore.getCsrfToken(req, res);
+    const flash = await sessionStore.consumeFlash(req, res);
+    const authStatus = await twitchManager.getAuthStatus();
+    const viewModel = await buildViewModel({
+      activePage: "overview",
+      contentService,
+      csrfToken,
+      flash,
+      req,
+      twitchTargetService,
+    });
 
     res.render("admin-overview", {
       ...viewModel,
@@ -795,11 +795,13 @@ export default function createAdminServer({
 
   DATASET_PAGES.forEach((page) => {
     app.get(page.path, requireAdmin(sessionStore), async (req, res) => {
+      const csrfToken = await sessionStore.getCsrfToken(req, res);
+      const flash = await sessionStore.consumeFlash(req, res);
       const viewModel = await buildViewModel({
         activePage: page.key,
         contentService,
-        csrfToken: sessionStore.getCsrfToken(req, res),
-        flash: sessionStore.consumeFlash(req, res),
+        csrfToken,
+        flash,
         req,
         twitchTargetService,
       });
@@ -827,13 +829,13 @@ export default function createAdminServer({
         });
       }
       await timerManager.handleContentReload();
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "success",
         message: successMessage,
       });
     } catch (error) {
       console.error("[admin:mutation]", error);
-      sessionStore.setFlash(req, res, {
+      await sessionStore.setFlash(req, res, {
         type: "error",
         message: toUserMessage(error, "Unable to save changes. Check server logs for details."),
       });

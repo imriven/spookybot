@@ -4,8 +4,7 @@ import config from "../config/appConfig.js";
 export default async function RedisClient() {
   const redisUrl = config.redisFlyConnect || config.redisFlyConnectDev;
   if (!redisUrl) {
-    console.warn("Redis URL is not set. Tip rotation persistence is disabled.");
-    return null;
+    throw new Error("Redis URL is not set. Configure REDIS_FLY_CONNECT or REDIS_FLY_CONNECTD.");
   }
 
   const redisClient = createClient({

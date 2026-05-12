@@ -5,7 +5,8 @@ const COOKIE_NAME = config.sessionCookieSecure
   ? "__Host-spookybot_admin_session"
   : "spookybot_admin_session";
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const CLEANUP_INTERVAL_MS = 60 * 60 * 1000;
+const ONE_WEEK_SECONDS = Math.floor(ONE_WEEK_MS / 1000);
+const REDIS_KEY_PREFIX = "admin_session:";
 
 function parseCookies(cookieHeader = "") {
   return cookieHeader
@@ -56,20 +57,49 @@ function serializeCookie(value, expiresAt) {
 }
 
 export default class SessionStore {
-  constructor() {
-    this.sessions = new Map();
-    this.cleanupInterval = setInterval(() => this.pruneExpiredSessions(), CLEANUP_INTERVAL_MS);
-    this.cleanupInterval.unref?.();
+  constructor({ redisClient } = {}) {
+    if (!redisClient) {
+      throw new Error("SessionStore requires a Redis client.");
+    }
+
+    this.redisClient = redisClient;
+  }
+
+  getSessionKey(sessionId) {
+    return `${REDIS_KEY_PREFIX}${sessionId}`;
+  }
+
+  async loadSession(sessionId) {
+    const rawSession = await this.redisClient.get(this.getSessionKey(sessionId));
+    if (!rawSession) {
+      return null;
+    }
+
+    return JSON.parse(rawSession);
+  }
+
+  async saveSession(session) {
+    await this.redisClient.set(this.getSessionKey(session.id), JSON.stringify(session), {
+      EX: ONE_WEEK_SECONDS,
+    });
+  }
+
+  async deleteSession(sessionId) {
+    await this.redisClient.del(this.getSessionKey(sessionId));
   }
 
   middleware() {
     return (req, _res, next) => {
-      req.session = this.read(req);
-      next();
+      this.read(req)
+        .then((session) => {
+          req.session = session;
+          next();
+        })
+        .catch(next);
     };
   }
 
-  read(req) {
+  async read(req) {
     const cookies = parseCookies(req.headers.cookie);
     const raw = cookies[COOKIE_NAME];
     if (!raw) {
@@ -81,13 +111,13 @@ export default class SessionStore {
       return null;
     }
 
-    const session = this.sessions.get(sessionId);
+    const session = await this.loadSession(sessionId);
     if (!session) {
       return null;
     }
 
     if (session.expiresAt <= Date.now()) {
-      this.sessions.delete(sessionId);
+      await this.deleteSession(sessionId);
       return null;
     }
 
@@ -95,7 +125,7 @@ export default class SessionStore {
     return session;
   }
 
-  ensure(req, res) {
+  async ensure(req, res) {
     if (req.session) {
       return req.session;
     }
@@ -112,14 +142,14 @@ export default class SessionStore {
       csrfToken: crypto.randomBytes(32).toString("hex"),
     };
 
-    this.sessions.set(sessionId, session);
-    this.commit(res, session);
+    await this.commit(res, session);
     req.session = session;
     return session;
   }
 
-  commit(res, session) {
+  async commit(res, session) {
     session.expiresAt = Date.now() + ONE_WEEK_MS;
+    await this.saveSession(session);
     const expiresAt = new Date(session.expiresAt);
     res.setHeader("Set-Cookie", serializeCookie(`${session.id}.${sign(session.id)}`, expiresAt));
   }
@@ -128,38 +158,38 @@ export default class SessionStore {
     res.setHeader("Set-Cookie", serializeCookie("", new Date(0)));
   }
 
-  destroy(req, res) {
+  async destroy(req, res) {
     if (req.session) {
-      this.sessions.delete(req.session.id);
+      await this.deleteSession(req.session.id);
       req.session = null;
     }
     this.clear(res);
   }
 
-  setFlash(req, res, flash) {
-    const session = this.ensure(req, res);
+  async setFlash(req, res, flash) {
+    const session = await this.ensure(req, res);
     session.flash = flash;
-    this.commit(res, session);
+    await this.commit(res, session);
   }
 
-  rotate(req, res) {
-    const session = this.ensure(req, res);
-    this.sessions.delete(session.id);
+  async rotate(req, res) {
+    const session = await this.ensure(req, res);
+    const previousSessionId = session.id;
+    await this.deleteSession(previousSessionId);
     session.id = crypto.randomUUID();
     session.lastSeenAt = Date.now();
     session.expiresAt = Date.now() + ONE_WEEK_MS;
     session.csrfToken = crypto.randomBytes(32).toString("hex");
-    this.sessions.set(session.id, session);
-    this.commit(res, session);
+    await this.commit(res, session);
     req.session = session;
     return session;
   }
 
-  getCsrfToken(req, res) {
-    const session = this.ensure(req, res);
+  async getCsrfToken(req, res) {
+    const session = await this.ensure(req, res);
     if (!session.csrfToken) {
       session.csrfToken = crypto.randomBytes(32).toString("hex");
-      this.commit(res, session);
+      await this.commit(res, session);
     }
     return session.csrfToken;
   }
@@ -173,23 +203,14 @@ export default class SessionStore {
     return signaturesMatch(submitted, expected);
   }
 
-  consumeFlash(req, res) {
+  async consumeFlash(req, res) {
     if (!req.session?.flash) {
       return null;
     }
 
     const flash = req.session.flash;
     req.session.flash = null;
-    this.commit(res, req.session);
+    await this.commit(res, req.session);
     return flash;
-  }
-
-  pruneExpiredSessions() {
-    const now = Date.now();
-    for (const [sessionId, session] of this.sessions.entries()) {
-      if (session.expiresAt <= now) {
-        this.sessions.delete(sessionId);
-      }
-    }
   }
 }

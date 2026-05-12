@@ -14,7 +14,6 @@ import TwitchTargetService from "./services/twitch-target-service.js";
 await prepareDatabase();
 
 const state = new BotState();
-const sessionStore = new SessionStore();
 const contentService = new ContentService();
 const twitchTargetService = new TwitchTargetService();
 await twitchTargetService.initialize();
@@ -22,7 +21,7 @@ await contentService.reload();
 
 const discordClient = await DiscordClient();
 const redisClient = await RedisClient();
-
+const sessionStore = new SessionStore({ redisClient });
 let timerManager = null;
 const twitchManager = new TwitchManager({
   contentService,
